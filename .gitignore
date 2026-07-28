@@ -10,10 +10,14 @@ dist/
 .coverage
 htmlcov/
 
-# Données : JAMAIS dans git — versionnées par DVC (pointeurs *.dvc versionnés)
-data/
+# Données : JAMAIS dans git — versionnées par DVC.
+# On ignore le CONTENU (`data/**`) et non le dossier : git ne peut pas
+# désexclure un fichier situé sous un dossier lui-même exclu, or les pointeurs
+# `*.dvc`, eux, doivent être versionnés.
+data/**
+!data/**/
 !data/**/*.dvc
-!data/.gitkeep
+!data/**/.gitignore
 
 # Artefacts d'expériences : modèles et figures lourds hors git.
 # Les métriques/config/rapports des runs officiels sont versionnés (cf. .gitignore ci-dessous).

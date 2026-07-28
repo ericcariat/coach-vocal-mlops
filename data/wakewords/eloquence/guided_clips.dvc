@@ -1,0 +1,6 @@
+outs:
+- md5: eec50674cf0f3dd33be3bfc2f80389d9.dir
+  size: 1345232
+  nfiles: 28
+  hash: md5
+  path: guided_clips
