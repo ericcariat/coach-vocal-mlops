@@ -1,0 +1,89 @@
+# Recette « base » — équivalent du run v02 (dernier état 100 % réel).
+# Sert de témoin : toute nouvelle recette hérite de celle-ci (`extends: base`)
+# et ne déclare que ses différences, ce qui rend le diff lisible.
+#
+# `copies` = duplication des chemins (« boost ») : pondère une source rare sans
+# toucher à la loss. `label` : 1 = le mot, 0 = tout le reste.
+name: base
+data_seed: 42            # seed DONNÉES — ne JAMAIS changer (fige le jeu de test)
+splits_csv: splits.csv
+
+augmentation:
+  enabled: true
+  time_shift_ms: 100     # décalage NON circulaire (recoller fin→début créerait
+                         # des mots impossibles)
+  speed_min: 0.85        # ±15 % de vitesse : le run v01 avait appris un débit,
+  speed_max: 1.15        # pas un mot (15 « éloquence » sur 20 ratés au tempo réel)
+
+sources:
+  # ── Positifs ────────────────────────────────────────────────────────────────
+  - name: yt_positif
+    type: word_clips
+    label: 1
+    params: {label_key: eloquence, prefix: "yt_"}
+
+  - name: moi_positif
+    type: word_clips
+    label: 1
+    copies: 10           # ma voix est la cible d'usage : sur-représentée
+    params: {label_key: eloquence, prefix: "moi_"}
+
+  - name: guided_positif
+    type: guided
+    label: 1
+    copies: 10
+    splits: [train]      # collectés après le figement du split → train seulement
+    params:
+      outcomes: [TP, FN]
+      crop: true
+      exclude_prefixes: ["guided_0046", "guided_0047"]   # session trop basse en gain
+
+  # ── Négatifs ────────────────────────────────────────────────────────────────
+  - name: guided_hard_neg
+    type: guided
+    label: 0
+    copies: 10
+    splits: [train]
+    params: {outcomes: [FP, TN], crop: false}
+
+  - name: proches
+    type: word_clips
+    label: 0
+    copies: 10           # « élégance », « éloquent »… : les confusions les plus coûteuses
+    params: {label_key: proche}
+
+  - name: gsc
+    type: gsc
+    label: 0
+    params: {budget: [2000, 250, 250]}
+
+  - name: cv_fr
+    type: common_voice
+    label: 0
+    params: {lang: fr, shard: fr_train_0, budget: [1200, 150, 150]}
+
+  - name: cv_en
+    type: common_voice
+    label: 0
+    params: {lang: en, shard: en_train_0, budget: [600, 75, 75]}
+
+  - name: musan_noise
+    type: musan_noise
+    label: 0
+    params: {budget: [1200, 150, 150], gains: [1.0, 0.1, 0.02]}
+
+  - name: silence
+    type: silence
+    label: 0
+    params: {budget: [150, 20, 20]}
+
+  - name: fragments_moi
+    type: fragments
+    label: 0
+    copies: 3
+    params: {prefix: "moi_", prefix_fracs: [0.30, 0.45, 0.60], subset: 3}
+
+  - name: fragments_yt
+    type: fragments
+    label: 0
+    params: {prefix: "yt_", prefix_fracs: [0.30, 0.45, 0.60], subset: 3}

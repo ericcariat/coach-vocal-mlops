@@ -1,0 +1,44 @@
+# Mot-clé « éloquence ».
+# Ces valeurs sont partagées par l'entraînement ET l'inférence : les changer
+# invalide tous les modèles existants (le front-end acoustique ne serait plus
+# le même). Un nouveau front-end = un nouveau fichier de mot-clé.
+name: eloquence
+classes: [pas_eloquence, eloquence]
+sample_rate: 16000
+
+audio:
+  frame_length: 255        # ~16 ms de fenêtre STFT
+  frame_step: 128          # ~8 ms de pas → 124 trames pour 1 s
+  num_mel_bins: 40
+  lower_edge_hertz: 20.0
+  upper_edge_hertz: null   # null → sample_rate / 2
+  clip_seconds: 1.0
+
+live:
+  threshold: 0.80          # plus haut que le seuil d'évaluation (0.5) : en
+                           # always-on on préfère rater un mot que se réveiller seul
+  hop_s: 0.125             # une décision toutes les 125 ms
+  n_consecutive: 3         # 3 fenêtres d'affilée → filtre les pics isolés
+  cooldown_s: 1.5          # un mot prononcé une fois ne compte qu'une fois
+  min_peak: 0.02           # portail d'énergie : silence → pas de prédiction
+
+# Génération des positifs synthétiques (coachvocal data tts-pool eloquence).
+# `fr_FR-mls` est volontairement absente : entraînée sur des livres audio, elle
+# babille sur un mot isolé (1,5-3,5 s de charabia). Le point final stabilise
+# nettement la prosodie des autres voix.
+tts:
+  text: "éloquence."
+  voices:
+    - name: siwis
+      model: data/external/piper_voices/fr_FR-siwis-medium.onnx
+      speaker: 0
+    - name: upmc_s0
+      model: data/external/piper_voices/fr_FR-upmc-medium.onnx
+      speaker: 0
+    - name: upmc_s1
+      model: data/external/piper_voices/fr_FR-upmc-medium.onnx
+      speaker: 1
+  length_scales: [0.85, 0.95, 1.0, 1.05, 1.15]   # vitesse d'élocution
+  noise_scales: [0.5, 0.667, 0.9]                # variabilité de synthèse
+  per_combo: 50
+  pool_name: tts_positives

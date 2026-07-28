@@ -1,0 +1,59 @@
+{
+  "run_id": "v01",
+  "script": "14_eloquence_v02_train",
+  "date": "2026-07-19T21:15:23.355283",
+  "seed": 42,
+  "sr": 16000,
+  "epochs_max": 30,
+  "batch_size": 64,
+  "budgets": {
+    "gsc": [
+      2000,
+      250,
+      250
+    ],
+    "cv_fr": [
+      1200,
+      150,
+      150
+    ],
+    "cv_en": [
+      600,
+      75,
+      75
+    ],
+    "musan_noise": [
+      1200,
+      150,
+      150
+    ],
+    "silence": [
+      150,
+      20,
+      20
+    ]
+  },
+  "noise_gains": [
+    1.0,
+    0.1,
+    0.02
+  ],
+  "prefix_fracs": [
+    0.3,
+    0.45,
+    0.6
+  ],
+  "yt_frag_subset": 3,
+  "my_pos_boost": 10,
+  "proches_boost": 10,
+  "my_frag_boost": 3,
+  "max_shift_ms": 100,
+  "threshold": 0.5,
+  "class_weight": {
+    "0": 0.6215025906735752,
+    "1": 2.5575692963752665
+  },
+  "splits_csv": "wakewords/eloquence/splits.csv",
+  "selection": "selections/negatives_v01.csv",
+  "train_on": "cpu (tensorflow-metal corrompt les gradients)"
+}

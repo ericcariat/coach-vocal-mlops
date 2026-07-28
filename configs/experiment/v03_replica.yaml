@@ -1,0 +1,25 @@
+# Réplique du run v03 (champion actuel) dans la nouvelle architecture.
+# But : vérifier que le pipeline reconstruit donne les mêmes ordres de grandeur
+# que l'ancien (F1 ≈ 0.926, FRR ≈ 5 %, FAR ≈ 2,5 %). Sans ce point de contrôle,
+# on ne saurait pas si un écart futur vient de la recette ou de la migration.
+name: v03_replica
+description: >
+  CNN de référence + 500 positifs TTS (dose optimale du sweep).
+  5 candidats seeds 42-46, élu par la validation.
+
+wakeword: eloquence
+dataset: tts500
+model: cnn_baseline
+
+training:
+  epochs: 30
+  batch_size: 64
+  learning_rate: 0.001
+  early_stopping_patience: 5
+  class_weight: true
+  threshold: 0.5
+  # 5 candidats : l'entraînement CPU n'est pas déterministe (±0.03-0.06 de F1 à
+  # seed identique). Élire par la validation, jamais par le test.
+  seeds: [42, 43, 44, 45, 46]
+  selection_metric: val_loss
+  use_gpu: false          # tensorflow-metal corrompt les gradients (ADR-002)

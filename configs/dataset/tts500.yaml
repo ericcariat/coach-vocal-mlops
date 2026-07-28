@@ -1,0 +1,21 @@
+# Recette « base + 500 positifs synthétiques » — celle du run v03.
+#
+# Dose issue d'un sweep dose-réponse (0 / 100 / 500 / 2000, docs/JOURNAL.md) :
+# le gain n'est PAS monotone. À 500 (~2× les positifs réels) la F1 monte et la
+# FAR baisse sur 3 seeds appariés ; à 2000 le synthétique noie le réel et tout
+# s'effondre. Reproduire ce sweep : --set dataset.sources.tts_positif.params.dose=N
+#
+# Le synthétique reste STRICTEMENT dans le train : mesurer sur du Piper
+# reviendrait à mesurer la capacité à reconnaître Piper.
+extends: base
+name: tts500
+
+sources:
+  - name: tts_positif
+    type: tts_piper
+    label: 1
+    copies: 1
+    splits: [train]
+    params:
+      pool: tts_positives
+      dose: 500

@@ -1,0 +1,24 @@
+# Recette « tts500 + négatifs de parole continue » — hypothèse du prochain run.
+#
+# Motivation, mesurée et non supposée : le banc streaming donne ~50 fausses
+# alarmes/heure alors que le test par clips affiche une FAR de 2,5 %. L'écart
+# s'explique par ce que le modèle n'a JAMAIS vu à l'entraînement — un flux de
+# parole ininterrompu, où chaque fenêtre de 1 s tombe au milieu d'un mot. Tous
+# nos négatifs de parole étaient des mots isolés (GSC) ou des extraits d'1 s
+# tronqués (Common Voice).
+#
+# Hypothèse à valider : ces négatifs font baisser les FA/h sans coûter de rappel.
+# Le banc streaming tranchera (le test par clips ne le verra probablement pas).
+extends: tts500
+name: speech_neg
+
+sources:
+  - name: speech_negatives
+    type: speech_negatives
+    label: 0
+    params:
+      budget: [1500, 150, 150]
+      stride_s: 1.0        # fenêtres jointives
+      guard_s: 2.0         # marge autour d'une occurrence connue du mot-clé
+      min_peak: 0.02       # écarte les fenêtres muettes (déjà couvertes par `silence`)
+      max_per_video: 60    # évite qu'une seule vidéo domine le pool

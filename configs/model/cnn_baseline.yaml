@@ -1,0 +1,10 @@
+# CNN binaire de référence — architecture de tous les runs v01 → v03.
+# Sert de témoin : toute nouvelle architecture doit la battre au banc streaming,
+# pas seulement sur la F1 par clip.
+name: cnn_baseline
+arch: cnn_baseline
+params:
+  filters: [32, 64]
+  dense_units: 128
+  dropout_conv: 0.25
+  dropout_dense: 0.5

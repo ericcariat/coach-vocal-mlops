@@ -1,0 +1,10 @@
+# DS-CNN (Zhang et al., « Hello Edge », 2017) — référence du domaine pour la
+# détection de mot-clé embarquée. Convolutions séparables : à précision
+# comparable, 5 à 10× moins de paramètres et de MACs que la CNN de référence.
+# Candidat si le détecteur doit tourner en permanence sur batterie.
+name: dscnn
+arch: dscnn
+params:
+  filters: 64
+  n_blocks: 4
+  dropout: 0.2

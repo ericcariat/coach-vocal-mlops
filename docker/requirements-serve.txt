@@ -1,0 +1,17 @@
+# Dépendances de l'image de SERVICE (Linux). Volontairement minimales : ni
+# entraînement, ni MLflow, ni outillage de données.
+# `tensorflow-cpu` remplace `tensorflow-macos` (qui n'existe que pour macOS).
+numpy==1.26.4
+tensorflow-cpu==2.16.2
+soundfile>=0.12
+librosa>=0.10
+pydantic>=2.7
+pyyaml>=6.0
+typer>=0.12
+rich>=13.7
+fastapi>=0.111
+uvicorn[standard]>=0.30
+python-multipart>=0.0.9
+streamlit>=1.40,<2
+pandas>=2.2,<3
+matplotlib>=3.8

@@ -1,0 +1,27 @@
+# v04 — hypothèse : ajouter des négatifs de PAROLE CONTINUE fait baisser les
+# fausses alarmes par heure sans coûter de rappel.
+#
+# Critère de succès défini AVANT le run (sinon on justifie n'importe quel
+# résultat après coup) :
+#   • FA/h au banc streaming en baisse d'au moins 20 % vs v03 ;
+#   • rappel streaming en baisse d'au plus 2 points.
+# Vérification : coachvocal bench --run v03_replica --run v04_speech_neg --minutes 16
+name: v04_speech_neg
+description: >
+  tts500 + 1500 fenêtres de parole continue YouTube en négatifs (train),
+  150 en val et test. Même architecture et même protocole que v03.
+
+wakeword: eloquence
+dataset: speech_neg
+model: cnn_baseline
+
+training:
+  epochs: 30
+  batch_size: 64
+  learning_rate: 0.001
+  early_stopping_patience: 5
+  class_weight: true
+  threshold: 0.5
+  seeds: [42, 43, 44, 45, 46]
+  selection_metric: val_loss
+  use_gpu: false

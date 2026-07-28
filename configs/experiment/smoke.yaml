@@ -1,0 +1,27 @@
+# Expérience « fumée » : vérifie que la chaîne complète tourne en ~2 minutes.
+# Un seul seed, 2 epochs, budgets réduits. À lancer après toute modification du
+# pipeline, AVANT de démarrer un vrai run de 40 minutes.
+name: smoke
+description: Contrôle de bout en bout du pipeline (résultats sans valeur scientifique).
+
+wakeword: eloquence
+model: cnn_baseline
+
+dataset:
+  ref: base
+  name: smoke
+  sources:
+    - name: gsc
+      params: {budget: [200, 40, 40]}
+    - name: cv_fr
+      params: {budget: [100, 20, 20]}
+    - name: cv_en
+      enabled: false
+    - name: musan_noise
+      params: {budget: [100, 20, 20]}
+    - name: silence
+      params: {budget: [20, 5, 5]}
+
+training:
+  epochs: 2
+  seeds: [42]

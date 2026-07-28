@@ -1,0 +1,36 @@
+# CI : lint + tests unitaires uniquement.
+# Pas d'entraînement en CI — il demande ~20 Go de données et 40 minutes de CPU.
+# Les tests couvrent ce qui doit rester vrai sans données : validation des
+# configs, cohérence du front-end acoustique, machine à états du détecteur,
+# détection de fuite train/test, métriques, API.
+name: CI
+
+on:
+  push: {branches: [main]}
+  pull_request:
+
+jobs:
+  qualite:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: Python 3.11
+        run: uv python install 3.11
+
+      - name: Dépendances (Linux → tensorflow-cpu)
+        run: |
+          uv venv
+          uv pip install -r docker/requirements-serve.txt
+          uv pip install pytest ruff scikit-learn seaborn httpx
+          uv pip install --no-deps -e .
+
+      - name: Lint
+        run: uv run ruff check src tests app scripts
+
+      - name: Tests
+        run: uv run pytest -q

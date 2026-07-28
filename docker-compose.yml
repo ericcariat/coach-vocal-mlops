@@ -1,0 +1,38 @@
+# Trois services indépendants : l'API sert le modèle, l'UI le montre, MLflow
+# archive les expériences. Modèles et données sont montés en volume (jamais
+# copiés dans l'image) : promouvoir un champion ne demande pas de rebuild.
+services:
+  api:
+    build: .
+    image: coachvocal:latest
+    ports: ["8000:8000"]
+    volumes:
+      - ./artifacts:/app/artifacts:ro
+      - ./data:/app/data:ro
+    environment:
+      COACHVOCAL_ROOT: /app
+    restart: unless-stopped
+
+  ui:
+    image: coachvocal:latest
+    depends_on: [api]
+    ports: ["8501:8501"]
+    volumes:
+      - ./artifacts:/app/artifacts:ro
+      - ./data:/app/data:ro
+    environment:
+      COACHVOCAL_ROOT: /app
+    command: >
+      streamlit run app/Home.py
+      --server.port 8501 --server.address 0.0.0.0 --server.headless true
+
+  mlflow:
+    image: coachvocal:latest
+    ports: ["5000:5000"]
+    volumes:
+      - ./artifacts:/app/artifacts
+    command: >
+      sh -c "pip install --no-cache-dir 'mlflow<3' &&
+             mlflow ui --backend-store-uri file:///app/artifacts/mlruns
+             --host 0.0.0.0 --port 5000"
+    profiles: ["tracking"]

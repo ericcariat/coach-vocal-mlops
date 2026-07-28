@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.py[cod]
+build/
+dist/
+*.egg-info/
+.venv/
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Données : JAMAIS dans git — versionnées par DVC (pointeurs *.dvc versionnés)
+data/
+!data/**/*.dvc
+!data/.gitkeep
+
+# Artefacts d'expériences : modèles et figures lourds hors git.
+# Les métriques/config/rapports des runs officiels sont versionnés (cf. .gitignore ci-dessous).
+artifacts/mlruns/
+artifacts/runs/**/model.keras
+artifacts/runs/**/candidates/
+artifacts/cache/
+artifacts/reports/**/*.wav
+
+# Audio brut (garde-fou : aucun média ne doit atterrir dans git)
+*.wav
+*.mp3
+*.m4a
+*.flac
+*.ogg
+
+# OS / IDE
+.DS_Store
+.idea/
+.vscode/
