@@ -113,5 +113,6 @@ docker compose up api ui
 - [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) — le pipeline étape par étape
 - [`docs/DATA.md`](docs/DATA.md) — provenance et licence de chaque source
 - [`docs/decisions/`](docs/decisions/) — décisions techniques et leurs raisons
+- [`HANDOFF.md`](HANDOFF.md) — **point de reprise** : état, vérifications, prochaines étapes
 - [`docs/JOURNAL.md`](docs/JOURNAL.md) — explorations, y compris les impasses
 - [`docs/CHANGELOG.md`](docs/CHANGELOG.md) — historique des runs et des promotions

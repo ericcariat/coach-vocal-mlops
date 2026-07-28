@@ -1,0 +1,6 @@
+outs:
+- md5: 758ee22ec5eeb170f2086e1159c7ee83.dir
+  size: 1844498180
+  nfiles: 1895
+  hash: md5
+  path: youtube_corpus

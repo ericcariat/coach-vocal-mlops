@@ -14,7 +14,8 @@ data/
     common_voice_fr/   Common Voice FR
     common_voice_en/   Common Voice EN
     piper_voices/      voix TTS Piper (.onnx)
-    youtube_corpus/    → lien vers le scraper (audio + subs + discovery.db)
+    youtube_corpus/    corpus YouTube COPIÉ depuis le scraper (audio + subs +
+                       discovery.db + curation.db) — cf. ADR-006
   wakewords/<mot>/
     raw/               brut, jamais modifié
     clean/             dérivé par script (positives/, negatives_proches/)
@@ -44,7 +45,7 @@ jeu de données qui l'a produit.
 | **MUSAN** | <https://www.openslr.org/17/> | Crops d'1 s, 3 gains (1.0 / 0.1 / 0.02), split par position | CC BY 4.0 / domaine public |
 | **Common Voice FR/EN** | <https://commonvoice.mozilla.org/datasets> | mp3 → wav 16 kHz mono, 1 s à partir de 0,5 s ; phrases contenant le mot-clé **exclues** ; split par locuteur | CC0 |
 | **Voix Piper** | <https://huggingface.co/rhasspy/piper-voices> — `fr_FR-siwis-medium` (CC BY 4.0), `fr_FR-upmc-medium` (Apache 2.0) | Synthèse, 22 050 → 16 kHz, rognage des silences, recadrage 1 s, normalisation du pic | Voir par voix |
-| `youtube_corpus` | Projet `scraper-audio` (lien symbolique) | Aucune — lecture seule | Usage recherche |
+| `youtube_corpus` | Copié depuis `scraper-audio` le 2026-07-28 (1,7 Go : 1278 segments, 613 VTT, 2006 occurrences alignées) | Aucune — lecture seule | Usage recherche |
 
 ### Générés (reproductibles depuis la seed)
 
