@@ -31,6 +31,18 @@ non-linéarités explique tout le tableau de juillet d'un coup. Le mystère
 d'ADR-002 n'en est plus un : re-contrôle permanent en une commande,
 `uv run python scripts/check_metal_relu.py`.
 
+**Un contournement existe — mesuré, pas adopté.** Le bug ne touche que le
+motif de fusion : un ReLU « fait main » (`tf.maximum(x, 0)`, mathématiquement
+identique) y échappe, tout comme `leaky_relu` et `elu` — mais `relu6` est
+cassé aussi, preuve que le problème est systémique aux fusions du plugin. Sur
+un problème-jouet non linéaire (cercles), l'entraînement Metal avec `relu`
+standard reste au hasard (acc 0.50 : le réseau est devenu linéaire) quand
+`tf.maximum(x, 0)` sur Metal converge à l'identique du CPU au chiffre près
+(loss 0.0282, acc 0.9937). Réhabiliter Metal pour l'exploration serait donc
+*possible* — mais exigerait le protocole complet (recette v03 sur Metal avec
+activation contournée, banc CPU, qualité dans la dispersion) et une mise à
+jour d'ADR-002. Non lancé à ce stade.
+
 Au passage, la même passe d'écoute a produit les premiers **verdicts humains
 sur le banc** (page « Banc streaming » : lecture audio + jugement persisté) :
 sur v03_replica au seuil 0.5, 15 FA confirmées (futurs hard negatives), 1 FA
