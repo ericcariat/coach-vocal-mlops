@@ -82,6 +82,27 @@ inexploitable, 6 FN tous confirmés.
 
 ---
 
+## 2026-08-13 — Audit des positifs + synthèse des études : la feuille de route
+
+Cinq lectures en parallèle (les quatre études `ETUDE_*.md` + un audit chiffré
+des 1 882 positifs YouTube) pour décider de la suite. Deux surprises de
+l'audit : le doute sur les fins de clips était minoritaire (~17-25 % de fins
+chargées, 62 % de fins proprement zéro-paddées) — mais **93,5 % des clips
+attaquent le mot à l'échantillon 0**, l'inverse exact du placement recommandé
+unanimement par openWakeWord/microWakeWord/LiveKit (fin du mot près de la fin
+de fenêtre, jitter ~200 ms). Et **85 % des positifs sont des formes élidées**
+(« l'éloquence » 48,7 %, « d'éloquence » 36,3 %) — on les garde (c'est le
+français réel) mais on mesurera le rappel par forme. Bonus : 551 clips curés à
+la main dorment dans `curation.db` sans avoir jamais été utilisés, et 5
+« Dauphine-Éloquence » (nom propre) polluent les positifs.
+
+Tout est priorisé dans `docs/ROADMAP.md` : P0 = banc étendu + re-découpe des
+positifs (placement fin de fenêtre) + curation dormante ; P1 = sweeps dosés
+(parole continue 0/100/300/500, RIR/multi-SNR, hard negatives, sélection par
+FA/h) ; P2 = studio d'enregistrement guidé ; P3 = benchmarks externes.
+
+---
+
 ## 2026-08-12 — Reprise après deux semaines · cap fixé
 
 Décision d'orientation : **poursuivre l'amélioration de la détection dans ce
