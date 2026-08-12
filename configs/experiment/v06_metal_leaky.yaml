@@ -1,0 +1,40 @@
+# Suite du re-contrôle Metal (v05_metal_check) : le bug est circonscrit au
+# noyau ReLU fusionné des couches Dense, et leaky_relu y échappe (vérifié sur
+# Dense ET Conv2D, en inférence et sur un entraînement-jouet — JOURNAL du
+# 2026-08-12). Question : la recette v03 entraînée sur Metal avec leaky_relu
+# retrouve-t-elle la qualité CPU, en combien de temps ?
+#
+# Critère de succès, écrit AVANT le run :
+#   • qualité au banc streaming (inférence CPU) dans la dispersion des
+#     candidats v03_replica : rappel à ±2 points, FA/h du même ordre ;
+#   • temps d'entraînement (`fit_s`) nettement meilleur que les ~14 s/epoch CPU.
+# Vérification : coachvocal bench --run v03_replica --run v06_metal_leaky --minutes 16
+#
+# Lecture des résultats : deux choses changent vs v03_replica (backend Metal ET
+# activation leaky). Si la qualité est au rendez-vous, on ne saura pas l'attribuer
+# — et peu importe : la revendication validée est « Metal + leaky_relu est un
+# chemin d'itération rapide fiable », pas « leaky_relu est meilleur ».
+# Si succès : ADR-002 à amender (Metal toléré pour l'EXPLORATION avec activation
+# non fusionnée + scripts/check_metal_relu.py en garde-fou ; les runs officiels
+# et l'inférence restent sur CPU). Aucune promotion depuis ce run sans un
+# jumeau CPU de contrôle.
+name: v06_metal_leaky
+description: >
+  Recette v03 (tts500), CNN de référence en leaky_relu, entraînement sur GPU
+  Metal : le contournement du bug ReLU rend-il Metal utilisable, et à quelle
+  vitesse ?
+
+wakeword: eloquence
+dataset: tts500
+model: cnn_leaky
+
+training:
+  epochs: 30
+  batch_size: 64
+  learning_rate: 0.001
+  early_stopping_patience: 5
+  class_weight: true
+  threshold: 0.5
+  seeds: [42, 43, 44, 45, 46]
+  selection_metric: val_loss
+  use_gpu: true           # objet du test, avec activation non fusionnée (ADR-002)

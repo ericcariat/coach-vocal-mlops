@@ -1,0 +1,14 @@
+# CNN de référence avec activation leaky_relu (pente 0.2, défaut Keras).
+# Raison d'être : le noyau ReLU fusionné de tensorflow-metal ne s'applique pas
+# sur les couches Dense (ADR-002, re-contrôle du 2026-08-12) ; leaky_relu
+# échappe à la fusion et se comporte correctement sur GPU comme sur CPU.
+# C'est aussi une variante d'architecture intéressante en soi (pas de neurones
+# morts) — mais toute comparaison à cnn_baseline se juge au banc streaming.
+name: cnn_leaky
+arch: cnn_baseline
+params:
+  filters: [32, 64]
+  dense_units: 128
+  dropout_conv: 0.25
+  dropout_dense: 0.5
+  activation: leaky_relu

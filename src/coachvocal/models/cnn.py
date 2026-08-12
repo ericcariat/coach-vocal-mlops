@@ -16,16 +16,20 @@ from . import architecture
 
 @architecture("cnn_baseline")
 def cnn_baseline(input_shape, filters=(32, 64), dense_units=128,
-                 dropout_conv=0.25, dropout_dense=0.5, name="cnn_baseline"):
+                 dropout_conv=0.25, dropout_dense=0.5, activation="relu",
+                 name="cnn_baseline"):
+    # `activation` est paramétrable car le noyau ReLU *fusionné* de
+    # tensorflow-metal est défectueux sur les couches Dense (ADR-002,
+    # re-contrôle du 2026-08-12) : "leaky_relu" échappe à la fusion.
     return keras.Sequential(
         [
             layers.Input(shape=input_shape),
-            layers.Conv2D(filters[0], 3, activation="relu", padding="same", name="conv1"),
-            layers.Conv2D(filters[1], 3, activation="relu", padding="same", name="conv2"),
+            layers.Conv2D(filters[0], 3, activation=activation, padding="same", name="conv1"),
+            layers.Conv2D(filters[1], 3, activation=activation, padding="same", name="conv2"),
             layers.MaxPooling2D(2, name="pool"),
             layers.Dropout(dropout_conv, name="drop1"),
             layers.Flatten(name="flatten"),
-            layers.Dense(dense_units, activation="relu", name="dense1"),
+            layers.Dense(dense_units, activation=activation, name="dense1"),
             layers.Dropout(dropout_dense, name="drop2"),
             layers.Dense(1, activation="sigmoid", name="output"),
         ],
