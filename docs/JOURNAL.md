@@ -41,7 +41,20 @@ standard reste au hasard (acc 0.50 : le réseau est devenu linéaire) quand
 (loss 0.0282, acc 0.9937). Réhabiliter Metal pour l'exploration serait donc
 *possible* — mais exigerait le protocole complet (recette v03 sur Metal avec
 activation contournée, banc CPU, qualité dans la dispersion) et une mise à
-jour d'ADR-002. Non lancé à ce stade.
+jour d'ADR-002.
+
+**Protocole complet exécuté dans la foulée (`v06_metal_leaky`)** : activation
+paramétrée dans l'architecture (`cnn_leaky`), recette v03, entraînement Metal.
+L'entraînement est redevenu sain (val_loss 0.12–0.16, early stopping normal)
+et la vitesse est là (**2 min 39 s les 5 candidats, contre ~17 min sur CPU**) —
+mais le banc a tranché : rappel 60.9 % et 83.7 FA/h, contre 73.9 % et 47.1
+pour v03_replica. Critère raté sur les deux axes. **Metal reste écarté, la
+vitesse ne rachète pas la qualité.** On ne peut pas attribuer la dégradation
+(backend ? leaky_relu ? variance ?) — deux facteurs changeaient à la fois,
+c'était assumé dans la config ; un jumeau CPU en leaky_relu trancherait si
+besoin. La journée aura donc donné : la cause racine, un contournement
+démontré, et la preuve au banc que même contourné, Metal ne tient pas sa
+promesse ici.
 
 Au passage, la même passe d'écoute a produit les premiers **verdicts humains
 sur le banc** (page « Banc streaming » : lecture audio + jugement persisté) :

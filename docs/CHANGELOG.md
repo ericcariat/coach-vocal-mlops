@@ -23,6 +23,23 @@ lien `current/`. Ne jamais écrire un chemin de run en dur ailleurs.
 
 ## Runs
 
+### v06_metal_leaky — 2026-08-12 — ❌ critère non atteint : Metal reste écarté
+- **But** : le bug ReLU étant circonscrit aux Dense fusionnées et contourné par
+  `leaky_relu`, la recette v03 entraînée sur Metal retrouve-t-elle la qualité
+  CPU, et en combien de temps ? Critère pré-déclaré : rappel banc à ±2 points
+  de v03_replica, FA/h du même ordre, temps nettement meilleur.
+- **Entraînement sain, vitesse confirmée** : val_loss 0.12–0.16, early stopping
+  normal (7–19 epochs), **2 min 39 s pour 5 candidats contre ~17 min sur CPU**
+  (~3 s/epoch, ×4,7). Clips : F1 0.9120 (élu : seed 46).
+- **Banc (inférence CPU, seuil 0.8)** : rappel **60.9 %** (14/23) et
+  **83.7 FA/h** — contre 73.9 % · 47.1 pour v03_replica. Dégradé sur les deux
+  axes : ❌ sur le critère qualité.
+- **Verdict** : la vitesse ne rachète pas la qualité ; Metal reste écarté,
+  ADR-002 inchangé. Attribution impossible entre backend Metal, passage à
+  leaky_relu et variance (deux facteurs changés à la fois — assumé dans la
+  config) : un jumeau CPU en leaky_relu trancherait si la question redevient
+  d'actualité. Preuves : `artifacts/runs/eloquence/v06_metal_leaky/`.
+
 ### v05_metal_check — 2026-08-12 — 🔬 diagnostic : ADR-002 reconfirmé
 - **But** : re-contrôler si `tensorflow-metal` 1.2.0 corrompt toujours
   l'entraînement, et mesurer le temps (recette v03_replica, `use_gpu: true`).

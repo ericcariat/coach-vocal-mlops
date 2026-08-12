@@ -38,7 +38,7 @@ code { background:color-mix(in srgb, var(--accent) 12%, transparent); padding:.1
   border-radius:4px; font-size:13px; }
 </style></head><body><div class="wrap">
 <h1>Wake word « eloquence » — tableau de bord</h1>
-<p class="sub">Généré le 2026-08-12 18:49 · toutes les métriques de tous les runs</p>
+<p class="sub">Généré le 2026-08-12 23:25 · toutes les métriques de tous les runs</p>
 <p class='note'>⭐ Champion : <b>v03</b> (promu le 2026-07-28)<br>Champion repris de coach-vocal_etape1 : banc streaming 16 min, rappel 68.4% et 52.7 FA/h au seuil 0.8 (meilleur des 3 finalistes). Reverifie apres migration sur 3.3 min : rappel 80% (4/5), 54 FA/h.</p>
 
 
@@ -48,14 +48,14 @@ l'entraînement, vérité terrain WhisperX. <b>Rappel</b> = occurrences réellem
 attrapées ; <b>FA/h</b> = réveils intempestifs par heure. Corpus thématique donc
 pire cas volontaire. Les événements « incertains » (vérité terrain douteuse) sont
 exclus du décompte.</p>
-<div class='scroll'><table><thead><tr><th>Modèle</th><th>Rappel 0.5</th><th>FA/h 0.5</th><th>Incertains</th><th>Rappel 0.8</th><th>FA/h 0.8</th><th>Incertains</th></tr></thead><tbody><tr><td>v03_replica</td><td>73.91%</td><td>89.0</td><td>14</td><td>73.91%</td><td>47.1</td><td>9</td></tr><tr><td>v04_speech_neg</td><td>52.17%</td><td>36.6</td><td>6</td><td>43.48%</td><td>26.2</td><td>4</td></tr></tbody></table></div>
+<div class='scroll'><table><thead><tr><th>Modèle</th><th>Rappel 0.5</th><th>FA/h 0.5</th><th>Incertains</th><th>Rappel 0.8</th><th>FA/h 0.8</th><th>Incertains</th></tr></thead><tbody><tr><td>v03_replica</td><td>73.91%</td><td>89.0</td><td>14</td><td>73.91%</td><td>47.1</td><td>9</td></tr><tr><td>v06_metal_leaky</td><td>69.57%</td><td>157.0</td><td>22</td><td>60.87%</td><td>83.7</td><td>14</td></tr></tbody></table></div>
 
 <h2>Test par clips — signal de contrôle</h2>
 <p class="note warn">⚠️ Ces métriques ont déjà <b>mal classé</b> les modèles : le
 meilleur en F1 par clip s'est révélé le pire en conditions réelles. À lire comme
 un garde-fou, jamais comme un critère de promotion.
 <b>FRR</b> = mot prononcé et raté ; <b>FAR</b> = négatif accepté.</p>
-<div class='scroll'><table><thead><tr><th>Run</th><th>Date</th><th>Seed</th><th>Accuracy</th><th>F1</th><th>FRR ↓</th><th>FAR ↓</th><th>ROC-AUC</th><th>Empreinte data</th></tr></thead><tbody><tr><td>smoke</td><td>2026-07-28</td><td>42</td><td>92.10%</td><td>0.8648</td><td>4.62%</td><td>9.08%</td><td>0.9723</td><td><code>8ecbf4603ae3e769</code></td></tr><tr><td>v01</td><td></td><td>None</td><td>97.60%</td><td>0.9407</td><td>3.36%</td><td>2.17%</td><td>0.9934</td><td><code>—</code></td></tr><tr><td>v02</td><td></td><td>None</td><td>98.09%</td><td>0.9516</td><td>5.04%</td><td>1.14%</td><td>0.9922</td><td><code>—</code></td></tr><tr class='champion'><td>v03 ⭐</td><td></td><td>None</td><td>97.02%</td><td>0.9262</td><td>5.04%</td><td>2.48%</td><td>0.9918</td><td><code>—</code></td></tr><tr><td>v03_replica</td><td>2026-08-12</td><td>46</td><td>96.77%</td><td>0.9202</td><td>5.46%</td><td>2.68%</td><td>0.9915</td><td><code>3b0f0eb5888f8d4c</code></td></tr><tr><td>v04_speech_neg</td><td>2026-08-12</td><td>42</td><td>96.46%</td><td>0.9020</td><td>7.14%</td><td>2.77%</td><td>0.9862</td><td><code>a1867ef00cd975c6</code></td></tr></tbody></table></div>
+<div class='scroll'><table><thead><tr><th>Run</th><th>Date</th><th>Seed</th><th>Accuracy</th><th>F1</th><th>FRR ↓</th><th>FAR ↓</th><th>ROC-AUC</th><th>Empreinte data</th></tr></thead><tbody><tr><td>smoke</td><td>2026-08-12</td><td>42</td><td>93.55%</td><td>0.8863</td><td>5.04%</td><td>6.96%</td><td>0.9711</td><td><code>8ecbf4603ae3e769</code></td></tr><tr><td>v01</td><td></td><td>None</td><td>97.60%</td><td>0.9407</td><td>3.36%</td><td>2.17%</td><td>0.9934</td><td><code>—</code></td></tr><tr><td>v02</td><td></td><td>None</td><td>98.09%</td><td>0.9516</td><td>5.04%</td><td>1.14%</td><td>0.9922</td><td><code>—</code></td></tr><tr class='champion'><td>v03 ⭐</td><td></td><td>None</td><td>97.02%</td><td>0.9262</td><td>5.04%</td><td>2.48%</td><td>0.9918</td><td><code>—</code></td></tr><tr><td>v03_replica</td><td>2026-08-12</td><td>46</td><td>96.77%</td><td>0.9202</td><td>5.46%</td><td>2.68%</td><td>0.9915</td><td><code>3b0f0eb5888f8d4c</code></td></tr><tr><td>v04_speech_neg</td><td>2026-08-12</td><td>42</td><td>96.46%</td><td>0.9020</td><td>7.14%</td><td>2.77%</td><td>0.9862</td><td><code>a1867ef00cd975c6</code></td></tr><tr><td>v05_metal_check</td><td>2026-08-12</td><td>44</td><td>89.98%</td><td>0.7903</td><td>4.20%</td><td>11.46%</td><td>0.9480</td><td><code>3b0f0eb5888f8d4c</code></td></tr><tr><td>v06_metal_leaky</td><td>2026-08-12</td><td>46</td><td>96.35%</td><td>0.9120</td><td>4.20%</td><td>3.51%</td><td>0.9838</td><td><code>3b0f0eb5888f8d4c</code></td></tr></tbody></table></div>
 
 <h2>Comment reproduire</h2>
 <div class="panel">
