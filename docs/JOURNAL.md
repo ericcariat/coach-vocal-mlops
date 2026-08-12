@@ -6,6 +6,18 @@ vaut plus qu'un résultat lisse — elle dit comment on a appris à ne plus se t
 
 ---
 
+## 2026-08-12 — Reprise après deux semaines · cap fixé
+
+Décision d'orientation : **poursuivre l'amélioration de la détection dans ce
+dépôt**, et non dans `coach-vocal_etape1` (figé, et où `v04_speech_neg` — la
+réponse au déficit n°1 — n'existe pas).
+
+Objectif de sortie acté : un **notebook Jupyter pour la synthèse
+bloc 5 (Deep Learning)**, rédigé une fois qu'il y aura une progression à
+raconter. Voir `docs/NOTEBOOK.md` pour ce que ça implique dès maintenant.
+
+---
+
 ## 2026-07-28 — Reconstruction MLOps
 
 Migration de `coach-vocal_etape1` vers une architecture pilotée par configuration.
