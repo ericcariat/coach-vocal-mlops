@@ -1,0 +1,34 @@
+# Même question que v06_metal_leaky, avec elu : la recette v03 entraînée sur
+# Metal (activation non fusionnée, donc saine) retrouve-t-elle la qualité CPU ?
+# v06 (leaky_relu) a raté le critère : rappel 60.9 % et 83.7 FA/h contre
+# 73.9 % / 47.1 pour v03_replica, malgré un entraînement sain et ×6 plus rapide.
+#
+# Critère de succès, écrit AVANT le run (identique à v06) :
+#   • banc streaming (inférence CPU) : rappel à ±2 points de v03_replica,
+#     FA/h du même ordre ;
+#   • temps d'entraînement nettement meilleur que ~14 s/epoch CPU.
+# Vérification : coachvocal bench --run v03_replica --run v07_metal_elu --minutes 16
+#
+# Si ce run échoue aussi, la série s'arrête : deux activations saines qui
+# dégradent toutes deux au banc pointeraient le backend (ou l'écart à relu),
+# et l'itération rapide sur Metal ne vaut pas une qualité en moins.
+# Aucune promotion depuis ce run sans jumeau CPU de contrôle.
+name: v07_metal_elu
+description: >
+  Recette v03 (tts500), CNN de référence en elu, entraînement sur GPU Metal :
+  deuxième essai du contournement du bug ReLU après l'échec de leaky_relu.
+
+wakeword: eloquence
+dataset: tts500
+model: cnn_elu
+
+training:
+  epochs: 30
+  batch_size: 64
+  learning_rate: 0.001
+  early_stopping_patience: 5
+  class_weight: true
+  threshold: 0.5
+  seeds: [42, 43, 44, 45, 46]
+  selection_metric: val_loss
+  use_gpu: true           # objet du test, activation non fusionnée (ADR-002)

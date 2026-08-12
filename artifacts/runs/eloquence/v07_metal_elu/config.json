@@ -1,0 +1,350 @@
+{
+  "name": "v07_metal_elu",
+  "description": "Recette v03 (tts500), CNN de référence en elu, entraînement sur GPU Metal : deuxième essai du contournement du bug ReLU après l'échec de leaky_relu.\n",
+  "wakeword": {
+    "name": "eloquence",
+    "classes": [
+      "pas_eloquence",
+      "eloquence"
+    ],
+    "sample_rate": 16000,
+    "audio": {
+      "frame_length": 255,
+      "frame_step": 128,
+      "num_mel_bins": 40,
+      "lower_edge_hertz": 20.0,
+      "upper_edge_hertz": null,
+      "clip_seconds": 1.0
+    },
+    "live": {
+      "threshold": 0.8,
+      "hop_s": 0.125,
+      "n_consecutive": 3,
+      "cooldown_s": 1.5,
+      "min_peak": 0.02
+    },
+    "tts": {
+      "text": "éloquence.",
+      "voices": [
+        {
+          "name": "siwis",
+          "model": "data/external/piper_voices/fr_FR-siwis-medium.onnx",
+          "speaker": 0
+        },
+        {
+          "name": "upmc_s0",
+          "model": "data/external/piper_voices/fr_FR-upmc-medium.onnx",
+          "speaker": 0
+        },
+        {
+          "name": "upmc_s1",
+          "model": "data/external/piper_voices/fr_FR-upmc-medium.onnx",
+          "speaker": 1
+        }
+      ],
+      "length_scales": [
+        0.85,
+        0.95,
+        1.0,
+        1.05,
+        1.15
+      ],
+      "noise_scales": [
+        0.5,
+        0.667,
+        0.9
+      ],
+      "per_combo": 50,
+      "pool_name": "tts_positives"
+    }
+  },
+  "dataset": {
+    "name": "tts500",
+    "data_seed": 42,
+    "splits_csv": "splits.csv",
+    "sources": [
+      {
+        "name": "yt_positif",
+        "type": "word_clips",
+        "label": 1,
+        "copies": 1,
+        "splits": [
+          "train",
+          "val",
+          "test"
+        ],
+        "enabled": true,
+        "params": {
+          "label_key": "eloquence",
+          "prefix": "yt_"
+        }
+      },
+      {
+        "name": "moi_positif",
+        "type": "word_clips",
+        "label": 1,
+        "copies": 10,
+        "splits": [
+          "train",
+          "val",
+          "test"
+        ],
+        "enabled": true,
+        "params": {
+          "label_key": "eloquence",
+          "prefix": "moi_"
+        }
+      },
+      {
+        "name": "guided_positif",
+        "type": "guided",
+        "label": 1,
+        "copies": 10,
+        "splits": [
+          "train"
+        ],
+        "enabled": true,
+        "params": {
+          "outcomes": [
+            "TP",
+            "FN"
+          ],
+          "crop": true,
+          "exclude_prefixes": [
+            "guided_0046",
+            "guided_0047"
+          ]
+        }
+      },
+      {
+        "name": "guided_hard_neg",
+        "type": "guided",
+        "label": 0,
+        "copies": 10,
+        "splits": [
+          "train"
+        ],
+        "enabled": true,
+        "params": {
+          "outcomes": [
+            "FP",
+            "TN"
+          ],
+          "crop": false
+        }
+      },
+      {
+        "name": "proches",
+        "type": "word_clips",
+        "label": 0,
+        "copies": 10,
+        "splits": [
+          "train",
+          "val",
+          "test"
+        ],
+        "enabled": true,
+        "params": {
+          "label_key": "proche"
+        }
+      },
+      {
+        "name": "gsc",
+        "type": "gsc",
+        "label": 0,
+        "copies": 1,
+        "splits": [
+          "train",
+          "val",
+          "test"
+        ],
+        "enabled": true,
+        "params": {
+          "budget": [
+            2000,
+            250,
+            250
+          ]
+        }
+      },
+      {
+        "name": "cv_fr",
+        "type": "common_voice",
+        "label": 0,
+        "copies": 1,
+        "splits": [
+          "train",
+          "val",
+          "test"
+        ],
+        "enabled": true,
+        "params": {
+          "lang": "fr",
+          "shard": "fr_train_0",
+          "budget": [
+            1200,
+            150,
+            150
+          ]
+        }
+      },
+      {
+        "name": "cv_en",
+        "type": "common_voice",
+        "label": 0,
+        "copies": 1,
+        "splits": [
+          "train",
+          "val",
+          "test"
+        ],
+        "enabled": true,
+        "params": {
+          "lang": "en",
+          "shard": "en_train_0",
+          "budget": [
+            600,
+            75,
+            75
+          ]
+        }
+      },
+      {
+        "name": "musan_noise",
+        "type": "musan_noise",
+        "label": 0,
+        "copies": 1,
+        "splits": [
+          "train",
+          "val",
+          "test"
+        ],
+        "enabled": true,
+        "params": {
+          "budget": [
+            1200,
+            150,
+            150
+          ],
+          "gains": [
+            1.0,
+            0.1,
+            0.02
+          ]
+        }
+      },
+      {
+        "name": "silence",
+        "type": "silence",
+        "label": 0,
+        "copies": 1,
+        "splits": [
+          "train",
+          "val",
+          "test"
+        ],
+        "enabled": true,
+        "params": {
+          "budget": [
+            150,
+            20,
+            20
+          ]
+        }
+      },
+      {
+        "name": "fragments_moi",
+        "type": "fragments",
+        "label": 0,
+        "copies": 3,
+        "splits": [
+          "train",
+          "val",
+          "test"
+        ],
+        "enabled": true,
+        "params": {
+          "prefix": "moi_",
+          "prefix_fracs": [
+            0.3,
+            0.45,
+            0.6
+          ],
+          "subset": 3
+        }
+      },
+      {
+        "name": "fragments_yt",
+        "type": "fragments",
+        "label": 0,
+        "copies": 1,
+        "splits": [
+          "train",
+          "val",
+          "test"
+        ],
+        "enabled": true,
+        "params": {
+          "prefix": "yt_",
+          "prefix_fracs": [
+            0.3,
+            0.45,
+            0.6
+          ],
+          "subset": 3
+        }
+      },
+      {
+        "name": "tts_positif",
+        "type": "tts_piper",
+        "label": 1,
+        "copies": 1,
+        "splits": [
+          "train"
+        ],
+        "enabled": true,
+        "params": {
+          "pool": "tts_positives",
+          "dose": 500
+        }
+      }
+    ],
+    "augmentation": {
+      "time_shift_ms": 100,
+      "speed_min": 0.85,
+      "speed_max": 1.15,
+      "enabled": true
+    }
+  },
+  "model": {
+    "name": "cnn_elu",
+    "arch": "cnn_baseline",
+    "params": {
+      "filters": [
+        32,
+        64
+      ],
+      "dense_units": 128,
+      "dropout_conv": 0.25,
+      "dropout_dense": 0.5,
+      "activation": "elu"
+    }
+  },
+  "training": {
+    "epochs": 30,
+    "batch_size": 64,
+    "learning_rate": 0.001,
+    "early_stopping_patience": 5,
+    "class_weight": true,
+    "threshold": 0.5,
+    "seeds": [
+      42,
+      43,
+      44,
+      45,
+      46
+    ],
+    "selection_metric": "val_loss",
+    "use_gpu": true
+  }
+}

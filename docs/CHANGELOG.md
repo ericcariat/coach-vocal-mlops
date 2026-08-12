@@ -23,6 +23,21 @@ lien `current/`. Ne jamais écrire un chemin de run en dur ailleurs.
 
 ## Runs
 
+### v07_metal_elu — 2026-08-12 — ❌ critère non atteint : fin de la série Metal
+- **But** : deuxième essai du contournement (elu), même critère que v06.
+- **Entraînement sain** : val_loss 0.08–0.10 (les plus proches du CPU),
+  F1 clips 0.9286 (élu : seed 42). Mais elu est lent sur Metal : ~8,4 s/epoch,
+  8 min 24 s le run — ×2 vs CPU seulement, loin du ×6 de leaky_relu.
+- **Banc (inférence CPU, seuil 0.8)** : rappel **78.3 %** (18/23, une occurrence
+  de mieux que v03_replica) mais **73.3 FA/h** contre 47.1 (14 FA contre 9) —
+  ❌ sur le volet FA/h du critère.
+- **Verdict** : clause d'arrêt pré-déclarée appliquée — deux activations
+  saines (leaky, elu), deux échecs au banc : la piste Metal s'arrête, ADR-002
+  inchangé, retour au travail sur les données. Nuance honnête : à cette taille
+  de banc (23 occurrences, ~15 FA), une partie de ces écarts est du bruit —
+  l'extension du banc (backlog) rendrait ces comparaisons plus tranchantes.
+  Preuves : `artifacts/runs/eloquence/v07_metal_elu/`.
+
 ### v06_metal_leaky — 2026-08-12 — ❌ critère non atteint : Metal reste écarté
 - **But** : le bug ReLU étant circonscrit aux Dense fusionnées et contourné par
   `leaky_relu`, la recette v03 entraînée sur Metal retrouve-t-elle la qualité

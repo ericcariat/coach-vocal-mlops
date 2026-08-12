@@ -52,9 +52,15 @@ pour v03_replica. Critère raté sur les deux axes. **Metal reste écarté, la
 vitesse ne rachète pas la qualité.** On ne peut pas attribuer la dégradation
 (backend ? leaky_relu ? variance ?) — deux facteurs changeaient à la fois,
 c'était assumé dans la config ; un jumeau CPU en leaky_relu trancherait si
-besoin. La journée aura donc donné : la cause racine, un contournement
-démontré, et la preuve au banc que même contourné, Metal ne tient pas sa
-promesse ici.
+besoin. Un second essai avec `elu`
+(`v07_metal_elu`) a confirmé : entraînement sain et rappel banc même meilleur
+(78.3 %), mais 73.3 FA/h (contre 47.1) et un gain de temps réduit à ×2 (elu est
+lent sur Metal). Clause d'arrêt pré-déclarée appliquée : deux activations
+saines, deux échecs au banc — fin de la série Metal.
+
+La journée aura donc donné : la cause racine, un contournement
+démontré, et la preuve au banc — deux fois plutôt qu'une — que même contourné,
+Metal ne tient pas sa promesse ici.
 
 Au passage, la même passe d'écoute a produit les premiers **verdicts humains
 sur le banc** (page « Banc streaming » : lecture audio + jugement persisté) :

@@ -1,0 +1,11 @@
+# CNN de référence avec activation elu — deuxième activation vérifiée saine
+# sur Metal (re-contrôle ADR-002 du 2026-08-12), après l'échec de leaky_relu
+# au banc (v06). Toute comparaison se juge au banc streaming.
+name: cnn_elu
+arch: cnn_baseline
+params:
+  filters: [32, 64]
+  dense_units: 128
+  dropout_conv: 0.25
+  dropout_dense: 0.5
+  activation: elu
