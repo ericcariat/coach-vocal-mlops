@@ -77,7 +77,8 @@ pour savoir si le modèle est plus faible sur une forme.
 - [ ] **Re-découper les positifs : fin du mot près de la fin de fenêtre,
   jitter ~200 ms** (recette de découpe, sources brutes inchangées). Expérience
   dédiée vs v03_replica, critère avant le run. C'est le levier n°1 suggéré
-  par la littérature ET par l'audit.
+  par la littérature ET par l'audit. Explication visuelle :
+  `docs/FENETRE_GLISSANTE_ET_JITTER.html` (à ouvrir dans un navigateur).
 - [ ] **Exploiter `curation.db`** : 551 clips curés à la main (crop_start/end,
   10 rejetés) jamais injectés dans le pool actuel. De la curation humaine
   gratuite qui dort.
