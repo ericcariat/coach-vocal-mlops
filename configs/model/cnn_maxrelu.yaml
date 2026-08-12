@@ -1,0 +1,15 @@
+# CNN de référence avec relu_max : mathématiquement IDENTIQUE à cnn_baseline
+# (tf.maximum(x, 0) ≡ relu), seul le graphe d'exécution change — il échappe au
+# noyau ReLU fusionné défectueux de tensorflow-metal (ADR-002, § Re-contrôles).
+# C'est l'architecture du test d'attribution : contrairement à leaky/elu, tout
+# écart mesuré vs cnn_baseline est imputable au backend (ou à la variance),
+# jamais à la fonction d'activation. Export embarqué : re-swapper en "relu"
+# standard avec les mêmes poids (voir models/activations.py).
+name: cnn_maxrelu
+arch: cnn_baseline
+params:
+  filters: [32, 64]
+  dense_units: 128
+  dropout_conv: 0.25
+  dropout_dense: 0.5
+  activation: relu_max

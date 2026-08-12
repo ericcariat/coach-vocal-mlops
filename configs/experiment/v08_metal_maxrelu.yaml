@@ -1,0 +1,39 @@
+# Test d'ATTRIBUTION, qui rouvre la série Metal close par v07 — et c'est
+# assumé : v06 (leaky) et v07 (elu) changeaient deux choses à la fois (backend
+# ET fonction d'activation), leurs échecs au banc sont donc inattribuables.
+# relu_max (tf.maximum(x, 0)) est mathématiquement identique au ReLU : ce run
+# reproduit la recette v03 À L'IDENTIQUE FONCTIONNEL, seul le backend change.
+#
+# Critère de succès, écrit AVANT le run :
+#   • banc streaming (inférence CPU) : rappel à ±2 points de v03_replica
+#     (73.9 %) et FA/h du même ordre (47.1) ;
+#   • temps proche du ×5 de leaky (relu_max est aussi simple que relu).
+# Vérification : coachvocal bench --run v03_replica --run v08_metal_maxrelu --minutes 16
+#
+# Lecture, quelle que soit l'issue :
+#   • succès → les numériques Metal sont saines ; les échecs v06/v07 venaient
+#     des activations ; Metal + relu_max devient un chemin d'itération rapide
+#     légitime (amender ADR-002 : exploration seulement, runs officiels CPU) ;
+#   • échec → le backend lui-même est en cause, dossier Metal refermé pour de
+#     bon avec une conclusion propre.
+# Aucune promotion depuis ce run.
+name: v08_metal_maxrelu
+description: >
+  Recette v03 (tts500), CNN identique à la référence via relu_max
+  (≡ ReLU, non fusionné), entraînement sur GPU Metal : le test qui sépare
+  l'effet backend de l'effet activation.
+
+wakeword: eloquence
+dataset: tts500
+model: cnn_maxrelu
+
+training:
+  epochs: 30
+  batch_size: 64
+  learning_rate: 0.001
+  early_stopping_patience: 5
+  class_weight: true
+  threshold: 0.5
+  seeds: [42, 43, 44, 45, 46]
+  selection_metric: val_loss
+  use_gpu: true           # objet du test (ADR-002)

@@ -12,6 +12,11 @@ from tensorflow import keras
 from tensorflow.keras import layers
 
 from . import architecture
+from .activations import relu_max
+
+# Les chaînes Keras standard passent telles quelles ; seules les activations
+# custom du projet ont besoin d'être résolues en fonction.
+_CUSTOM_ACTIVATIONS = {"relu_max": relu_max}
 
 
 @architecture("cnn_baseline")
@@ -20,7 +25,9 @@ def cnn_baseline(input_shape, filters=(32, 64), dense_units=128,
                  name="cnn_baseline"):
     # `activation` est paramétrable car le noyau ReLU *fusionné* de
     # tensorflow-metal est défectueux sur les couches Dense (ADR-002,
-    # re-contrôle du 2026-08-12) : "leaky_relu" échappe à la fusion.
+    # re-contrôle du 2026-08-12) : "leaky_relu" et "relu_max" échappent
+    # à la fusion.
+    activation = _CUSTOM_ACTIVATIONS.get(activation, activation)
     return keras.Sequential(
         [
             layers.Input(shape=input_shape),

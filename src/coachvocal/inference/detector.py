@@ -107,6 +107,8 @@ def load_detector(model_path: Path, wakeword: WakewordConfig,
                   threshold: float | None = None) -> WakeWordDetector:
     import tensorflow as tf
 
+    from ..models import activations  # noqa: F401 — enregistre relu_max avant load_model (ADR-002)
+
     model = tf.keras.models.load_model(model_path)
     detector = WakeWordDetector(model, wakeword, threshold)
     detector.model(detector.features(np.zeros(detector.n, np.float32))[np.newaxis, ...],
