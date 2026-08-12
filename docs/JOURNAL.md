@@ -21,6 +21,16 @@ en inférence CPU, le modèle élu fait **764 FA/h contre 47** pour v03_replica.
 Metal est bien ~4,7× plus rapide par epoch (3 s contre 14 s) — vitesse pour un
 modèle inutilisable. Détail daté dans `ADR-002`, section « Re-contrôles ».
 
+**Suite le soir même : cause racine trouvée.** Un fil du forum Apple
+([thread 818015](https://developer.apple.com/forums/thread/818015), même config
+que la nôtre) pointait le ReLU. Reproduit ici en cinq lignes : **le noyau
+fusionné MatMul+BiasAdd+ReLU du plugin Metal n'applique pas le ReLU** (min de
+sortie −11.0 au lieu de 0.0, y compris avec la couche `Activation` séparée ;
+`tf.nn.relu` seul est correct — c'est bien la fusion). Un réseau sans
+non-linéarités explique tout le tableau de juillet d'un coup. Le mystère
+d'ADR-002 n'en est plus un : re-contrôle permanent en une commande,
+`uv run python scripts/check_metal_relu.py`.
+
 Au passage, la même passe d'écoute a produit les premiers **verdicts humains
 sur le banc** (page « Banc streaming » : lecture audio + jugement persisté) :
 sur v03_replica au seuil 0.5, 15 FA confirmées (futurs hard negatives), 1 FA

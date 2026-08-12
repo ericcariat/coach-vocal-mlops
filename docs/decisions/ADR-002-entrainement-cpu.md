@@ -76,3 +76,28 @@ v03_replica à l'identique, `use_gpu: true`). Reconfirmé, dans les deux sens :
 
 La décision tient. Prochain re-contrôle : à la prochaine montée de version de
 `tensorflow-metal`, via les deux tests ci-dessus.
+
+**2026-08-12 (soir) — cause racine identifiée.** Ce n'était ni les gradients ni
+les probabilités en tant que tels : **le noyau fusionné MatMul+BiasAdd+ReLU du
+plugin Metal n'applique pas le ReLU** — la sortie brute, négatifs compris,
+traverse le réseau. Reproduction minimale sur cette machine (M4 Max, macOS,
+tensorflow-macos 2.16.2, tensorflow-metal 1.2.0) :
+
+| Chemin d'exécution | min de sortie (attendu 0.0) |
+|---|---:|
+| CPU, `Dense(activation="relu")` | 0.0 ✅ |
+| **Metal, `Dense(activation="relu")`** | **−11.0 ❌** |
+| **Metal, `Dense` + `Activation("relu")` séparée** | **−11.0 ❌** (le remapper fusionne quand même) |
+| Metal, `tf.nn.relu` hors graphe | 0.0 ✅ |
+
+Un réseau dont les non-linéarités disparaissent explique *tout* le tableau
+constaté : loss qui diverge à l'entraînement, probabilités absurdes à
+l'inférence, et des métriques parfois plausibles (le sous-réseau linéaire
+apprend un peu quand même — c'est ce qui rend le bug si trompeur).
+
+Signalé publiquement sans réponse d'Apple à ce jour :
+[thread 818015](https://developer.apple.com/forums/thread/818015) (même config
+que la nôtre) et [tensorflow#62137](https://github.com/tensorflow/tensorflow/issues/62137)
+(même bug dès TF 2.14). Re-contrôle en une commande :
+`uv run python scripts/check_metal_relu.py` — tant qu'il affiche un min
+négatif, cet ADR tient.
