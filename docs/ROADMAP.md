@@ -81,6 +81,15 @@ pour savoir si le modèle est plus faible sur une forme.
 - [ ] **Exploiter `curation.db`** : 551 clips curés à la main (crop_start/end,
   10 rejetés) jamais injectés dans le pool actuel. De la curation humaine
   gratuite qui dort.
+- [ ] **Porte qualité automatique dans la construction des pools** : étendre
+  l'audit existant (`data/quality.py`, aujourd'hui informatif) en **filtre**
+  mesurant par clip durée, RMS, pic/saturation, SNR estimé, énergie des
+  tranches de tête et de queue (débordement du mot suivant), padding de zéros.
+  Seuils déclarés en config, clips rejetés listés dans un rapport HTML
+  écoutable — jamais supprimés silencieusement. Pas trop tard : les pools sont
+  régénérables, la porte s'applique au prochain build (nouvelle empreinte de
+  dataset = nouvelle expérience, comparée au banc comme le reste). Mêmes
+  mesures branchées sur le futur studio d'enregistrement (P2) — un seul code.
 - [ ] **Nettoyage ciblé** : retirer les 5 « Dauphine-Éloquence » (nom propre) ;
   écouter les ~17 % de fins chargées (page d'audit à l'oreille) ; corriger
   l'encodage cassé des fichiers `moi_*.wav`.
