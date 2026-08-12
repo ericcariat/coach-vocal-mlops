@@ -1,0 +1,250 @@
+{
+  "run_id": "v04_speech_neg",
+  "experiment": "v04_speech_neg",
+  "date": "2026-08-12T18:29:18",
+  "duration_s": 1144,
+  "selected_seed": 42,
+  "selection": "min(val_loss) parmi [42, 43, 44, 45, 46]",
+  "epochs_run": 18,
+  "val_loss": 0.0617121085524559,
+  "val_accuracy": 0.9882955551147461,
+  "test": {
+    "threshold": 0.5,
+    "accuracy": 0.9646278555637435,
+    "precision_pos": 0.876984126984127,
+    "recall_pos": 0.9285714285714286,
+    "f1_pos": 0.9020408163265307,
+    "frr": 0.0714285714285714,
+    "far": 0.027703306523681914,
+    "tp": 221,
+    "fp": 31,
+    "fn": 17,
+    "tn": 1088,
+    "n": 1357,
+    "n_pos": 238,
+    "roc_auc": 0.9862384632137037,
+    "threshold_sweep": [
+      {
+        "threshold": 0.3,
+        "accuracy": 0.9602063375092115,
+        "precision_pos": 0.8538461538461538,
+        "recall_pos": 0.9327731092436975,
+        "f1_pos": 0.891566265060241,
+        "frr": 0.0672268907563025,
+        "far": 0.03395889186773904,
+        "tp": 222,
+        "fp": 38,
+        "fn": 16,
+        "tn": 1081
+      },
+      {
+        "threshold": 0.4,
+        "accuracy": 0.9631540162122328,
+        "precision_pos": 0.8671875,
+        "recall_pos": 0.9327731092436975,
+        "f1_pos": 0.8987854251012146,
+        "frr": 0.0672268907563025,
+        "far": 0.030384271671134888,
+        "tp": 222,
+        "fp": 34,
+        "fn": 16,
+        "tn": 1085
+      },
+      {
+        "threshold": 0.5,
+        "accuracy": 0.9646278555637435,
+        "precision_pos": 0.876984126984127,
+        "recall_pos": 0.9285714285714286,
+        "f1_pos": 0.9020408163265307,
+        "frr": 0.0714285714285714,
+        "far": 0.027703306523681914,
+        "tp": 221,
+        "fp": 31,
+        "fn": 17,
+        "tn": 1088
+      },
+      {
+        "threshold": 0.6,
+        "accuracy": 0.9727339719970524,
+        "precision_pos": 0.91701244813278,
+        "recall_pos": 0.9285714285714286,
+        "f1_pos": 0.9227557411273486,
+        "frr": 0.0714285714285714,
+        "far": 0.01787310098302053,
+        "tp": 221,
+        "fp": 20,
+        "fn": 17,
+        "tn": 1099
+      },
+      {
+        "threshold": 0.7,
+        "accuracy": 0.9734708916728076,
+        "precision_pos": 0.9243697478991597,
+        "recall_pos": 0.9243697478991597,
+        "f1_pos": 0.9243697478991597,
+        "frr": 0.07563025210084029,
+        "far": 0.01608579088471851,
+        "tp": 220,
+        "fp": 18,
+        "fn": 18,
+        "tn": 1101
+      },
+      {
+        "threshold": 0.8,
+        "accuracy": 0.9727339719970524,
+        "precision_pos": 0.9240506329113924,
+        "recall_pos": 0.9201680672268907,
+        "f1_pos": 0.9221052631578948,
+        "frr": 0.0798319327731093,
+        "far": 0.01608579088471851,
+        "tp": 219,
+        "fp": 18,
+        "fn": 19,
+        "tn": 1101
+      },
+      {
+        "threshold": 0.9,
+        "accuracy": 0.9727339719970524,
+        "precision_pos": 0.9276595744680851,
+        "recall_pos": 0.9159663865546218,
+        "f1_pos": 0.9217758985200846,
+        "frr": 0.08403361344537819,
+        "far": 0.015192135835567444,
+        "tp": 218,
+        "fp": 17,
+        "fn": 20,
+        "tn": 1102
+      }
+    ]
+  },
+  "pools_test": {
+    "cv_en": {
+      "n": 98,
+      "mean_proba": 0.006849383452134583,
+      "fire_rate": 0.0,
+      "expected": "bas",
+      "ok": true
+    },
+    "cv_fr": {
+      "n": 195,
+      "mean_proba": 0.006689657071992714,
+      "fire_rate": 0.005128205128205128,
+      "expected": "bas",
+      "ok": true
+    },
+    "fragments_moi": {
+      "n": 30,
+      "mean_proba": 0.12054622042765763,
+      "fire_rate": 0.13333333333333333,
+      "expected": "bas",
+      "ok": false
+    },
+    "fragments_yt": {
+      "n": 126,
+      "mean_proba": 0.001025931011768104,
+      "fire_rate": 0.0,
+      "expected": "bas",
+      "ok": true
+    },
+    "gsc": {
+      "n": 250,
+      "mean_proba": 0.008168091622657693,
+      "fire_rate": 0.008,
+      "expected": "bas",
+      "ok": true
+    },
+    "moi_positif": {
+      "n": 5,
+      "mean_proba": 0.9991311073303223,
+      "fire_rate": 1.0,
+      "expected": "haut",
+      "ok": true
+    },
+    "musan_noise": {
+      "n": 150,
+      "mean_proba": 0.005199138865454586,
+      "fire_rate": 0.006666666666666667,
+      "expected": "bas",
+      "ok": true
+    },
+    "proches": {
+      "n": 4,
+      "mean_proba": 0.24442146259822017,
+      "fire_rate": 0.25,
+      "expected": "bas",
+      "ok": false
+    },
+    "silence": {
+      "n": 20,
+      "mean_proba": 1.2323623963290548e-12,
+      "fire_rate": 0.0,
+      "expected": "bas",
+      "ok": true
+    },
+    "speech_negatives": {
+      "n": 150,
+      "mean_proba": 0.0462476196928539,
+      "fire_rate": 0.03333333333333333,
+      "expected": "bas",
+      "ok": true
+    },
+    "yt_positif": {
+      "n": 188,
+      "mean_proba": 0.9105100169810301,
+      "fire_rate": 0.9095744680851063,
+      "expected": "haut",
+      "ok": true
+    }
+  },
+  "dataset_fingerprint": "a1867ef00cd975c6",
+  "candidates": [
+    {
+      "seed": 42,
+      "val_loss": 0.0617121085524559,
+      "test_f1": 0.9020408163265307,
+      "test_frr": 0.0714285714285714,
+      "test_far": 0.027703306523681914,
+      "epochs": 18
+    },
+    {
+      "seed": 43,
+      "val_loss": 0.08672221004962921,
+      "test_f1": 0.8884297520661157,
+      "test_frr": 0.09663865546218486,
+      "test_far": 0.027703306523681914,
+      "epochs": 12
+    },
+    {
+      "seed": 44,
+      "val_loss": 0.08237855136394501,
+      "test_f1": 0.8966942148760331,
+      "test_frr": 0.08823529411764708,
+      "test_far": 0.025915996425379784,
+      "epochs": 20
+    },
+    {
+      "seed": 45,
+      "val_loss": 0.10962879657745361,
+      "test_f1": 0.87109375,
+      "test_frr": 0.06302521008403361,
+      "test_far": 0.04557640750670244,
+      "epochs": 11
+    },
+    {
+      "seed": 46,
+      "val_loss": 0.09997030347585678,
+      "test_f1": 0.8839103869653768,
+      "test_frr": 0.08823529411764708,
+      "test_far": 0.03217158176943702,
+      "epochs": 9
+    }
+  ],
+  "environment": {
+    "platform": "macOS-26.4.1-arm64-arm-64bit",
+    "python": "3.11.14",
+    "tensorflow": "2.16.2",
+    "gpus_visibles": [],
+    "cpus": 1
+  },
+  "data_quality_ok": false
+}

@@ -1,0 +1,36 @@
+# Re-contrôle daté d'ADR-002 — PAS un retour au GPU. tensorflow-metal (1.2.0)
+# a pu être corrigé depuis le constat de juillet ; on mesure au lieu de croire.
+#
+# Deux questions, critère écrit AVANT le run :
+#   1. Temps : `fit_s` par candidat vs la référence CPU (~14 s/epoch observés
+#      sur v03_replica, même recette).
+#   2. Qualité, jugée UNIQUEMENT sur CPU — les métriques clips de CE run sont
+#      calculées par le processus Metal, donc suspectes par construction.
+#      Vérification : coachvocal bench --run v03_replica --run v05_metal_check --minutes 16
+#      (le banc recharge model.keras dans un processus CPU).
+#
+# Succès = une réponse NETTE, dans un sens ou dans l'autre :
+#   • banc dans la dispersion de v03_replica ET gain de temps réel
+#     → Metal réhabilité pour l'entraînement, mettre à jour ADR-002 ;
+#   • qualité effondrée ou temps équivalent
+#     → ADR-002 reconfirmé, avec chiffres et date dans le JOURNAL.
+# Dans les DEUX cas : aucune promotion depuis ce run (diagnostic, pas candidat).
+name: v05_metal_check
+description: >
+  Recette v03_replica à l'identique, entraînée sur GPU Metal (tensorflow-metal
+  1.2.0) : re-contrôle d'ADR-002 et mesure du temps d'entraînement.
+
+wakeword: eloquence
+dataset: tts500
+model: cnn_baseline
+
+training:
+  epochs: 30
+  batch_size: 64
+  learning_rate: 0.001
+  early_stopping_patience: 5
+  class_weight: true
+  threshold: 0.5
+  seeds: [42, 43, 44, 45, 46]
+  selection_metric: val_loss
+  use_gpu: true           # OBJET DU TEST — interdit partout ailleurs (ADR-002)

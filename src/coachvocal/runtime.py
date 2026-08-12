@@ -1,11 +1,12 @@
 """Réglages runtime TensorFlow (à appeler AVANT toute opération TF).
 
 ⚠️ Décision structurante du projet, cf. `docs/decisions/ADR-002` :
-**l'entraînement se fait sur CPU**. Le plugin `tensorflow-metal` corrompt les
-gradients sur cette machine — la loss explose au bout de quelques batches, avec
-des hyperparamètres pourtant sains. Des heures ont été perdues à chercher un
-bug d'apprentissage qui était un bug de backend. L'inférence sur Metal, elle,
-est correcte et reste autorisée.
+**tout se fait sur CPU, entraînement ET inférence**. Le plugin
+`tensorflow-metal` corrompt les gradients sur cette machine — la loss explose
+au bout de quelques batches, avec des hyperparamètres pourtant sains — et
+fausse aussi les probabilités à l'inférence (banc du 2026-07-28 : rappel
+streaming 80 % sur CPU, 0 % sur Metal, même modèle et même audio). Des heures
+ont été perdues à chercher un bug d'apprentissage qui était un bug de backend.
 """
 
 from __future__ import annotations

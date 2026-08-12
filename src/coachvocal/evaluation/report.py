@@ -120,6 +120,10 @@ def write_run_report(run_dir: Path, cfg, metrics: dict, manifest, extra: list[st
         f"- entraînement : {metrics.get('epochs_run', '?')}/{cfg.training.epochs} epochs, "
         f"batch {cfg.training.batch_size}, lr {cfg.training.learning_rate}, "
         f"seeds {cfg.training.seeds} (élu par `{cfg.training.selection_metric}`)",
+        f"- durée : **{metrics.get('duration_s', '?')} s** au total, dont "
+        f"{metrics.get('fit_s_total', '?')} s de `model.fit` cumulés — backend "
+        f"**{'GPU Metal' if metrics.get('use_gpu') else 'CPU'}** "
+        f"(GPU visibles : {metrics.get('environment', {}).get('gpus_visibles', '?')})",
         "",
         "## Composition du jeu de données",
         "",

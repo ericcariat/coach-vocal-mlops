@@ -65,6 +65,7 @@ def _fit_candidate(cfg: ExperimentConfig, manifest: Manifest, seed: int, out_dir
     model.compile(optimizer=keras.optimizers.Adam(learning_rate=cfg.training.learning_rate),
                   loss=keras.losses.BinaryCrossentropy(), metrics=["accuracy"])
 
+    fit_started = datetime.now()
     history = model.fit(
         train_ds, validation_data=val_ds, epochs=cfg.training.epochs,
         class_weight=_class_weight(tr_labels) if cfg.training.class_weight else None,
@@ -72,6 +73,7 @@ def _fit_candidate(cfg: ExperimentConfig, manifest: Manifest, seed: int, out_dir
             monitor="val_loss", patience=cfg.training.early_stopping_patience,
             restore_best_weights=True)],
         verbose=2).history
+    fit_s = round((datetime.now() - fit_started).total_seconds(), 1)
 
     y_proba = model.predict(test_ds, verbose=0).ravel()
     y_true = np.concatenate([lab.numpy() for _, lab in test_ds]).ravel().astype(int)
@@ -80,6 +82,7 @@ def _fit_candidate(cfg: ExperimentConfig, manifest: Manifest, seed: int, out_dir
     best_ep = int(np.argmin(history["val_loss"]))
     candidate = {
         "seed": seed,
+        "fit_s": fit_s,
         "epochs_run": len(history["loss"]),
         "best_epoch": best_ep + 1,
         "val_loss": float(history["val_loss"][best_ep]),
@@ -95,7 +98,7 @@ def _fit_candidate(cfg: ExperimentConfig, manifest: Manifest, seed: int, out_dir
     (out_dir / "candidate.json").write_text(json.dumps(candidate, indent=2))
 
     tracker.log_history(history)
-    tracker.log_metrics({"val_loss_best": candidate["val_loss"],
+    tracker.log_metrics({"val_loss_best": candidate["val_loss"], "fit_s": fit_s,
                          **{f"test_{k}": v for k, v in test_metrics.items()
                             if isinstance(v, (int, float))}})
     return candidate
@@ -182,9 +185,12 @@ def _finalize(cfg, run_id, run_dir: Path, manifest: Manifest, candidates: list[d
         "test": best["test"],
         "pools_test": breakdown,
         "dataset_fingerprint": manifest.fingerprint(),
+        "fit_s_total": round(sum(c.get("fit_s", 0) for c in candidates), 1),
+        "use_gpu": cfg.training.use_gpu,
         "candidates": [{"seed": c["seed"], "val_loss": c["val_loss"],
                         "test_f1": c["test"]["f1_pos"], "test_frr": c["test"]["frr"],
-                        "test_far": c["test"]["far"], "epochs": c["epochs_run"]}
+                        "test_far": c["test"]["far"], "epochs": c["epochs_run"],
+                        "fit_s": c.get("fit_s")}
                        for c in candidates],
         "environment": {"platform": platform.platform(), "python": platform.python_version(),
                         **runtime.describe()},
