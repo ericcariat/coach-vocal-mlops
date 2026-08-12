@@ -23,6 +23,23 @@ lien `current/`. Ne jamais écrire un chemin de run en dur ailleurs.
 
 ## Runs
 
+### v08_metal_maxrelu — 2026-08-13 — ❌ le test d'attribution condamne le backend
+- **But** : séparer l'effet backend de l'effet activation, ce que v06/v07 ne
+  permettaient pas. `relu_max` (`tf.maximum(x, 0)`) est mathématiquement
+  identique au ReLU : recette v03 à l'identique fonctionnel, seul le backend
+  change. Rouvre en conscience la série close par v07 (assumé dans la config).
+- **Entraînement impeccable — sur le papier** : val_loss 0.056–0.10, au niveau
+  du CPU, F1 clips 0.9322 (élu : seed 42), ~4,7 s/epoch (5 min 50 s le run, ×3).
+- **Banc (inférence CPU, seuil 0.8)** : rappel 78.3 % mais **120.3 FA/h contre
+  47.1** — 2,5× la référence, le pire des trois contournements. ❌ net.
+- **Verdict — le plus instructif de la série** : à fonction mathématiquement
+  identique, Metal produit un modèle dont les métriques d'entraînement et de
+  clips sont indiscernables du CPU, mais qui s'effondre en FA/h au banc. Le
+  backend fabrique bien des modèles subtilement différents, d'une façon
+  qu'aucune métrique amont ne détecte (ADR-002 **et** ADR-004 confirmés d'un
+  même geste). Dossier Metal refermé définitivement pour ce projet.
+  Preuves : `artifacts/runs/eloquence/v08_metal_maxrelu/`.
+
 ### v07_metal_elu — 2026-08-12 — ❌ critère non atteint : fin de la série Metal
 - **But** : deuxième essai du contournement (elu), même critère que v06.
 - **Entraînement sain** : val_loss 0.08–0.10 (les plus proches du CPU),

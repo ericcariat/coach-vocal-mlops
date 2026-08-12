@@ -1,0 +1,69 @@
+<!doctype html><html lang='fr'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>Wake word eloquence — dashboard</title><style>
+:root {
+  --bg:#FBFBFC; --panel:#FFFFFF; --border:#E3E4E8; --text:#1B1C1F; --muted:#6E7076;
+  --accent:#5B6FB8; --warn:#C2452C; --ok:#00806B; --star:#B8860B;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --bg:#141518; --panel:#1C1D21; --border:#303138; --text:#E9EAEE; --muted:#9A9CA4;
+          --accent:#7286D3; --warn:#D96A3E; --ok:#2E9E85; --star:#D6A93B; }
+}
+:root[data-theme="light"] { --bg:#FBFBFC; --panel:#FFFFFF; --border:#E3E4E8; --text:#1B1C1F;
+  --muted:#6E7076; --accent:#5B6FB8; --warn:#C2452C; --ok:#00806B; --star:#B8860B; }
+:root[data-theme="dark"] { --bg:#141518; --panel:#1C1D21; --border:#303138; --text:#E9EAEE;
+  --muted:#9A9CA4; --accent:#7286D3; --warn:#D96A3E; --ok:#2E9E85; --star:#D6A93B; }
+body { margin:0; background:var(--bg); color:var(--text);
+  font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
+.wrap { max-width:1100px; margin:0 auto; padding:2.5rem 1.25rem 4rem; }
+h1 { font-size:1.75rem; margin:0 0 .25rem; letter-spacing:-.02em; }
+h2 { font-size:1.15rem; margin:2.5rem 0 .75rem; }
+.sub { color:var(--muted); margin:0 0 2rem; }
+.panel { background:var(--panel); border:1px solid var(--border); border-radius:10px;
+  padding:1rem 1.25rem; margin-bottom:1rem; }
+.scroll { overflow-x:auto; }
+table { border-collapse:collapse; width:100%; font-size:14px; }
+th,td { padding:.55rem .7rem; text-align:right; border-bottom:1px solid var(--border);
+  white-space:nowrap; }
+th:first-child,td:first-child { text-align:left; }
+th { color:var(--muted); font-weight:600; font-size:12.5px; text-transform:uppercase;
+  letter-spacing:.04em; }
+tr.champion td { background:color-mix(in srgb, var(--star) 10%, transparent); font-weight:600; }
+.note { color:var(--muted); font-size:13.5px; border-left:3px solid var(--accent);
+  padding:.35rem 0 .35rem .85rem; margin:.75rem 0; }
+.warn { border-left-color:var(--warn); }
+.kpi { display:flex; gap:1rem; flex-wrap:wrap; }
+.kpi div { flex:1 1 150px; }
+.kpi .v { font-size:1.6rem; font-weight:650; letter-spacing:-.02em; }
+.kpi .l { color:var(--muted); font-size:12.5px; text-transform:uppercase; letter-spacing:.04em; }
+code { background:color-mix(in srgb, var(--accent) 12%, transparent); padding:.1rem .35rem;
+  border-radius:4px; font-size:13px; }
+</style></head><body><div class="wrap">
+<h1>Wake word « eloquence » — tableau de bord</h1>
+<p class="sub">Généré le 2026-08-13 00:13 · toutes les métriques de tous les runs</p>
+<p class='note'>⭐ Champion : <b>v03</b> (promu le 2026-07-28)<br>Champion repris de coach-vocal_etape1 : banc streaming 16 min, rappel 68.4% et 52.7 FA/h au seuil 0.8 (meilleur des 3 finalistes). Reverifie apres migration sur 3.3 min : rappel 80% (4/5), 54 FA/h.</p>
+
+
+<h2>Banc streaming — la mesure qui décide</h2>
+<p class="note">Logique live rejouée sur de l'audio YouTube continu jamais vu à
+l'entraînement, vérité terrain WhisperX. <b>Rappel</b> = occurrences réellement
+attrapées ; <b>FA/h</b> = réveils intempestifs par heure. Corpus thématique donc
+pire cas volontaire. Les événements « incertains » (vérité terrain douteuse) sont
+exclus du décompte.</p>
+<div class='scroll'><table><thead><tr><th>Modèle</th><th>Rappel 0.5</th><th>FA/h 0.5</th><th>Incertains</th><th>Rappel 0.8</th><th>FA/h 0.8</th><th>Incertains</th></tr></thead><tbody><tr><td>v03_replica</td><td>73.91%</td><td>89.0</td><td>14</td><td>73.91%</td><td>47.1</td><td>9</td></tr><tr><td>v08_metal_maxrelu</td><td>86.96%</td><td>214.5</td><td>32</td><td>78.26%</td><td>120.3</td><td>23</td></tr></tbody></table></div>
+
+<h2>Test par clips — signal de contrôle</h2>
+<p class="note warn">⚠️ Ces métriques ont déjà <b>mal classé</b> les modèles : le
+meilleur en F1 par clip s'est révélé le pire en conditions réelles. À lire comme
+un garde-fou, jamais comme un critère de promotion.
+<b>FRR</b> = mot prononcé et raté ; <b>FAR</b> = négatif accepté.</p>
+<div class='scroll'><table><thead><tr><th>Run</th><th>Date</th><th>Seed</th><th>Accuracy</th><th>F1</th><th>FRR ↓</th><th>FAR ↓</th><th>ROC-AUC</th><th>Empreinte data</th></tr></thead><tbody><tr><td>smoke</td><td>2026-08-12</td><td>42</td><td>93.55%</td><td>0.8863</td><td>5.04%</td><td>6.96%</td><td>0.9711</td><td><code>8ecbf4603ae3e769</code></td></tr><tr><td>v01</td><td></td><td>None</td><td>97.60%</td><td>0.9407</td><td>3.36%</td><td>2.17%</td><td>0.9934</td><td><code>—</code></td></tr><tr><td>v02</td><td></td><td>None</td><td>98.09%</td><td>0.9516</td><td>5.04%</td><td>1.14%</td><td>0.9922</td><td><code>—</code></td></tr><tr class='champion'><td>v03 ⭐</td><td></td><td>None</td><td>97.02%</td><td>0.9262</td><td>5.04%</td><td>2.48%</td><td>0.9918</td><td><code>—</code></td></tr><tr><td>v03_replica</td><td>2026-08-12</td><td>46</td><td>96.77%</td><td>0.9202</td><td>5.46%</td><td>2.68%</td><td>0.9915</td><td><code>3b0f0eb5888f8d4c</code></td></tr><tr><td>v04_speech_neg</td><td>2026-08-12</td><td>42</td><td>96.46%</td><td>0.9020</td><td>7.14%</td><td>2.77%</td><td>0.9862</td><td><code>a1867ef00cd975c6</code></td></tr><tr><td>v05_metal_check</td><td>2026-08-12</td><td>44</td><td>89.98%</td><td>0.7903</td><td>4.20%</td><td>11.46%</td><td>0.9480</td><td><code>3b0f0eb5888f8d4c</code></td></tr><tr><td>v06_metal_leaky</td><td>2026-08-12</td><td>46</td><td>96.35%</td><td>0.9120</td><td>4.20%</td><td>3.51%</td><td>0.9838</td><td><code>3b0f0eb5888f8d4c</code></td></tr><tr><td>v07_metal_elu</td><td>2026-08-12</td><td>42</td><td>97.18%</td><td>0.9286</td><td>7.14%</td><td>1.75%</td><td>0.9859</td><td><code>3b0f0eb5888f8d4c</code></td></tr><tr><td>v08_metal_maxrelu</td><td>2026-08-13</td><td>42</td><td>97.27%</td><td>0.9322</td><td>4.62%</td><td>2.27%</td><td>0.9898</td><td><code>3b0f0eb5888f8d4c</code></td></tr></tbody></table></div>
+
+<h2>Comment reproduire</h2>
+<div class="panel">
+<p><code>coachvocal train &lt;experience&gt;</code> → entraîne les candidats et élit par la validation<br>
+<code>coachvocal bench --run &lt;run&gt; --minutes 16</code> → mesure en conditions réelles<br>
+<code>coachvocal registry promote &lt;run&gt; --reason "…"</code> → promotion tracée</p>
+<p class="sub">Empreinte data : deux runs de même empreinte ont vu exactement les
+mêmes fichiers avec les mêmes poids — un écart de métriques sans écart d'empreinte
+est de la variance, pas un progrès.</p>
+</div>
+</div></body></html>

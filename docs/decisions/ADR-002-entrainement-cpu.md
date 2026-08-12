@@ -95,6 +95,17 @@ constaté : loss qui diverge à l'entraînement, probabilités absurdes à
 l'inférence, et des métriques parfois plausibles (le sous-réseau linéaire
 apprend un peu quand même — c'est ce qui rend le bug si trompeur).
 
+**2026-08-13 — le contournement lui-même invalidé (`v08_metal_maxrelu`).**
+Même en remplaçant le ReLU par `tf.maximum(x, 0)` — mathématiquement identique,
+non fusionné, vérifié sain — l'entraînement Metal produit un modèle aux
+métriques amont indiscernables du CPU (val_loss 0.056, F1 clips 0.9322) mais à
+**120.3 FA/h au banc contre 47.1** pour le même entraînement sur CPU. Deux
+autres activations saines (leaky_relu, elu — runs v06/v07) avaient déjà échoué.
+Conclusion : au-delà du bug ReLU documenté ci-dessous, le backend produit des
+modèles subtilement différents d'une façon qu'aucune métrique d'entraînement ne
+détecte. **La décision ne repose donc plus seulement sur un bug identifiable et
+corrigeable : Metal est écarté même contourné.**
+
 Signalé publiquement sans réponse d'Apple à ce jour :
 [thread 818015](https://developer.apple.com/forums/thread/818015) (même config
 que la nôtre) et [tensorflow#62137](https://github.com/tensorflow/tensorflow/issues/62137)

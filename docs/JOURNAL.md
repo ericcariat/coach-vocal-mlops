@@ -58,9 +58,21 @@ besoin. Un second essai avec `elu`
 lent sur Metal). Clause d'arrêt pré-déclarée appliquée : deux activations
 saines, deux échecs au banc — fin de la série Metal.
 
-La journée aura donc donné : la cause racine, un contournement
-démontré, et la preuve au banc — deux fois plutôt qu'une — que même contourné,
-Metal ne tient pas sa promesse ici.
+Restait l'ambiguïté d'attribution (backend ou activation ?). Le test décisif
+(`v08_metal_maxrelu`, le 13 au matin) l'a levée : avec `tf.maximum(x, 0)` —
+mathématiquement identique au ReLU — l'entraînement Metal donne des métriques
+amont **indiscernables du CPU** (val_loss 0.056, F1 clips 0.9322)… et
+**120.3 FA/h au banc, 2,5× la référence**. À fonction identique, seul le
+backend restait en cause : condamné. C'est peut-être le résultat le plus
+précieux de la série — la démonstration qu'un backend peut produire un modèle
+*plausible sur toutes les métriques amont* et pourtant inutilisable, ce
+qu'aucun test par clips n'aurait vu (ADR-002 et ADR-004 confirmés d'un même
+geste).
+
+La série Metal aura donc donné : la cause racine du bug ReLU, un contournement
+démontré, et la preuve au banc — trois fois, dont une à fonction
+mathématiquement identique — que ce backend ne produit pas les mêmes modèles.
+Dossier refermé définitivement ; retour aux données.
 
 Au passage, la même passe d'écoute a produit les premiers **verdicts humains
 sur le banc** (page « Banc streaming » : lecture audio + jugement persisté) :
