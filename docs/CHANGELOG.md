@@ -23,6 +23,15 @@ lien `current/`. Ne jamais écrire un chemin de run en dur ailleurs.
 
 ## Runs
 
+### v05_metal_check — 2026-08-12 — 🔬 diagnostic : ADR-002 reconfirmé
+- **But** : re-contrôler si `tensorflow-metal` 1.2.0 corrompt toujours
+  l'entraînement, et mesurer le temps (recette v03_replica, `use_gpu: true`).
+  Jamais candidat à la promotion, quel que soit le résultat.
+- **Verdict** : corruption identique à juillet — 5 seeds effondrés (val_loss
+  0.36–2.5), et au banc en inférence CPU : **764 FA/h contre 47** pour
+  v03_replica. Metal est ~4,7× plus rapide par epoch, pour un modèle
+  inutilisable. Détail : `docs/JOURNAL.md` et `ADR-002` § Re-contrôles.
+
 ### v04_speech_neg — 2026-08-12 — ❌ critère non atteint, pas de promotion
 - **Hypothèse** : les négatifs de parole continue font baisser les FA/heure.
 - **Critère défini à l'avance** : FA/h −20 % minimum, rappel −2 points maximum.

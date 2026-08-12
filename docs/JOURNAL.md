@@ -6,6 +6,29 @@ vaut plus qu'un résultat lisse — elle dit comment on a appris à ne plus se t
 
 ---
 
+## 2026-08-12 — Re-contrôle Metal : ADR-002 reconfirmé, avec chiffres
+
+`tensorflow-metal` 1.2.0 aurait pu avoir corrigé la corruption des gradients
+constatée en juillet. Plutôt que de croire l'ADR sur parole, un run de
+diagnostic (`v05_metal_check`, recette v03_replica à l'identique,
+`use_gpu: true`, critère écrit avant le lancement) a mesuré — et l'occasion a
+servi à instrumenter le **temps d'entraînement par candidat** (`fit_s` dans
+`metrics.json`, MLflow et `report.md`), désormais tracé pour tous les runs.
+
+Résultat : effondrement identique à juillet. Les 5 seeds divergent (val_loss
+0.36–2.5 contre ~0.06 sur CPU, early stopping à 6 epochs partout) et, au banc
+en inférence CPU, le modèle élu fait **764 FA/h contre 47** pour v03_replica.
+Metal est bien ~4,7× plus rapide par epoch (3 s contre 14 s) — vitesse pour un
+modèle inutilisable. Détail daté dans `ADR-002`, section « Re-contrôles ».
+
+Au passage, la même passe d'écoute a produit les premiers **verdicts humains
+sur le banc** (page « Banc streaming » : lecture audio + jugement persisté) :
+sur v03_replica au seuil 0.5, 15 FA confirmées (futurs hard negatives), 1 FA
+qui était en réalité une bonne détection (vérité WhisperX à corriger), 1 extrait
+inexploitable, 6 FN tous confirmés.
+
+---
+
 ## 2026-08-12 — Reprise après deux semaines · cap fixé
 
 Décision d'orientation : **poursuivre l'amélioration de la détection dans ce

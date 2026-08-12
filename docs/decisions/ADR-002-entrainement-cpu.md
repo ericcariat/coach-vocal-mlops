@@ -60,3 +60,19 @@ non-régression, à passer tous les deux :
 1. `coachvocal train smoke --set training.use_gpu=true` → la loss reste finie et
    décroissante ;
 2. le banc streaming sur GPU retrouve le rappel mesuré sur CPU (à ±2 points).
+
+## Re-contrôles
+
+**2026-08-12** — `tensorflow-metal` 1.2.0, run `v05_metal_check` (recette
+v03_replica à l'identique, `use_gpu: true`). Reconfirmé, dans les deux sens :
+
+- **Entraînement corrompu** : les 5 seeds s'effondrent (val_loss 0.36–2.5
+  contre ~0.06 sur CPU, early stopping à 6 epochs partout, F1 clips 0.60–0.84).
+- **Au banc (inférence CPU sur le modèle élu)** : 764 FA/h contre 47 pour
+  v03_replica — le modèle tire sur tout, son rappel apparent de 95,7 % ne
+  mesure rien.
+- **Le gain de temps existe mais est théorique** : ~3 s/epoch sur Metal contre
+  ~14 s sur CPU (×4,7). Sans apprentissage correct, il n'achète rien.
+
+La décision tient. Prochain re-contrôle : à la prochaine montée de version de
+`tensorflow-metal`, via les deux tests ci-dessus.
