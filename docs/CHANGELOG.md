@@ -23,10 +23,24 @@ lien `current/`. Ne jamais écrire un chemin de run en dur ailleurs.
 
 ## Runs
 
-### v04_speech_neg — *à lancer*
+### v04_speech_neg — 2026-08-12 — ❌ critère non atteint, pas de promotion
 - **Hypothèse** : les négatifs de parole continue font baisser les FA/heure.
 - **Critère défini à l'avance** : FA/h −20 % minimum, rappel −2 points maximum.
-- **Configuration** : `configs/experiment/v04_speech_neg.yaml`.
+- **Recette** : tts500 + 1500 fenêtres de parole continue YouTube en négatifs
+  (train), 150 en val/test — le test par clips n'est donc **plus comparable**
+  à v03 (F1 0.9020 · FRR 7.14 % · FAR 2.77 %, élu : seed 42).
+- **Banc streaming** (11,5 min, 23 occurrences, seuil 0.8) : **rappel 43.5 %
+  (10/23) · 26.2 FA/h** — contre v03_replica : 73.9 % (17/23) · 47.1 FA/h.
+  FA/h −44 % ✅, mais rappel −30 points ❌ (critère : −2 max). À 0.5, v04 reste
+  en dessous (52.2 % · 36.6 FA/h) : le compromis entier s'est déplacé, ce n'est
+  pas un effet de seuil.
+- **Verdict** : hypothèse à moitié confirmée — la parole continue en négatif
+  écrase bien les FA, mais à cette dose (1500 fenêtres) elle
+  rend le modèle sourd aux vraies occurrences. Piste suivante : réduire la dose
+  et/ou passer par des hard negatives ciblés (les FA réelles du banc) plutôt
+  qu'un volume massif indifférencié. Preuves :
+  `artifacts/runs/eloquence/v04_speech_neg/` et
+  `artifacts/reports/stream_bench/eloquence.json`.
 
 ### v03_replica — 2026-08-12 — ✅ point de contrôle de la migration validé
 - **But** : rejouer la recette v03 dans la nouvelle architecture. Attendu :
@@ -74,7 +88,9 @@ lien `current/`. Ne jamais écrire un chemin de run en dur ailleurs.
 ## Backlog
 
 - [x] Réplique v03 dans la nouvelle architecture (point de contrôle de migration) — validé le 2026-08-12.
-- [ ] v04 : négatifs de parole continue — déficit n°1 révélé par le banc.
+- [x] v04 : négatifs de parole continue — testé le 2026-08-12, critère non
+  atteint (rappel −30 pts). Reste à trouver la bonne dose ou passer aux hard
+  negatives ciblés.
 - [ ] Réinjecter les fausses alarmes réelles confirmées à l'oreille (hard negatives).
 - [ ] Étendre le banc (60 min, vidéos non thématiques) pour des FA/h représentatives.
 - [ ] Comparer `dscnn` à `cnn_baseline` au banc (et non sur la F1 par clip).
