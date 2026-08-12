@@ -28,11 +28,20 @@ lien `current/`. Ne jamais écrire un chemin de run en dur ailleurs.
 - **Critère défini à l'avance** : FA/h −20 % minimum, rappel −2 points maximum.
 - **Configuration** : `configs/experiment/v04_speech_neg.yaml`.
 
-### v03_replica — *à lancer* (réplique de v03 dans la nouvelle architecture)
-- **But** : point de contrôle de la migration. On attend les mêmes ordres de
-  grandeur que le v03 historique (F1 ≈ 0.926, FRR ≈ 5 %, FAR ≈ 2,5 %).
-- Un écart important signalerait une différence de pipeline, pas de recette —
-  à investiguer avant tout nouveau run.
+### v03_replica — 2026-08-12 — ✅ point de contrôle de la migration validé
+- **But** : rejouer la recette v03 dans la nouvelle architecture. Attendu :
+  F1 ≈ 0.926, FRR ≈ 5 %, FAR ≈ 2,5 %.
+- **Test clips (seuil 0.5)** : F1 0.9202 · FRR 5.46 % · FAR 2.68 % · AUC 0.9915
+  (élu : seed 46 par la validation, 5 candidats). Écart avec v03 largement sous
+  le bruit CPU de ±0.03-0.06 (`ADR-003`).
+- **Banc streaming** (11,5 min réelles, 23 occurrences, seuil 0.8) :
+  **rappel 73.9 % (17/23) · 47.1 FA/h** — contre v03 rejoué sur le même banc :
+  69.6 % (16/23) · 52.3 FA/h. Différence d'une occurrence et d'une FA : de la
+  variance, pas un gain.
+- **Verdict** : la migration reproduit la recette v03 aux fluctuations près.
+  Pas de promotion (ce run est un contrôle, pas une hypothèse). Preuves :
+  `artifacts/runs/eloquence/v03_replica/` et
+  `artifacts/reports/dashboards/eloquence_2026-08-12.html`.
 
 ---
 
@@ -64,7 +73,7 @@ lien `current/`. Ne jamais écrire un chemin de run en dur ailleurs.
 
 ## Backlog
 
-- [ ] Réplique v03 dans la nouvelle architecture (point de contrôle de migration).
+- [x] Réplique v03 dans la nouvelle architecture (point de contrôle de migration) — validé le 2026-08-12.
 - [ ] v04 : négatifs de parole continue — déficit n°1 révélé par le banc.
 - [ ] Réinjecter les fausses alarmes réelles confirmées à l'oreille (hard negatives).
 - [ ] Étendre le banc (60 min, vidéos non thématiques) pour des FA/h représentatives.
