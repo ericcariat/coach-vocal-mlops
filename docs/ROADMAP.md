@@ -69,11 +69,36 @@ pour savoir si le modèle est plus faible sur une forme.
 
 ### P0 — Qualité des données et du banc (avant tout nouveau run « recette »)
 
-- [ ] **Étendre le corpus du banc à ~60 min** avec vidéos non thématiques.
-  Prérequis statistique de tout le reste : à 23 occurrences / ~15 FA, un écart
-  de 2 occurrences ou 5 FA est du bruit (vu sur la série Metal). Débloque
-  aussi les hard negatives (on peut sacrifier des vidéos au train sans tuer
-  le banc).
+- [ ] **Étendre le corpus du banc à ~60 min maximum** (décision : on ne va pas
+  au-delà d'une heure). Prérequis statistique de tout le reste : à
+  23 occurrences / ~15 FA, un écart de 2 occurrences ou 5 FA est du bruit (vu
+  sur la série Metal). Débloque aussi les hard negatives (on peut sacrifier
+  des vidéos au train sans tuer le banc).
+
+  **Sources candidates, examinées le 2026-08-13** (voir `ETUDE_OPENWAKEWORD.md`
+  §8, `ETUDE_MICRO_WAKE_WORD.md` §7.2) :
+  - **YouTube non thématique via le scraper existant** — la voie principale.
+    Parole française ordinaire : dialogues, bureau, café, rue, magasins,
+    interviews. C'est le domaine réel du produit (le coach écoute du français),
+    et le pipeline vérité-terrain WhisperX existe déjà. Traçabilité DATA.md +
+    DVC comme le reste.
+  - **Amazon Dinner Party Corpus (DiPCo, ~5,5 h)** — utilisé par openWakeWord
+    pour évaluer les FA de ses modèles officiels ; parole lointaine + musique
+    + bruit, très adversarial. Anglais : utile comme **sous-ensemble de
+    stress** (10-15 min), pas comme cœur du banc — les FA sur de l'anglais ne
+    prédisent pas les FA sur du français. Vérifier la licence avant usage.
+  - **Dataset HF `kahrendt/microwakeword` (~9,7 Go)** — ÉCARTÉ : ce sont des
+    features précalculées du front-end micro_speech, pas de l'audio brut
+    (incompatible avec la règle « un seul front-end acoustique »), et
+    licence CC BY-NC 4.0.
+  - Rappel anti-fuite : MUSAN, Common Voice, GSC sont interdits au banc (déjà
+    dans l'entraînement).
+
+  **Protocole retenu** : ~45 min YouTube français non thématique + ~10-15 min
+  de stress (brouhaha type DiPCo ou équivalent français type café/bureau
+  YouTube). **Chaque fichier passe par WhisperX** pour certifier l'absence du
+  mot « éloquence » (et, s'il y est, l'occurrence entre dans la vérité
+  terrain au lieu d'être ignorée). Plafond total : 1 h.
 - [ ] **Re-découper les positifs : fin du mot près de la fin de fenêtre,
   jitter ~200 ms** (recette de découpe, sources brutes inchangées). Expérience
   dédiée vs v03_replica, critère avant le run. C'est le levier n°1 suggéré
