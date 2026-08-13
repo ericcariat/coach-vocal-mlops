@@ -91,6 +91,36 @@ def db_occurrences(word: str, db: Path | None = None) -> dict[str, list[tuple[fl
     return {k: sorted(v) for k, v in out.items()}
 
 
+def db_word_spans(word: str, db: Path | None = None,
+                  dedup_s: float = 0.5) -> dict[str, list[tuple[float, float, str]]]:
+    """video_id → [(t_start, t_end, surface)] absolus, dédupliqués.
+
+    La base contient des quasi-doublons (même occurrence détectée deux fois à
+    quelques dizaines de ms) : on garde la première par fenêtre de `dedup_s`."""
+    db = db or CORPUS / "discovery.db"
+    if not db.exists():
+        return {}
+    con = sqlite3.connect(f"file:{db}?mode=ro", uri=True)
+    raw = defaultdict(list)
+    try:
+        for vid, t0, t1, surface in con.execute(
+                "SELECT video_id, t_start, t_end, surface FROM clips "
+                "WHERE word LIKE ? AND t_end IS NOT NULL", (f"%{word}%",)):
+            m = re.search(f"({VIDEO_ID})$", vid)
+            raw[m.group(1) if m else vid].append((float(t0), float(t1), surface or word))
+    finally:
+        con.close()
+    out = {}
+    for vid, spans in raw.items():
+        kept: list[tuple[float, float, str]] = []
+        for span in sorted(spans):
+            if kept and span[0] - kept[-1][0] < dedup_s:
+                continue
+            kept.append(span)
+        out[vid] = kept
+    return out
+
+
 def surface_form(surface: str, word: str) -> str:
     """Regroupe une surface en forme comparable : « nu », « l' », « d' », « autre »
     (accents et apostrophes typographiques neutralisés)."""

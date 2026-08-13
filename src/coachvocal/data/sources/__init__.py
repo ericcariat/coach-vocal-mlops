@@ -128,4 +128,5 @@ from . import (  # noqa: E402,F401
     speech_negatives,
     tts_piper,
     word_clips,
+    word_clips_recut,
 )

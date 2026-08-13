@@ -1,0 +1,21 @@
+# Recette v03 avec les positifs YouTube RE-DÉCOUPÉS : fin du mot à 0-200 ms du
+# bord droit de la fenêtre, contexte réel avant (au lieu de : mot à
+# l'échantillon 0, zéros après). Voir docs/FENETRE_GLISSANTE_ET_JITTER.html et
+# la source `word_clips_recut`.
+#
+# Une seule variable change vs tts500 : la GÉOMÉTRIE de découpe des mêmes
+# occurrences (only_known_positives: true). Les autres pools sont identiques.
+#
+# time_shift_ms: 0 — le jitter est déjà tiré à la découpe ; un shift
+# supplémentaire pousserait la fin du mot hors de la fenêtre.
+extends: tts500
+name: tts500_recut
+
+augmentation:
+  time_shift_ms: 0
+
+sources:
+  - name: yt_positif
+    type: word_clips_recut
+    label: 1
+    params: {jitter_s: 0.2, only_known_positives: true}

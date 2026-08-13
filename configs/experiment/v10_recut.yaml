@@ -1,0 +1,35 @@
+# La géométrie de découpe des positifs, testée seule (une variable, cf.
+# tts500_recut) : mêmes occurrences YouTube que v03, mais fin du mot à
+# 0-200 ms du bord droit et contexte réel avant, au lieu de mot-au-début +
+# zéros. C'est le levier n°1 pointé par l'audit ET par la littérature
+# (openWakeWord, microWakeWord, LiveKit — unanimes).
+#
+# Critère de succès, écrit AVANT le run :
+#   • banc streaming : rappel ≥ v03_replica (73.9 %) − 2 points, et l'espoir
+#     déclaré est une AMÉLIORATION du rappel (géométrie d'entraînement enfin
+#     alignée sur celle du déclenchement) ;
+#   • FA/h ≤ v03_replica × 1.2 (48 → tolérance 57) — la disparition du
+#     « silence après le mot » peut déplacer un peu le compromis.
+#   • Si les deux se dégradent : la découpe re-écoutée avant toute conclusion
+#     (page Qualité), puis retour à l'ancienne géométrie documenté.
+# Le test par clips n'est PAS comparable à v03_replica (val/test re-découpés).
+# Vérification : coachvocal bench --run v03_replica --run v10_recut --minutes 16
+name: v10_recut
+description: >
+  Recette v03 avec positifs YouTube re-découpés fin-de-fenêtre + jitter 200 ms
+  (dataset tts500_recut). Une seule variable : la géométrie de découpe.
+
+wakeword: eloquence
+dataset: tts500_recut
+model: cnn_baseline
+
+training:
+  epochs: 30
+  batch_size: 64
+  learning_rate: 0.001
+  early_stopping_patience: 5
+  class_weight: true
+  threshold: 0.5
+  seeds: [42, 43, 44, 45, 46]
+  selection_metric: val_loss
+  use_gpu: false
