@@ -218,6 +218,60 @@ def embed_arrays(arrays, mel_sess, emb_sess, tag: str) -> np.ndarray:
     return out
 
 
+
+def collect_french_negatives(max_windows: int = 12000) -> list[np.ndarray]:
+    """Négatifs FRANÇAIS à l'échelle (round 5) : fenêtres de PAD_S s de parole
+    continue, hors zones du mot (±2 s, spans dédupliqués), depuis les segments
+    du corpus + les réunions SUMM-RE d'entraînement. C'est le contrepoids que
+    l'océan ACAV (multilingue) n'a pas."""
+    import re
+
+    import soundfile as sf
+
+    from coachvocal.data import corpus as corpus_mod
+
+    pad_n = int(PAD_S * SR)
+    stride = SR                                  # une fenêtre par seconde
+    spans = corpus_mod.db_word_spans("eloquence")
+    out: list[np.ndarray] = []
+
+    sources: list[tuple] = []
+    for wav in sorted((corpus_mod.CORPUS / "audio").glob("*.wav")):
+        m = re.match(r"(.+)_(\d+)-(\d+)$", wav.stem)
+        if m:
+            sources.append((wav, m.group(1), int(m.group(2))))
+    for wav in sorted((ROOT / "data/external/summre_train").glob("*.wav")):
+        sources.append((wav, None, 0))           # certifié sans le mot
+
+    rng = np.random.default_rng(123)
+    rng.shuffle(sources)
+    for wav, vid, s0 in sources:
+        if len(out) >= max_windows:
+            break
+        try:
+            audio, sr = sf.read(wav, dtype="float32")
+        except Exception:
+            continue
+        if sr != SR:
+            continue
+        if audio.ndim > 1:
+            audio = audio.mean(axis=1)
+        forbidden = [(t0 - s0, t1 - s0) for t0, t1, _ in spans.get(vid, [])] if vid else []
+        for start in range(0, max(len(audio) - pad_n, 0), stride):
+            if len(out) >= max_windows:
+                break
+            t0, t1 = start / SR, (start + pad_n) / SR
+            if any(a - 2.0 <= t1 and t0 <= b + 2.0 for a, b in forbidden):
+                continue
+            win = audio[start:start + pad_n]
+            if np.abs(win).max() < 0.02:
+                continue
+            out.append(win.astype(np.float32))
+    print(f"    négatifs français continus : {len(out)} fenêtres "
+          f"({len(out) * 1 / 3600:.1f} h)")
+    return out
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--seeds", type=int, nargs="+", default=[42, 43, 44])
@@ -228,6 +282,8 @@ def main():
     ap.add_argument("--tag", type=str, default="nosdonnees")
     ap.add_argument("--context", action="store_true",
                     help="positifs à contexte réel (fenêtres 2 s du corpus)")
+    ap.add_argument("--french-neg", type=int, default=0,
+                    help="nb de fenêtres négatives françaises (poids ×20)")
     args = ap.parse_args()
 
     import onnxruntime as ort
@@ -244,14 +300,23 @@ def main():
         X_pos = embed_files(pos_files, mel, emb, "pos")
     X_neg = embed_files(neg_files, mel, emb, "neg")
     parts_X, parts_y = [X_pos, X_neg], [np.ones(len(X_pos)), np.zeros(len(X_neg))]
+    parts_w = [np.ones(len(X_pos)), np.ones(len(X_neg))]
+    if args.french_neg:
+        X_fr = embed_arrays(collect_french_negatives(args.french_neg), mel, emb,
+                            "frneg")
+        parts_X.append(X_fr)
+        parts_y.append(np.zeros(len(X_fr)))
+        parts_w.append(np.full(len(X_fr), 20.0))   # contrepoids face à l'océan
     if args.acav:
         X_acav = acav_windows(args.acav, args.acav_stride)
         print(f"    + océan ACAV : {X_acav.shape} "
               f"({len(X_acav) * 0.08 * args.acav_stride / 3600:.1f} h de flux)")
         parts_X.append(X_acav)
         parts_y.append(np.zeros(len(X_acav)))
+        parts_w.append(np.ones(len(X_acav)))
     X = np.concatenate(parts_X)
     y = np.concatenate(parts_y).astype(np.float32)
+    w = np.concatenate(parts_w).astype(np.float32)
     print(f"    features : {X.shape}")
 
     runtime.configure(use_gpu=False)
@@ -278,9 +343,10 @@ def main():
                      loss="binary_crossentropy",
                      metrics=[keras.metrics.AUC(name="auc")])
         n_pos, n_neg = y[tr].sum(), len(tr) - y[tr].sum()
-        head.fit(X[tr], y[tr], validation_data=(X[va], y[va]),
+        cw = {0: len(tr) / (2 * n_neg), 1: len(tr) / (2 * n_pos)}
+        head.fit(X[tr], y[tr] , validation_data=(X[va], y[va]),
+                 sample_weight=w[tr] * np.where(y[tr] > 0, cw[1], cw[0]),
                  epochs=args.epochs, batch_size=128, verbose=2,
-                 class_weight={0: len(tr) / (2 * n_neg), 1: len(tr) / (2 * n_pos)},
                  callbacks=[keras.callbacks.EarlyStopping(
                      monitor="val_auc", mode="max", patience=6,
                      restore_best_weights=True)])
