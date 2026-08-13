@@ -108,6 +108,17 @@ class AugmentationConfig(Base):
     speed_min: float = 0.85
     speed_max: float = 1.15
     enabled: bool = True
+    # ── Réverbération par réponses impulsionnelles (RIR) — ROADMAP P1 ────────
+    # Absente des recettes historiques (prob 0 = comportement inchangé).
+    # Recommandée par openWakeWord/microWakeWord/LiveKit : le direct sans
+    # réverbération n'existe pas en conditions réelles.
+    rir_prob: float = 0.0                      # proba par clip d'appliquer une RIR
+    rir_dir: str = "data/external/rir_mit/16k" # RIR 16 kHz (MIT IR Survey)
+    # ── Bruit additif à SNR tiré dans une plage (multi-SNR explicite) ────────
+    noise_prob: float = 0.0                    # proba par clip de mélanger un bruit
+    noise_snr_db: list[float] = [5.0, 20.0]    # plage de SNR (uniforme)
+    noise_dir: str = "data/external/musan/noise"
+    bank_size: int = 256                       # fichiers max chargés par banque
 
 
 class QualityGateConfig(Base):

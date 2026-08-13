@@ -1,0 +1,37 @@
+# Augmentation RIR + bruit multi-SNR (ROADMAP P1) — recette v03 inchangée,
+# seule l'augmentation s'enrichit : réverbération (MIT IR Survey, 1 clip sur 2)
+# et bruit MUSAN mélangé à un SNR tiré entre 5 et 20 dB (1 clip sur 2).
+# C'est l'écart n°2 avec les pipelines de référence (openWakeWord,
+# microWakeWord, LiveKit), après la géométrie de découpe (v10_recut).
+#
+# Critère de succès, écrit AVANT le run :
+#   • banc streaming (dont les 64 min SUMM-RE — micros de réunion, acoustique
+#     réelle) : rappel ≥ v03_replica − 2 points ET FA/h ≤ v03_replica ;
+#   • l'espoir déclaré : moins de FA sur les segments SUMM-RE (voix lointaines,
+#     réverbération de salle) — à lire segment par segment dans le rapport.
+# Le test par clips reste comparable (val/test non augmentés, par construction).
+# Vérification : coachvocal bench --run v03_replica --run v12_rir --minutes 60
+name: v12_rir
+description: >
+  Recette v03 + augmentation réverbération RIR (p=0.5) et bruit multi-SNR
+  5-20 dB (p=0.5) — combler l'écart d'augmentation avec l'état de l'art.
+
+wakeword: eloquence
+dataset:
+  ref: tts500
+  augmentation:
+    rir_prob: 0.5
+    noise_prob: 0.5
+    noise_snr_db: [5.0, 20.0]
+model: cnn_baseline
+
+training:
+  epochs: 30
+  batch_size: 64
+  learning_rate: 0.001
+  early_stopping_patience: 5
+  class_weight: true
+  threshold: 0.5
+  seeds: [42, 43, 44, 45, 46]
+  selection_metric: val_loss
+  use_gpu: false

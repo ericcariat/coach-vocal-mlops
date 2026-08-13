@@ -1,0 +1,6 @@
+outs:
+- md5: e8fa0bada03747bf5c4c3d9bd2e910cf.dir
+  size: 22313840
+  nfiles: 541
+  hash: md5
+  path: rir_mit
