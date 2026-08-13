@@ -11,11 +11,23 @@ l'architecture. Hypothèse : leur extracteur pré-entraîné + NOS voix réelles
   réels (1 882, toutes formes : nu/l'/d'), les enregistrements « moi » (47) et
   les prises guidées TP/FN de l'auteur. **AUCUN clip TTS** — c'est la variable
   qu'on teste.
+- `negatifs_parole_continue_fr/` — **375 fenêtres d'1 s de parole continue
+  FRANÇAISE** (YouTube dose 300 + réunions SUMM-RE 75 — les mêmes que le
+  champion). Leur corpus générique de négatifs est massif mais très
+  anglophone ; c'est le complément de domaine qui nous a divisé les FA par
+  deux chez nous.
 - `negatifs_adversariaux/` — **122 clips** : cousins phonétiques
   (« élégance », « éloquent »…), FP/TN guidés de la voix de l'auteur, hard
   negatives (FA réelles du banc confirmées à l'oreille). À donner comme
   négatifs custom si l'entraîneur le permet (en PLUS de ses négatifs
   génériques, pas à la place).
+
+## Pourquoi PAS nos bruits/musiques/silences
+
+L'entraîneur oWW apporte ses propres négatifs génériques (~31 000 h ACAV100M :
+parole, musique, bruit) — nos ~7 h de MUSAN/GSC/CV seraient redondantes. On ne
+fournit que ce que leur océan n'a pas : le français continu et l'adversarial
+spécifique au mot.
 
 ## Protocole
 
