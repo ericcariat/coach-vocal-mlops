@@ -41,6 +41,22 @@ lien `current/`. Ne jamais écrire un chemin de run en dur ailleurs.
   vérité terrain décalée ne donne pas un résultat imprécis, elle fabrique un
   résultat absurde — deuxième occurrence du motif (cf. banc de juillet).
 
+### Piste B, round 2 (ocean11h) — 2026-08-13 — la balançoire, et sa cause
+- **Protocole** : mêmes positifs réels + 60 167 fenêtres de négatifs ACAV
+  pré-calculés (~11 h, ratio 30:1). 3 seeds.
+- **Résultat** : la balançoire re-bascule — rappel 11-59 % à 0.2 (0-15 % à
+  0.8) pour 2-15 FA/h. Retour au profil « synthétique ».
+- **Cause identifiée (testable)** : nos positifs d'entraînement sont padés de
+  SILENCE avant le mot (clips 1 s complétés à 2 s), le banc présente le mot
+  après de la VRAIE parole. Avec peu de négatifs, la tête généralisait ;
+  noyée de flux continus réels étiquetés négatifs, elle a appris « contexte
+  continu = négatif ». C'est la leçon v10 (padding-signature) rejouée dans
+  l'espace des embeddings.
+- **Remède désigné** : des positifs oWW à CONTEXTE RÉEL — fenêtres de 2 s
+  découpées dans les segments du corpus, fin du mot au bord, par la
+  corrélation croisée de `word_clips_recut` (l'outil existe déjà). Les deux
+  chantiers de la journée (recut + greffe) convergent exactement ici.
+
 ### Piste B (têtes oWW sur nos données) — 2026-08-13 — la décomposition prouvée
 - **Protocole** : tête 64x3 entraînée EN LOCAL (scripts/train_oww_head.py) sur
   le front-end gelé oWW : 1 968 positifs réels + 6 921 négatifs de nos
