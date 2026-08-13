@@ -23,6 +23,18 @@ lien `current/`. Ne jamais écrire un chemin de run en dur ailleurs.
 
 ## Runs
 
+### v10_recut — 2026-08-13 — ❌ instructif : la géométrie seule casse tout
+- **But** : positifs re-découpés fin-de-fenêtre + jitter (levier n°1 de la
+  littérature), une seule variable vs v03.
+- **Banc étendu (seuil 0.8)** : rappel **100 %** (25/25, toutes formes) mais
+  **781.9 FA/h** — le modèle tire sur tout.
+- **Diagnostic** : les positifs re-découpés (contexte réel + mot) sont les
+  SEULS exemples d'entraînement ressemblant à un flux naturel ; face à des
+  négatifs restés « mots isolés / crops d'1 s », le modèle apprend « parole
+  continue = positif ». **La re-découpe et les négatifs de parole continue
+  sont un couple** — v10b les teste ensemble. Rétrospectivement, ceci éclaire
+  aussi v04 : sa chute de rappel était l'image miroir du même déséquilibre.
+
 ### Banc étendu — 2026-08-13 — nouvelle référence de mesure
 - **54,9 min** (18 segments YouTube + 3 pistes SUMM-RE de 42,4 min), 25
   occurrences. Le banc reporte désormais le **rappel par forme** (nu/l'/d').
