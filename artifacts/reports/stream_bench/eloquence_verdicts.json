@@ -358,5 +358,185 @@
   "v11_speech_300|th0.5|wVJjMu1oAQg_1622-1652.wav|10.41|FN": {
     "verdict": "✅ Erreur confirmée",
     "saved_at": "2026-08-13"
+  },
+  "v11_speech_300|th0.55|DOgPgkpre4w_764-804.wav|14.01|FN": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v11_speech_300|th0.55|DOgPgkpre4w_764-804.wav|24.02|FN": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v11_speech_300|th0.55|3cw7wyFJdAs_169-283.wav|18.4|FN": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v11_speech_300|th0.55|3cw7wyFJdAs_169-283.wav|44.97|FN": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v11_speech_300|th0.55|3cw7wyFJdAs_169-283.wav|84.34|FN": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v11_speech_300|th0.55|3cw7wyFJdAs_169-283.wav|90.11|FN": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v11_speech_300|th0.55|smy38ihT7CQ_36-66.wav|17.29|FN": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v11_speech_300|th0.55|wVJjMu1oAQg_1622-1652.wav|10.41|FN": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v11_speech_300|th0.55|summre_004c_PAPH_013.wav|26.62|FA": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v11_speech_300|th0.55|summre_004c_PAPH_013.wav|74.75|FA": {
+    "verdict": "❌ Pas une erreur (vérité terrain à revoir)",
+    "saved_at": "2026-08-13"
+  },
+  "v11_speech_300|th0.55|summre_004c_PAPH_013.wav|313.62|FA": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v11_speech_300|th0.55|summre_004c_PAPH_013.wav|560.38|FA": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v11_speech_300|th0.55|summre_004c_PAPH_013.wav|720.12|FA": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v11_speech_300|th0.55|summre_004c_PAPH_013.wav|786.12|FA": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v11_speech_300|th0.55|summre_004c_PAPH_013.wav|870.0|FA": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v11_speech_300|th0.55|summre_004c_PAPH_013.wav|897.5|FA": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v11_speech_300|th0.55|summre_004c_PAPH_013.wav|1001.12|FA": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v11_speech_300|th0.55|summre_004c_PAPH_013.wav|1015.75|FA": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v11_speech_300|th0.55|summre_004c_PAPH_013.wav|1245.88|FA": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v17_stack|th0.55|DOgPgkpre4w_764-804.wav|14.01|FN": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v17_stack|th0.55|DOgPgkpre4w_764-804.wav|24.02|FN": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v17_stack|th0.55|ffaEkrr2PWo_766-807.wav|25.78|FN": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v17_stack|th0.55|3cw7wyFJdAs_169-283.wav|18.4|FN": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v17_stack|th0.55|3cw7wyFJdAs_169-283.wav|44.97|FN": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v17_stack|th0.55|3cw7wyFJdAs_169-283.wav|84.34|FN": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v17_stack|th0.55|3cw7wyFJdAs_169-283.wav|90.11|FN": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v17_stack|th0.55|3cw7wyFJdAs_169-283.wav|103.59|FN": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v17_stack|th0.55|smy38ihT7CQ_36-66.wav|17.29|FN": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v17_stack|th0.55|wVJjMu1oAQg_1622-1652.wav|10.41|FN": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v17_stack|th0.55|summre_004c_PAPH_013.wav|26.62|FA": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v17_stack|th0.55|summre_004c_PAPH_013.wav|720.25|FA": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v17_stack|th0.55|summre_006b_EADH_017.wav|306.5|FA": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v17_stack|th0.55|summre_006b_EADH_017.wav|444.38|FA": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v17_stack|th0.55|summre_006b_EADH_017.wav|505.38|FA": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v17_stack|th0.55|summre_006b_EADH_017.wav|800.62|FA": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v17_stack|th0.55|summre_006b_EADH_017.wav|976.12|FA": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v17_stack|th0.55|summre_006b_EADH_017.wav|1230.12|FA": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v17_stack|th0.55|ffaEkrr2PWo_766-807.wav|2.0|FA": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v17_stack|th0.55|ffaEkrr2PWo_766-807.wav|31.38|FA": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v17_stack|th0.55|ffaEkrr2PWo_766-807.wav|33.38|FA": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v17_stack|th0.55|-rWxRdFMHCc_6586-6616.wav|28.62|FA": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v17_stack|th0.55|3cw7wyFJdAs_169-283.wav|117.0|FA": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v17_stack|th0.55|pKV9TDzs6C0_367-401.wav|21.62|FA": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v17_stack|th0.55|pKV9TDzs6C0_367-401.wav|33.5|FA": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v17_stack|th0.55|sV60XWz1b7c_29-59.wav|19.12|FA": {
+    "verdict": "🗑️ Inexploitable (à exclure du banc)",
+    "saved_at": "2026-08-13"
   }
 }
