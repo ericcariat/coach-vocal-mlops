@@ -136,7 +136,11 @@ def run(models: dict[str, Path], wakeword: WakewordConfig, minutes: float = 16.0
     results: dict = {}
     for name, path in models.items():
         print(f"\n📦  {name} — {path}")
-        detector = load_detector(path, wakeword)
+        if str(path).endswith(".onnx"):        # concurrent openWakeWord (P3)
+            from .oww_adapter import OwwDetector
+            detector = OwwDetector(Path(path), wakeword)
+        else:
+            detector = load_detector(path, wakeword)
         agg = {th: {"n_occ": 0, "detected": 0, "false_alarms": 0, "uncertain": 0}
                for th in thresholds}
         # Rappel PAR FORME (nu / l' / d') : 85 % des occurrences réelles sont

@@ -194,10 +194,18 @@ def bench_cmd(wakeword: str = "eloquence",
 
     word = load_wakeword(wakeword)
     runs = runs or [registry.champion_run(wakeword) or "v03"]
-    models = {r: paths.run_dir(wakeword, r) / "model.keras" for r in runs}
+    # Un argument .onnx = tête openWakeWord (adaptateur P3) ; sinon un run à nous.
+    models = {(Path(r).stem if r.endswith(".onnx") else r):
+              (Path(r) if r.endswith(".onnx") else paths.run_dir(wakeword, r) / "model.keras")
+              for r in runs}
     missing = [r for r, p in models.items() if not p.exists()]
     if missing:
         raise typer.BadParameter(f"modèle(s) introuvable(s) : {missing}")
+    if any(str(p).endswith(".onnx") for p in models.values()):
+        from .evaluation.oww_adapter import frontends_available
+        if not frontends_available():
+            raise typer.BadParameter("front-ends openWakeWord absents — voir "
+                                     "data/external/oww_models/ (docs/DATA.md)")
 
     payload = stream_bench.run(
         models, word, minutes=minutes,

@@ -47,6 +47,7 @@ dev = [
     "ruff>=0.5",
     "ipykernel>=6.29",
     "jupyterlab>=4.2",
+    "onnxruntime>=1.28.0",
 ]
 mlops = [
     "dvc>=3.51",

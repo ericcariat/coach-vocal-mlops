@@ -40,6 +40,26 @@ c[0].metric("Audio analysé", f"{bench['total_seconds'] / 60:.1f} min")
 c[1].metric("Occurrences", bench.get("n_occurrences", "—"))
 c[2].metric("Vidéos exclues (vues à l'entraînement)", len(bench.get("forbidden_videos", [])))
 
+# ── Ce qu'on rejoue : composition du banc par dataset ─────────────────────────
+seg_list = bench.get("segments", [])
+by_source: dict[str, list] = {}
+for s in seg_list:
+    name = Path(s["wav"]).name
+    src = "SUMM-RE (réunions FR, CC BY-SA)" if name.startswith("summre") \
+        else ("bench_extra" if "bench_extra" in s["wav"] else "YouTube (corpus scraper)")
+    by_source.setdefault(src, []).append(s)
+if by_source:
+    st.markdown("**Datasets rejoués par le banc :**")
+    rows = [{"Dataset": src,
+             "Segments": len(segs),
+             "Durée": f"{sum(x['end'] - x['start'] for x in segs) / 60:.1f} min",
+             "Occurrences": sum(len(x.get("occurrences", [])) for x in segs)}
+            for src, segs in sorted(by_source.items())]
+    st.dataframe(pd.DataFrame(rows), width="stretch", hide_index=True)
+    st.caption("Vérité terrain : alignements WhisperX (`discovery.db`) pour YouTube ; "
+               "alignements mot à mot fournis par SUMM-RE pour `bench_extra` "
+               "(provenance et licences : `docs/DATA.md`).")
+
 rows = []
 for model, per_th in bench["results"].items():
     for th, r in per_th.items():

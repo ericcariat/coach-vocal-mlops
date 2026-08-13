@@ -94,9 +94,23 @@ if current is None:
 cond, consigne = current
 st.subheader(f"Condition : {cond} — prise {kept[cond] + 1}/{takes_per_cond}")
 st.markdown(f"**Consigne : {consigne}.** Prononce « **éloquence** » une fois, "
-            "naturellement, puis arrête l'enregistrement.")
+            "naturellement, puis re-clique pour arrêter.")
 
-audio = st.audio_input(f"Enregistrer ({cond})", key=f"rec_{cond}_{kept[cond]}")
+# Le widget micro de Streamlit est discret : on le grossit en un vrai bouton
+# d'enregistrement, impossible à rater.
+st.markdown("""
+<style>
+div[data-testid="stAudioInput"] {
+    border: 3px solid #C0392B; border-radius: 14px;
+    padding: 18px; background: rgba(192, 57, 43, 0.06);
+}
+div[data-testid="stAudioInput"] button {
+    transform: scale(1.7); margin: 10px 18px;
+}
+</style>
+""", unsafe_allow_html=True)
+st.markdown("### 🔴 Enregistrer — clique le micro ci-dessous (start), re-clique (stop)")
+audio = st.audio_input(f"Prise « {cond} »", key=f"rec_{cond}_{kept[cond]}")
 
 if audio is not None:
     # Conversion navigateur (44.1/48 kHz, format variable) → 16 kHz mono PCM16.
