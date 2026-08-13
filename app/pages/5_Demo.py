@@ -23,8 +23,22 @@ if not runs:
     st.stop()
 
 champion = registry.champion_run(WAKEWORD)
-run = st.selectbox("Modèle", runs, index=runs.index(champion) if champion in runs else 0)
-threshold = st.slider("Seuil de décision", 0.1, 0.99, word.live.threshold, 0.01)
+# Concurrents openWakeWord (têtes ONNX) : testables dans la même démo, via
+# l'adaptateur du banc — leur front-end, notre machine à états.
+OWW_COMPARE = Path(__file__).resolve().parents[2] / "open_wake_word_compare"
+oww_heads = sorted(OWW_COMPARE.glob("*.onnx")) if OWW_COMPARE.exists() else []
+options = runs + [f"oww : {p.name}" for p in oww_heads]
+run = st.selectbox("Modèle", options, index=runs.index(champion) if champion in runs else 0)
+threshold = st.slider("Seuil de décision", 0.01, 0.99, word.live.threshold, 0.01)
+
+
+def _load_selected_detector():
+    runtime.configure(use_gpu=False)         # Metal fausse les probas (ADR-002)
+    if run.startswith("oww : "):
+        from coachvocal.evaluation.oww_adapter import OwwDetector
+        return OwwDetector(OWW_COMPARE / run[len("oww : "):], word, threshold)
+    from coachvocal.inference.detector import load_detector
+    return load_detector(paths.run_dir(WAKEWORD, run) / "model.keras", word, threshold)
 
 uploaded = st.file_uploader("Fichier audio (WAV mono)", type=["wav"])
 if uploaded:
@@ -34,12 +48,8 @@ if uploaded:
 
         import soundfile as sf
 
-        runtime.configure(use_gpu=False)     # Metal fausse les probas (ADR-002)
-        from coachvocal.inference.detector import load_detector
-
         with st.spinner("Chargement du modèle…"):
-            detector = load_detector(paths.run_dir(WAKEWORD, run) / "model.keras",
-                                     word, threshold)
+            detector = _load_selected_detector()
         audio, sr = sf.read(io.BytesIO(uploaded.getvalue()), dtype="float32")
         if audio.ndim > 1:
             audio = audio.mean(axis=1)
@@ -98,12 +108,8 @@ else:
 
         import sounddevice as sd
 
-        runtime.configure(use_gpu=False)     # Metal fausse les probas (ADR-002)
-        from coachvocal.inference.detector import load_detector
-
         with st.spinner("Chargement du modèle…"):
-            detector = load_detector(paths.run_dir(WAKEWORD, run) / "model.keras",
-                                     word, threshold)
+            detector = _load_selected_detector()
         status = st.empty()
         gauge = st.empty()
         journal = st.empty()

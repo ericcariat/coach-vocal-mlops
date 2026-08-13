@@ -83,6 +83,52 @@ class OwwDetector:
         peaks = np.array([float(np.abs(audio[s:s + win]).max() or 0.0) for s in starts])
         return probas, peaks, starts
 
+    # ── Chemin temps réel (page Démo) — recalcul complet par pas de 80 ms,
+    # comme le runtime officiel (stateless). Même règle de décision que push()
+    # du détecteur maison.
+    @property
+    def hop(self) -> int:
+        return int(self.hop_s * self.wakeword.sample_rate)
+
+    def push(self, chunk: np.ndarray) -> dict | None:
+        from collections import deque
+
+        sr = self.wakeword.sample_rate
+        n = int(self.window_s * sr)
+        if not hasattr(self, "_buffer"):
+            self._buffer = deque(maxlen=n)
+            self._buffer.extend(np.zeros(n, np.float32))
+            self._consecutive = 0
+            self._cooldown_until = -1.0
+            self._t = 0.0
+        self._buffer.extend(chunk.astype(np.float32).ravel())
+        self._t += len(chunk) / sr
+        window = np.array(self._buffer, dtype=np.float32)
+        peak = float(np.abs(window).max())
+
+        mel = self._mel.run(None, {"input": window[np.newaxis, :]})[0]
+        frames = (np.squeeze(mel) / 10.0 + 2.0)[-((HEAD_EMBEDDINGS - 1) * EMB_STEP_FRAMES
+                                                  + EMB_WIN_FRAMES):]
+        wins = np.stack([frames[i:i + EMB_WIN_FRAMES]
+                         for i in range(0, len(frames) - EMB_WIN_FRAMES + 1, EMB_STEP_FRAMES)])
+        embs = self._emb.run(None, {"input_1": wins[:, :, :, np.newaxis].astype(np.float32)})[0]
+        embs = embs.reshape(len(embs), 96)[-HEAD_EMBEDDINGS:]
+        if len(embs) < HEAD_EMBEDDINGS:
+            return {"proba": 0.0, "peak": peak, "triggered": False, "t": self._t}
+        proba = float(self._head.run(None, {self._head_in:
+                      embs[np.newaxis, ...].astype(np.float32)})[0].ravel()[0])
+
+        if self._t < self._cooldown_until:
+            self._consecutive = 0
+            return {"proba": proba, "peak": peak, "triggered": False, "t": self._t}
+        fired = (peak >= self.live.min_peak) and (proba > self.threshold)
+        self._consecutive = self._consecutive + 1 if fired else 0
+        triggered = self._consecutive >= self.live.n_consecutive
+        if triggered:
+            self._consecutive = 0
+            self._cooldown_until = self._t + self.live.cooldown_s
+        return {"proba": proba, "peak": peak, "triggered": triggered, "t": self._t}
+
     def triggers_from(self, probas, peaks, threshold: float | None = None) -> list[float]:
         """La MÊME règle que WakeWordDetector, à la cadence oWW (80 ms)."""
         th = self.threshold if threshold is None else threshold
