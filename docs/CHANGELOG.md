@@ -41,6 +41,16 @@ lien `current/`. Ne jamais écrire un chemin de run en dur ailleurs.
   vérité terrain décalée ne donne pas un résultat imprécis, elle fabrique un
   résultat absurde — deuxième occurrence du motif (cf. banc de juillet).
 
+### v12_rir — 2026-08-13 — ❌ au critère strict, mais le meilleur rappel mesuré
+- **But** : combler l'écart d'augmentation avec l'état de l'art (RIR MIT +
+  bruit multi-SNR 5-20 dB, p=0.5 chacun, recette v03 sinon inchangée).
+- **Banc étendu (seuil 0.8)** : rappel **88.0 %** (22/25 — record, +12 pts) et
+  « d'éloquence » remonte de 3/7 à **5/7** ; mais **72.2 FA/h** > critère
+  (≤ 66.7) et surtout > champion v11 (33.9). ❌ strict, gain de rappel réel —
+  la réverbération attaque bien le déficit champ-lointain vu sur SUMM-RE.
+- **Suite** : v14_rir_speech300 teste le cumul des deux gains orthogonaux
+  (dose 300 + RIR), critère : rappel ≥ 80 % ET FA/h ≤ 45.
+
 ### v11_speech_300 — 2026-08-13 — ⭐ PROMU : la dose utile de parole continue
 - **Sweep dose-réponse 0/100/300/500** (train seulement, val/test intacts —
   contrairement à v04), critère écrit avant les runs : minimiser les FA/h au

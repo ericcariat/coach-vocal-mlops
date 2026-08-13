@@ -1,0 +1,35 @@
+# Synthèse du P1 (2026-08-13) : combiner les deux gains orthogonaux mesurés
+# séparément — la dose 300 de parole continue (v11 : FA/h 66.7 → 33.9 à rappel
+# égal, PROMUE) et l'augmentation RIR + multi-SNR (v12 : rappel 76 → 88 %,
+# d' 3/7 → 5/7, mais FA/h 72.2).
+#
+# Critère de succès, écrit AVANT le run (banc étendu, seuil 0.8) :
+#   • rappel ≥ 80 % ET FA/h ≤ 45 — c.-à-d. garder l'essentiel des deux gains ;
+#   • si le cumul ne tient pas (interaction négative), le champion reste
+#     v11_speech_300 et on le documente : l'additivité des recettes n'est
+#     jamais acquise.
+# Vérification : coachvocal bench --run v11_speech_300 --run v14_rir_speech300 --minutes 60
+name: v14_rir_speech300
+description: >
+  Dose 300 de parole continue (champion v11) + augmentation RIR/multi-SNR
+  (v12) — le cumul des deux gains orthogonaux du P1.
+
+wakeword: eloquence
+dataset:
+  ref: speech_neg_300
+  augmentation:
+    rir_prob: 0.5
+    noise_prob: 0.5
+    noise_snr_db: [5.0, 20.0]
+model: cnn_baseline
+
+training:
+  epochs: 30
+  batch_size: 64
+  learning_rate: 0.001
+  early_stopping_patience: 5
+  class_weight: true
+  threshold: 0.5
+  seeds: [42, 43, 44, 45, 46]
+  selection_metric: val_loss
+  use_gpu: false
