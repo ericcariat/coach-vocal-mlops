@@ -41,6 +41,26 @@ lien `current/`. Ne jamais écrire un chemin de run en dur ailleurs.
   vérité terrain décalée ne donne pas un résultat imprécis, elle fabrique un
   résultat absurde — deuxième occurrence du motif (cf. banc de juillet).
 
+### Comparatif openWakeWord — 2026-08-13 — le banc tranche : 5× moins de rappel
+- **Protocole** : 5 têtes oWW « éloquence » (64x3, 115 k steps, entraînées par
+  l'auteur sur le pipeline openWakeWord, ~100 % synthétique) passées sur NOTRE banc
+  étendu via l'adaptateur ONNX (leur front-end mel+embeddings, NOTRE machine à
+  états), seuils 0.05 → 0.8.
+- **Résultats (seuil 0.5 ; les 5 modèles se valent)** : rappel **16-24 %** ·
+  **1.1 FA/h** — contre **76 % · 33.9** pour le champion v11_speech_300. Même à
+  0.05, le meilleur plafonne à 36 %. Et **« d'éloquence » : 0/7 pour les cinq
+  modèles**, à tous les seuils — Piper ne produit pas cette élision, le modèle
+  ne l'a jamais entendue (prédiction faite avant le run, confirmée).
+- **Lecture honnête** : (1) leur « 50 % de rappel » interne était mesuré sur
+  clips (large part synthétique) — sur du VRAI français en flux, il fond à
+  ~20 % : l'entraînement tout-synthétique ne généralise pas aux voix réelles ;
+  (2) leur FA/h ~1 est remarquable — le transfer learning sur embeddings est
+  très silencieux ; (3) réserve méthodologique : notre règle des 3 fenêtres à
+  leur cadence 80 ms (240 ms de persistance) peut coûter un peu de rappel,
+  mais pas un facteur 3-5. Verdict : notre CNN sur données réelles reste
+  largement devant en rappel ; l'approche oWW garde l'atout FA/h et la taille
+  (405 Ko). Preuves : `artifacts/reports/stream_bench/eloquence.json`.
+
 ### v14_rir_speech300 — 2026-08-13 — ❌ de peu : le cumul est partiel
 - **But** : cumuler les deux gains orthogonaux (dose 300 + RIR/multi-SNR).
   Critère : rappel ≥ 80 % ET FA/h ≤ 45.
