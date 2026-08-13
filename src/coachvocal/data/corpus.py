@@ -121,7 +121,7 @@ def db_word_spans(word: str, db: Path | None = None,
     return out
 
 
-def list_extra_segments(word: str, root: Path | None = None) -> list["Segment"]:
+def list_extra_segments(word: str, root: Path | None = None) -> list[Segment]:
     """Segments de banc ADDITIONNELS, hors corpus YouTube (extension ROADMAP P0).
 
     `data/external/bench_extra/` : des WAV (16 kHz mono) + `ground_truth.json` :
