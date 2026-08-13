@@ -1,0 +1,24 @@
+# Le cumul « rappel d'abord » (leçon du banc recomposé, 2026-08-13) :
+# champion (dose 300 YouTube) + RIR/multi-SNR (v12 : +12 pts de rappel, seul
+# levier positif) + SUMM-RE dose 75 (meilleur compromis du sweep) + hard
+# negatives à boost MODÉRÉ ×2 (le ×10 de v16 assourdissait).
+extends: speech_neg_300
+name: v17_stack
+
+augmentation:
+  rir_prob: 0.5
+  noise_prob: 0.5
+  noise_snr_db: [5.0, 20.0]
+
+sources:
+  - name: summre_neg_75
+    type: continuous_dir
+    label: 0
+    splits: [train]
+    params: {dir: data/external/summre_train, budget: 75, stride_s: 1.0, min_peak: 0.02, max_per_file: 200}
+  - name: hard_neg
+    type: hard_negatives
+    label: 0
+    copies: 2
+    splits: [train]
+    params: {model: v11_speech_300, threshold: th0.5}
