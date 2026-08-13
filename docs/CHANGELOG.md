@@ -41,6 +41,21 @@ lien `current/`. Ne jamais écrire un chemin de run en dur ailleurs.
   vérité terrain décalée ne donne pas un résultat imprécis, elle fabrique un
   résultat absurde — deuxième occurrence du motif (cf. banc de juillet).
 
+### Piste B (têtes oWW sur nos données) — 2026-08-13 — la décomposition prouvée
+- **Protocole** : tête 64x3 entraînée EN LOCAL (scripts/train_oww_head.py) sur
+  le front-end gelé oWW : 1 968 positifs réels + 6 921 négatifs de nos
+  recettes (~2,6 h). 3 seeds, export ONNX vérifié bit-à-bit, banc habituel.
+- **Résultat, miroir exact des têtes synthétiques** : rappel **92-100 %**
+  (« nu » 2/2 — les seules détections jamais mesurées ! — et « d' » 9/9)
+  mais **500-1 200 FA/h**. Les synthétiques : 16-24 % · 1.1 FA/h.
+- **Verdict — la décomposition est démontrée dans les deux sens** : la
+  représentation pré-entraînée transfère parfaitement (nos voix réelles y
+  dessinent la BONNE région) ; le silence, lui, vient exclusivement du volume
+  de négatifs (~31 000 h chez eux vs nos 2,6 h : la frontière n'est pas
+  sculptée). **Le quadrant gagnant = nos positifs réels + LEUR océan de
+  négatifs** — leurs features de négatifs pré-calculées sont téléchargeables
+  (format [16×96] directement compatible avec notre script). Prochain geste.
+
 ### v17_stack — 2026-08-13 — ⭐ PROMU (seuil live 0.8, priorité silence)
 - **Décision de l'auteur** : priorité aux FA/h. Au banc courant (53,1 min, 27 occ.,
   2 nus difficiles inclus) : **48.1 % · 6.8 FA/h** au seuil 0.8 — contre
