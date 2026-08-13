@@ -41,6 +41,18 @@ lien `current/`. Ne jamais écrire un chemin de run en dur ailleurs.
   vérité terrain décalée ne donne pas un résultat imprécis, elle fabrique un
   résultat absurde — deuxième occurrence du motif (cf. banc de juillet).
 
+### v13_fa_select — 2026-08-13 — ✅ critère atteint : l'élection vaut une recette
+- **But** : élire les candidats par FA/h sur 34,5 min de flux ambiant SUMM-RE
+  (hors banc) sous contrainte rappel val ≥ 90 %, au lieu de min(val_loss) —
+  recette v03 par ailleurs inchangée.
+- **Dispersion mesurée** : à recette identique, les 5 seeds vont de **8.7 à
+  31.4 FA/h ambiantes** (×3,6) — c'est ce que val_loss ne voit pas.
+- **Banc étendu (seuil 0.8)** : 76.0 % · **31.7 FA/h** — critère ✅ (< 66.7 à
+  rappel ≥ 74 %). Égal au champion v11 (33.9) à 2 FA près = bruit (ADR-003) :
+  **pas de re-promotion**, mais l'élection produit seule retrouve le gain de
+  la dose 300. Les deux mécanismes devraient se cumuler (backlog : v14 +
+  élection fa_ambient).
+
 ### v12_rir — 2026-08-13 — ❌ au critère strict, mais le meilleur rappel mesuré
 - **But** : combler l'écart d'augmentation avec l'état de l'art (RIR MIT +
   bruit multi-SNR 5-20 dB, p=0.5 chacun, recette v03 sinon inchangée).

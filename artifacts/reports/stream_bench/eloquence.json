@@ -1,5 +1,5 @@
 {
-  "date": "2026-08-13T05:28:40",
+  "date": "2026-08-13T05:46:33",
   "wakeword": "eloquence",
   "total_seconds": 3292.0,
   "n_occurrences": 25,
@@ -561,1345 +561,10 @@
     }
   ],
   "models": {
-    "v03_replica": "/Volumes/extreme_pro_ssd/alyra/13.PROJET_CERTIF/02.SOFTWARE/coach-vocal-mlops/artifacts/runs/eloquence/v03_replica/model.keras",
     "v11_speech_300": "/Volumes/extreme_pro_ssd/alyra/13.PROJET_CERTIF/02.SOFTWARE/coach-vocal-mlops/artifacts/runs/eloquence/v11_speech_300/model.keras",
-    "v12_rir": "/Volumes/extreme_pro_ssd/alyra/13.PROJET_CERTIF/02.SOFTWARE/coach-vocal-mlops/artifacts/runs/eloquence/v12_rir/model.keras"
+    "v13_fa_select": "/Volumes/extreme_pro_ssd/alyra/13.PROJET_CERTIF/02.SOFTWARE/coach-vocal-mlops/artifacts/runs/eloquence/v13_fa_select/model.keras"
   },
   "results": {
-    "v03_replica": {
-      "th0.5": {
-        "recall_stream": 0.72,
-        "frr_stream": 0.28,
-        "false_alarms": 108,
-        "fa_per_hour": 118.1044957472661,
-        "uncertain": 18,
-        "n_occ": 25,
-        "detected": 18,
-        "recall_by_form": {
-          "autre": {
-            "n_occ": 2,
-            "detected": 2,
-            "recall": 1.0
-          },
-          "d'": {
-            "n_occ": 7,
-            "detected": 3,
-            "recall": 0.42857142857142855
-          },
-          "l'": {
-            "n_occ": 15,
-            "detected": 12,
-            "recall": 0.8
-          },
-          "nu": {
-            "n_occ": 1,
-            "detected": 1,
-            "recall": 1.0
-          }
-        },
-        "events": [
-          {
-            "t": 67.0,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 74.75,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 100.12,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 124.75,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 192.75,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 200.62,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 213.12,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 224.25,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 248.88,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 287.38,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 313.38,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 315.38,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 359.62,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 364.0,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 414.38,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 486.25,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 488.38,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 497.88,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 507.62,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 560.25,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 563.88,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 615.0,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 720.12,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 741.75,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 764.12,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 766.38,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 795.5,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 870.0,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 896.5,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 924.38,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 943.5,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 1025.75,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 1068.5,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 1085.62,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 1149.0,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 1160.5,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 1179.0,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 1235.25,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 1247.0,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 58.88,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 113.0,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 164.75,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 181.25,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 186.12,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 217.38,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 235.62,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 295.0,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 299.75,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 306.38,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 319.88,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 325.62,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 342.38,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 348.12,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 414.25,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 439.12,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 441.25,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 444.38,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 467.0,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 474.38,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 491.88,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 505.38,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 512.5,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 532.25,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 556.5,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 613.88,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 616.5,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 620.38,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 627.88,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 647.0,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 656.38,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 694.62,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 767.12,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 800.62,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 842.62,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 855.12,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 876.0,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 929.12,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 943.12,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 1036.12,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 1042.38,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 1064.5,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 1083.38,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 1093.5,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 1101.12,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 1205.62,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 1228.75,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 1236.0,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 7.62,
-            "kind": "INCERTAIN",
-            "segment": "wR7yHWRDiC8_106-136.wav",
-            "video": "wR7yHWRDiC8"
-          },
-          {
-            "t": 15.93,
-            "kind": "FN",
-            "segment": "wR7yHWRDiC8_106-136.wav",
-            "video": "wR7yHWRDiC8"
-          },
-          {
-            "t": 3.25,
-            "kind": "FA",
-            "segment": "6f-X5IkV46I_340-414.wav",
-            "video": "6f-X5IkV46I"
-          },
-          {
-            "t": 68.75,
-            "kind": "FA",
-            "segment": "6f-X5IkV46I_340-414.wav",
-            "video": "6f-X5IkV46I"
-          },
-          {
-            "t": 15.88,
-            "kind": "FA",
-            "segment": "RPWcc5t7B6E_8902-9006.wav",
-            "video": "RPWcc5t7B6E"
-          },
-          {
-            "t": 24.0,
-            "kind": "FA",
-            "segment": "RPWcc5t7B6E_8902-9006.wav",
-            "video": "RPWcc5t7B6E"
-          },
-          {
-            "t": 31.88,
-            "kind": "INCERTAIN",
-            "segment": "RPWcc5t7B6E_8902-9006.wav",
-            "video": "RPWcc5t7B6E"
-          },
-          {
-            "t": 34.62,
-            "kind": "INCERTAIN",
-            "segment": "RPWcc5t7B6E_8902-9006.wav",
-            "video": "RPWcc5t7B6E"
-          },
-          {
-            "t": 44.5,
-            "kind": "FA",
-            "segment": "RPWcc5t7B6E_8902-9006.wav",
-            "video": "RPWcc5t7B6E"
-          },
-          {
-            "t": 71.5,
-            "kind": "FA",
-            "segment": "RPWcc5t7B6E_8902-9006.wav",
-            "video": "RPWcc5t7B6E"
-          },
-          {
-            "t": 9.25,
-            "kind": "INCERTAIN",
-            "segment": "MTPOjkqjHYk_55-85.wav",
-            "video": "MTPOjkqjHYk"
-          },
-          {
-            "t": 14.46,
-            "kind": "FN",
-            "segment": "MTPOjkqjHYk_55-85.wav",
-            "video": "MTPOjkqjHYk"
-          },
-          {
-            "t": 34.88,
-            "kind": "FA",
-            "segment": "MTPOjkqjHYk_55-85.wav",
-            "video": "MTPOjkqjHYk"
-          },
-          {
-            "t": 11.1,
-            "kind": "FN",
-            "segment": "UEuKv08YSHI_3-48.wav",
-            "video": "UEuKv08YSHI"
-          },
-          {
-            "t": 21.12,
-            "kind": "INCERTAIN",
-            "segment": "UEuKv08YSHI_3-48.wav",
-            "video": "UEuKv08YSHI"
-          },
-          {
-            "t": 20.12,
-            "kind": "FA",
-            "segment": "gim6xInUReM_7935-7965.wav",
-            "video": "gim6xInUReM"
-          },
-          {
-            "t": 11.44,
-            "kind": "FN",
-            "segment": "qA5IjCZ8w0Y_182-212.wav",
-            "video": "qA5IjCZ8w0Y"
-          },
-          {
-            "t": 20.12,
-            "kind": "FA",
-            "segment": "qA5IjCZ8w0Y_182-212.wav",
-            "video": "qA5IjCZ8w0Y"
-          },
-          {
-            "t": 20.75,
-            "kind": "INCERTAIN",
-            "segment": "A5T_VpSReWI_2635-2681.wav",
-            "video": "A5T_VpSReWI"
-          },
-          {
-            "t": 23.25,
-            "kind": "INCERTAIN",
-            "segment": "A5T_VpSReWI_2635-2681.wav",
-            "video": "A5T_VpSReWI"
-          },
-          {
-            "t": 39.88,
-            "kind": "FA",
-            "segment": "A5T_VpSReWI_2635-2681.wav",
-            "video": "A5T_VpSReWI"
-          },
-          {
-            "t": 10.41,
-            "kind": "FN",
-            "segment": "wVJjMu1oAQg_1622-1652.wav",
-            "video": "wVJjMu1oAQg"
-          },
-          {
-            "t": 4.38,
-            "kind": "INCERTAIN",
-            "segment": "Y6tEUNIsBn0_33-66.wav",
-            "video": "Y6tEUNIsBn0"
-          },
-          {
-            "t": 11.17,
-            "kind": "FN",
-            "segment": "Y6tEUNIsBn0_33-66.wav",
-            "video": "Y6tEUNIsBn0"
-          },
-          {
-            "t": 14.38,
-            "kind": "FA",
-            "segment": "Y6tEUNIsBn0_33-66.wav",
-            "video": "Y6tEUNIsBn0"
-          },
-          {
-            "t": 3.38,
-            "kind": "FA",
-            "segment": "h38_WTrtvf8_590-620.wav",
-            "video": "h38_WTrtvf8"
-          },
-          {
-            "t": 8.88,
-            "kind": "INCERTAIN",
-            "segment": "h38_WTrtvf8_590-620.wav",
-            "video": "h38_WTrtvf8"
-          },
-          {
-            "t": 9.76,
-            "kind": "FN",
-            "segment": "h38_WTrtvf8_590-620.wav",
-            "video": "h38_WTrtvf8"
-          },
-          {
-            "t": 12.88,
-            "kind": "INCERTAIN",
-            "segment": "h38_WTrtvf8_590-620.wav",
-            "video": "h38_WTrtvf8"
-          },
-          {
-            "t": 17.62,
-            "kind": "FA",
-            "segment": "h38_WTrtvf8_590-620.wav",
-            "video": "h38_WTrtvf8"
-          },
-          {
-            "t": 2.12,
-            "kind": "FA",
-            "segment": "PSfD2Lj9Ul8_1103-1133.wav",
-            "video": "PSfD2Lj9Ul8"
-          },
-          {
-            "t": 4.75,
-            "kind": "INCERTAIN",
-            "segment": "PSfD2Lj9Ul8_1103-1133.wav",
-            "video": "PSfD2Lj9Ul8"
-          },
-          {
-            "t": 10.25,
-            "kind": "INCERTAIN",
-            "segment": "PSfD2Lj9Ul8_1103-1133.wav",
-            "video": "PSfD2Lj9Ul8"
-          },
-          {
-            "t": 30.38,
-            "kind": "FA",
-            "segment": "PSfD2Lj9Ul8_1103-1133.wav",
-            "video": "PSfD2Lj9Ul8"
-          },
-          {
-            "t": 13.88,
-            "kind": "INCERTAIN",
-            "segment": "RECrbyhRjfw_124-154.wav",
-            "video": "RECrbyhRjfw"
-          },
-          {
-            "t": 27.62,
-            "kind": "FA",
-            "segment": "RECrbyhRjfw_124-154.wav",
-            "video": "RECrbyhRjfw"
-          },
-          {
-            "t": 19.12,
-            "kind": "FA",
-            "segment": "sV60XWz1b7c_29-59.wav",
-            "video": "sV60XWz1b7c"
-          },
-          {
-            "t": 4.0,
-            "kind": "INCERTAIN",
-            "segment": "N2qmU3sJZjw_0-36.wav",
-            "video": "N2qmU3sJZjw"
-          },
-          {
-            "t": 16.0,
-            "kind": "INCERTAIN",
-            "segment": "N2qmU3sJZjw_0-36.wav",
-            "video": "N2qmU3sJZjw"
-          },
-          {
-            "t": 10.75,
-            "kind": "INCERTAIN",
-            "segment": "-vxfAYywtBA_0-58.wav",
-            "video": "-vxfAYywtBA"
-          },
-          {
-            "t": 13.12,
-            "kind": "FA",
-            "segment": "-vxfAYywtBA_0-58.wav",
-            "video": "-vxfAYywtBA"
-          },
-          {
-            "t": 20.0,
-            "kind": "FA",
-            "segment": "-vxfAYywtBA_0-58.wav",
-            "video": "-vxfAYywtBA"
-          },
-          {
-            "t": 25.0,
-            "kind": "FA",
-            "segment": "-vxfAYywtBA_0-58.wav",
-            "video": "-vxfAYywtBA"
-          },
-          {
-            "t": 38.0,
-            "kind": "INCERTAIN",
-            "segment": "-vxfAYywtBA_0-58.wav",
-            "video": "-vxfAYywtBA"
-          },
-          {
-            "t": 18.88,
-            "kind": "FA",
-            "segment": "R6b324msgu8_8-38.wav",
-            "video": "R6b324msgu8"
-          },
-          {
-            "t": 1.25,
-            "kind": "INCERTAIN",
-            "segment": "83xlwG6PiJE_0-22.wav",
-            "video": "83xlwG6PiJE"
-          }
-        ]
-      },
-      "th0.8": {
-        "recall_stream": 0.76,
-        "frr_stream": 0.24,
-        "false_alarms": 61,
-        "fa_per_hour": 66.7071688942892,
-        "uncertain": 11,
-        "n_occ": 25,
-        "detected": 19,
-        "recall_by_form": {
-          "autre": {
-            "n_occ": 2,
-            "detected": 2,
-            "recall": 1.0
-          },
-          "d'": {
-            "n_occ": 7,
-            "detected": 3,
-            "recall": 0.42857142857142855
-          },
-          "l'": {
-            "n_occ": 15,
-            "detected": 13,
-            "recall": 0.8666666666666667
-          },
-          "nu": {
-            "n_occ": 1,
-            "detected": 1,
-            "recall": 1.0
-          }
-        },
-        "events": [
-          {
-            "t": 67.0,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 74.75,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 100.12,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 192.75,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 224.25,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 248.88,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 287.38,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 313.38,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 315.5,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 359.62,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 364.0,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 486.38,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 560.38,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 720.12,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 741.75,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 764.12,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 766.5,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 870.0,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 924.38,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 943.5,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 1025.75,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 1085.62,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 1160.5,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 1179.0,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 113.0,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 164.75,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 217.38,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 295.0,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 299.75,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 342.38,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 348.12,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 414.25,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 439.12,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 444.38,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 467.0,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 474.5,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 505.38,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 512.5,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 613.88,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 616.5,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 620.38,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 627.88,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 694.62,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 800.62,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 855.12,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 876.0,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 943.12,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 1036.25,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 1064.5,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 1093.62,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 1228.88,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 7.75,
-            "kind": "INCERTAIN",
-            "segment": "wR7yHWRDiC8_106-136.wav",
-            "video": "wR7yHWRDiC8"
-          },
-          {
-            "t": 15.93,
-            "kind": "FN",
-            "segment": "wR7yHWRDiC8_106-136.wav",
-            "video": "wR7yHWRDiC8"
-          },
-          {
-            "t": 15.88,
-            "kind": "FA",
-            "segment": "RPWcc5t7B6E_8902-9006.wav",
-            "video": "RPWcc5t7B6E"
-          },
-          {
-            "t": 31.88,
-            "kind": "INCERTAIN",
-            "segment": "RPWcc5t7B6E_8902-9006.wav",
-            "video": "RPWcc5t7B6E"
-          },
-          {
-            "t": 44.5,
-            "kind": "FA",
-            "segment": "RPWcc5t7B6E_8902-9006.wav",
-            "video": "RPWcc5t7B6E"
-          },
-          {
-            "t": 71.5,
-            "kind": "FA",
-            "segment": "RPWcc5t7B6E_8902-9006.wav",
-            "video": "RPWcc5t7B6E"
-          },
-          {
-            "t": 14.46,
-            "kind": "FN",
-            "segment": "MTPOjkqjHYk_55-85.wav",
-            "video": "MTPOjkqjHYk"
-          },
-          {
-            "t": 11.1,
-            "kind": "FN",
-            "segment": "UEuKv08YSHI_3-48.wav",
-            "video": "UEuKv08YSHI"
-          },
-          {
-            "t": 11.44,
-            "kind": "FN",
-            "segment": "qA5IjCZ8w0Y_182-212.wav",
-            "video": "qA5IjCZ8w0Y"
-          },
-          {
-            "t": 20.25,
-            "kind": "FA",
-            "segment": "qA5IjCZ8w0Y_182-212.wav",
-            "video": "qA5IjCZ8w0Y"
-          },
-          {
-            "t": 23.25,
-            "kind": "INCERTAIN",
-            "segment": "A5T_VpSReWI_2635-2681.wav",
-            "video": "A5T_VpSReWI"
-          },
-          {
-            "t": 40.0,
-            "kind": "FA",
-            "segment": "A5T_VpSReWI_2635-2681.wav",
-            "video": "A5T_VpSReWI"
-          },
-          {
-            "t": 10.41,
-            "kind": "FN",
-            "segment": "wVJjMu1oAQg_1622-1652.wav",
-            "video": "wVJjMu1oAQg"
-          },
-          {
-            "t": 4.38,
-            "kind": "INCERTAIN",
-            "segment": "Y6tEUNIsBn0_33-66.wav",
-            "video": "Y6tEUNIsBn0"
-          },
-          {
-            "t": 11.17,
-            "kind": "FN",
-            "segment": "Y6tEUNIsBn0_33-66.wav",
-            "video": "Y6tEUNIsBn0"
-          },
-          {
-            "t": 12.88,
-            "kind": "INCERTAIN",
-            "segment": "h38_WTrtvf8_590-620.wav",
-            "video": "h38_WTrtvf8"
-          },
-          {
-            "t": 2.12,
-            "kind": "FA",
-            "segment": "PSfD2Lj9Ul8_1103-1133.wav",
-            "video": "PSfD2Lj9Ul8"
-          },
-          {
-            "t": 4.75,
-            "kind": "INCERTAIN",
-            "segment": "PSfD2Lj9Ul8_1103-1133.wav",
-            "video": "PSfD2Lj9Ul8"
-          },
-          {
-            "t": 13.88,
-            "kind": "INCERTAIN",
-            "segment": "RECrbyhRjfw_124-154.wav",
-            "video": "RECrbyhRjfw"
-          },
-          {
-            "t": 19.12,
-            "kind": "FA",
-            "segment": "sV60XWz1b7c_29-59.wav",
-            "video": "sV60XWz1b7c"
-          },
-          {
-            "t": 4.0,
-            "kind": "INCERTAIN",
-            "segment": "N2qmU3sJZjw_0-36.wav",
-            "video": "N2qmU3sJZjw"
-          },
-          {
-            "t": 16.0,
-            "kind": "INCERTAIN",
-            "segment": "N2qmU3sJZjw_0-36.wav",
-            "video": "N2qmU3sJZjw"
-          },
-          {
-            "t": 20.0,
-            "kind": "FA",
-            "segment": "-vxfAYywtBA_0-58.wav",
-            "video": "-vxfAYywtBA"
-          },
-          {
-            "t": 25.0,
-            "kind": "FA",
-            "segment": "-vxfAYywtBA_0-58.wav",
-            "video": "-vxfAYywtBA"
-          },
-          {
-            "t": 38.0,
-            "kind": "INCERTAIN",
-            "segment": "-vxfAYywtBA_0-58.wav",
-            "video": "-vxfAYywtBA"
-          },
-          {
-            "t": 18.88,
-            "kind": "FA",
-            "segment": "R6b324msgu8_8-38.wav",
-            "video": "R6b324msgu8"
-          },
-          {
-            "t": 1.25,
-            "kind": "INCERTAIN",
-            "segment": "83xlwG6PiJE_0-22.wav",
-            "video": "83xlwG6PiJE"
-          }
-        ]
-      }
-    },
     "v11_speech_300": {
       "th0.5": {
         "recall_stream": 0.76,
@@ -2772,15 +1437,15 @@
         ]
       }
     },
-    "v12_rir": {
+    "v13_fa_select": {
       "th0.5": {
-        "recall_stream": 0.8,
-        "frr_stream": 0.19999999999999996,
-        "false_alarms": 148,
-        "fa_per_hour": 161.8469015795869,
-        "uncertain": 38,
+        "recall_stream": 0.84,
+        "frr_stream": 0.16000000000000003,
+        "false_alarms": 52,
+        "fa_per_hour": 56.86512758201702,
+        "uncertain": 25,
         "n_occ": 25,
-        "detected": 20,
+        "detected": 21,
         "recall_by_form": {
           "autre": {
             "n_occ": 2,
@@ -2794,8 +1459,8 @@
           },
           "l'": {
             "n_occ": 15,
-            "detected": 12,
-            "recall": 0.8
+            "detected": 13,
+            "recall": 0.8666666666666667
           },
           "nu": {
             "n_occ": 1,
@@ -2805,175 +1470,13 @@
         },
         "events": [
           {
-            "t": 26.5,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 95.25,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 110.0,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 132.25,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 206.62,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 224.25,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 249.0,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 282.38,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 296.88,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 306.38,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
             "t": 313.5,
             "kind": "FA",
             "segment": "summre_004c_PAPH_013.wav",
             "video": "extra_summre_004c_PAPH_013"
           },
           {
-            "t": 315.5,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 482.88,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 486.38,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 537.0,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 561.62,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 613.12,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 615.12,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 720.25,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 741.88,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 758.0,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 764.12,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 766.38,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 772.38,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
             "t": 897.5,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 922.75,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 934.75,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 943.62,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 998.5,
             "kind": "FA",
             "segment": "summre_004c_PAPH_013.wav",
             "video": "extra_summre_004c_PAPH_013"
@@ -2991,19 +1494,7 @@
             "video": "extra_summre_004c_PAPH_013"
           },
           {
-            "t": 1068.38,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 1078.75,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 1161.5,
+            "t": 1085.75,
             "kind": "FA",
             "segment": "summre_004c_PAPH_013.wav",
             "video": "extra_summre_004c_PAPH_013"
@@ -3015,55 +1506,13 @@
             "video": "extra_summre_004c_PAPH_013"
           },
           {
-            "t": 1227.88,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 16.38,
+            "t": 58.75,
             "kind": "FA",
             "segment": "summre_006b_EADH_017.wav",
             "video": "extra_summre_006b_EADH_017"
           },
           {
-            "t": 18.88,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 58.88,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 94.5,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 131.25,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 184.75,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 222.25,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 235.62,
+            "t": 113.0,
             "kind": "FA",
             "segment": "summre_006b_EADH_017.wav",
             "video": "extra_summre_006b_EADH_017"
@@ -3081,31 +1530,25 @@
             "video": "extra_summre_006b_EADH_017"
           },
           {
-            "t": 303.62,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
             "t": 306.38,
             "kind": "FA",
             "segment": "summre_006b_EADH_017.wav",
             "video": "extra_summre_006b_EADH_017"
           },
           {
-            "t": 325.62,
+            "t": 319.88,
             "kind": "FA",
             "segment": "summre_006b_EADH_017.wav",
             "video": "extra_summre_006b_EADH_017"
           },
           {
-            "t": 342.5,
+            "t": 342.38,
             "kind": "FA",
             "segment": "summre_006b_EADH_017.wav",
             "video": "extra_summre_006b_EADH_017"
           },
           {
-            "t": 348.0,
+            "t": 348.12,
             "kind": "FA",
             "segment": "summre_006b_EADH_017.wav",
             "video": "extra_summre_006b_EADH_017"
@@ -3117,25 +1560,13 @@
             "video": "extra_summre_006b_EADH_017"
           },
           {
-            "t": 409.88,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
             "t": 414.25,
             "kind": "FA",
             "segment": "summre_006b_EADH_017.wav",
             "video": "extra_summre_006b_EADH_017"
           },
           {
-            "t": 417.0,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 425.12,
+            "t": 441.25,
             "kind": "FA",
             "segment": "summre_006b_EADH_017.wav",
             "video": "extra_summre_006b_EADH_017"
@@ -3147,19 +1578,13 @@
             "video": "extra_summre_006b_EADH_017"
           },
           {
-            "t": 461.38,
+            "t": 461.25,
             "kind": "FA",
             "segment": "summre_006b_EADH_017.wav",
             "video": "extra_summre_006b_EADH_017"
           },
           {
-            "t": 467.12,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 491.75,
+            "t": 474.5,
             "kind": "FA",
             "segment": "summre_006b_EADH_017.wav",
             "video": "extra_summre_006b_EADH_017"
@@ -3171,25 +1596,13 @@
             "video": "extra_summre_006b_EADH_017"
           },
           {
-            "t": 507.88,
+            "t": 533.38,
             "kind": "FA",
             "segment": "summre_006b_EADH_017.wav",
             "video": "extra_summre_006b_EADH_017"
           },
           {
-            "t": 557.12,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 574.38,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 613.0,
+            "t": 614.0,
             "kind": "FA",
             "segment": "summre_006b_EADH_017.wav",
             "video": "extra_summre_006b_EADH_017"
@@ -3207,43 +1620,13 @@
             "video": "extra_summre_006b_EADH_017"
           },
           {
-            "t": 635.12,
+            "t": 651.88,
             "kind": "FA",
             "segment": "summre_006b_EADH_017.wav",
             "video": "extra_summre_006b_EADH_017"
           },
           {
-            "t": 647.0,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 649.38,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 657.5,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 663.38,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 694.62,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 761.62,
+            "t": 694.75,
             "kind": "FA",
             "segment": "summre_006b_EADH_017.wav",
             "video": "extra_summre_006b_EADH_017"
@@ -3255,13 +1638,7 @@
             "video": "extra_summre_006b_EADH_017"
           },
           {
-            "t": 800.62,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 855.12,
+            "t": 826.38,
             "kind": "FA",
             "segment": "summre_006b_EADH_017.wav",
             "video": "extra_summre_006b_EADH_017"
@@ -3273,43 +1650,7 @@
             "video": "extra_summre_006b_EADH_017"
           },
           {
-            "t": 876.12,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 916.75,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 943.12,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 953.62,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 962.12,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 976.0,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 1005.12,
+            "t": 876.0,
             "kind": "FA",
             "segment": "summre_006b_EADH_017.wav",
             "video": "extra_summre_006b_EADH_017"
@@ -3321,31 +1662,7 @@
             "video": "extra_summre_006b_EADH_017"
           },
           {
-            "t": 1041.25,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 1048.5,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 1067.62,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 1083.38,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 1088.62,
+            "t": 1067.5,
             "kind": "FA",
             "segment": "summre_006b_EADH_017.wav",
             "video": "extra_summre_006b_EADH_017"
@@ -3357,67 +1674,25 @@
             "video": "extra_summre_006b_EADH_017"
           },
           {
-            "t": 1097.62,
+            "t": 1101.25,
             "kind": "FA",
             "segment": "summre_006b_EADH_017.wav",
             "video": "extra_summre_006b_EADH_017"
           },
           {
-            "t": 1116.25,
+            "t": 1157.38,
             "kind": "FA",
             "segment": "summre_006b_EADH_017.wav",
             "video": "extra_summre_006b_EADH_017"
           },
           {
-            "t": 1118.0,
+            "t": 1212.12,
             "kind": "FA",
             "segment": "summre_006b_EADH_017.wav",
             "video": "extra_summre_006b_EADH_017"
           },
           {
-            "t": 1120.25,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 1131.0,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 1163.38,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 1183.0,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 1198.12,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 1203.5,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 1212.0,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 1237.0,
+            "t": 1228.75,
             "kind": "FA",
             "segment": "summre_006b_EADH_017.wav",
             "video": "extra_summre_006b_EADH_017"
@@ -3429,31 +1704,19 @@
             "video": "wR7yHWRDiC8"
           },
           {
-            "t": 13.88,
-            "kind": "INCERTAIN",
-            "segment": "wR7yHWRDiC8_106-136.wav",
-            "video": "wR7yHWRDiC8"
-          },
-          {
             "t": 15.93,
             "kind": "FN",
             "segment": "wR7yHWRDiC8_106-136.wav",
             "video": "wR7yHWRDiC8"
           },
           {
-            "t": 23.25,
-            "kind": "FA",
+            "t": 4.5,
+            "kind": "INCERTAIN",
             "segment": "6f-X5IkV46I_340-414.wav",
             "video": "6f-X5IkV46I"
           },
           {
-            "t": 36.75,
-            "kind": "FA",
-            "segment": "6f-X5IkV46I_340-414.wav",
-            "video": "6f-X5IkV46I"
-          },
-          {
-            "t": 53.12,
+            "t": 16.88,
             "kind": "INCERTAIN",
             "segment": "6f-X5IkV46I_340-414.wav",
             "video": "6f-X5IkV46I"
@@ -3465,43 +1728,7 @@
             "video": "6f-X5IkV46I"
           },
           {
-            "t": 63.12,
-            "kind": "FA",
-            "segment": "6f-X5IkV46I_340-414.wav",
-            "video": "6f-X5IkV46I"
-          },
-          {
-            "t": 63.91,
-            "kind": "FN",
-            "segment": "6f-X5IkV46I_340-414.wav",
-            "video": "6f-X5IkV46I"
-          },
-          {
-            "t": 68.62,
-            "kind": "FA",
-            "segment": "6f-X5IkV46I_340-414.wav",
-            "video": "6f-X5IkV46I"
-          },
-          {
-            "t": 73.25,
-            "kind": "FA",
-            "segment": "6f-X5IkV46I_340-414.wav",
-            "video": "6f-X5IkV46I"
-          },
-          {
-            "t": 79.5,
-            "kind": "FA",
-            "segment": "6f-X5IkV46I_340-414.wav",
-            "video": "6f-X5IkV46I"
-          },
-          {
-            "t": 8.5,
-            "kind": "INCERTAIN",
-            "segment": "RPWcc5t7B6E_8902-9006.wav",
-            "video": "RPWcc5t7B6E"
-          },
-          {
-            "t": 15.75,
+            "t": 15.88,
             "kind": "FA",
             "segment": "RPWcc5t7B6E_8902-9006.wav",
             "video": "RPWcc5t7B6E"
@@ -3513,88 +1740,34 @@
             "video": "RPWcc5t7B6E"
           },
           {
-            "t": 34.62,
-            "kind": "INCERTAIN",
-            "segment": "RPWcc5t7B6E_8902-9006.wav",
-            "video": "RPWcc5t7B6E"
-          },
-          {
             "t": 36.38,
             "kind": "INCERTAIN",
             "segment": "RPWcc5t7B6E_8902-9006.wav",
             "video": "RPWcc5t7B6E"
           },
           {
-            "t": 44.38,
+            "t": 44.62,
             "kind": "FA",
             "segment": "RPWcc5t7B6E_8902-9006.wav",
             "video": "RPWcc5t7B6E"
           },
           {
-            "t": 54.62,
+            "t": 71.5,
+            "kind": "FA",
+            "segment": "RPWcc5t7B6E_8902-9006.wav",
+            "video": "RPWcc5t7B6E"
+          },
+          {
+            "t": 78.5,
             "kind": "INCERTAIN",
             "segment": "RPWcc5t7B6E_8902-9006.wav",
             "video": "RPWcc5t7B6E"
           },
           {
-            "t": 60.25,
-            "kind": "FA",
-            "segment": "RPWcc5t7B6E_8902-9006.wav",
-            "video": "RPWcc5t7B6E"
-          },
-          {
-            "t": 63.5,
-            "kind": "FA",
-            "segment": "RPWcc5t7B6E_8902-9006.wav",
-            "video": "RPWcc5t7B6E"
-          },
-          {
-            "t": 65.5,
-            "kind": "FA",
-            "segment": "RPWcc5t7B6E_8902-9006.wav",
-            "video": "RPWcc5t7B6E"
-          },
-          {
-            "t": 68.75,
-            "kind": "FA",
-            "segment": "RPWcc5t7B6E_8902-9006.wav",
-            "video": "RPWcc5t7B6E"
-          },
-          {
-            "t": 70.62,
-            "kind": "FA",
-            "segment": "RPWcc5t7B6E_8902-9006.wav",
-            "video": "RPWcc5t7B6E"
-          },
-          {
-            "t": 81.0,
+            "t": 9.25,
             "kind": "INCERTAIN",
-            "segment": "RPWcc5t7B6E_8902-9006.wav",
-            "video": "RPWcc5t7B6E"
-          },
-          {
-            "t": 85.62,
-            "kind": "FA",
-            "segment": "RPWcc5t7B6E_8902-9006.wav",
-            "video": "RPWcc5t7B6E"
-          },
-          {
-            "t": 88.25,
-            "kind": "FA",
-            "segment": "RPWcc5t7B6E_8902-9006.wav",
-            "video": "RPWcc5t7B6E"
-          },
-          {
-            "t": 99.88,
-            "kind": "FA",
-            "segment": "RPWcc5t7B6E_8902-9006.wav",
-            "video": "RPWcc5t7B6E"
-          },
-          {
-            "t": 101.62,
-            "kind": "FA",
-            "segment": "RPWcc5t7B6E_8902-9006.wav",
-            "video": "RPWcc5t7B6E"
+            "segment": "MTPOjkqjHYk_55-85.wav",
+            "video": "MTPOjkqjHYk"
           },
           {
             "t": 14.46,
@@ -3603,40 +1776,22 @@
             "video": "MTPOjkqjHYk"
           },
           {
-            "t": 17.38,
+            "t": 34.88,
             "kind": "FA",
             "segment": "MTPOjkqjHYk_55-85.wav",
             "video": "MTPOjkqjHYk"
           },
           {
-            "t": 5.38,
+            "t": 7.0,
             "kind": "INCERTAIN",
             "segment": "UEuKv08YSHI_3-48.wav",
             "video": "UEuKv08YSHI"
           },
           {
-            "t": 10.25,
+            "t": 21.12,
             "kind": "INCERTAIN",
             "segment": "UEuKv08YSHI_3-48.wav",
             "video": "UEuKv08YSHI"
-          },
-          {
-            "t": 21.25,
-            "kind": "INCERTAIN",
-            "segment": "UEuKv08YSHI_3-48.wav",
-            "video": "UEuKv08YSHI"
-          },
-          {
-            "t": 12.5,
-            "kind": "INCERTAIN",
-            "segment": "gim6xInUReM_7935-7965.wav",
-            "video": "gim6xInUReM"
-          },
-          {
-            "t": 23.88,
-            "kind": "FA",
-            "segment": "gim6xInUReM_7935-7965.wav",
-            "video": "gim6xInUReM"
           },
           {
             "t": 11.44,
@@ -3645,50 +1800,8 @@
             "video": "qA5IjCZ8w0Y"
           },
           {
-            "t": 20.12,
-            "kind": "FA",
-            "segment": "qA5IjCZ8w0Y_182-212.wav",
-            "video": "qA5IjCZ8w0Y"
-          },
-          {
-            "t": 3.5,
-            "kind": "FA",
-            "segment": "A5T_VpSReWI_2635-2681.wav",
-            "video": "A5T_VpSReWI"
-          },
-          {
-            "t": 6.88,
-            "kind": "INCERTAIN",
-            "segment": "A5T_VpSReWI_2635-2681.wav",
-            "video": "A5T_VpSReWI"
-          },
-          {
-            "t": 11.62,
-            "kind": "INCERTAIN",
-            "segment": "A5T_VpSReWI_2635-2681.wav",
-            "video": "A5T_VpSReWI"
-          },
-          {
-            "t": 20.75,
-            "kind": "INCERTAIN",
-            "segment": "A5T_VpSReWI_2635-2681.wav",
-            "video": "A5T_VpSReWI"
-          },
-          {
             "t": 23.25,
             "kind": "INCERTAIN",
-            "segment": "A5T_VpSReWI_2635-2681.wav",
-            "video": "A5T_VpSReWI"
-          },
-          {
-            "t": 28.12,
-            "kind": "INCERTAIN",
-            "segment": "A5T_VpSReWI_2635-2681.wav",
-            "video": "A5T_VpSReWI"
-          },
-          {
-            "t": 33.0,
-            "kind": "FA",
             "segment": "A5T_VpSReWI_2635-2681.wav",
             "video": "A5T_VpSReWI"
           },
@@ -3699,58 +1812,10 @@
             "video": "A5T_VpSReWI"
           },
           {
-            "t": 41.75,
-            "kind": "FA",
-            "segment": "A5T_VpSReWI_2635-2681.wav",
-            "video": "A5T_VpSReWI"
-          },
-          {
-            "t": 45.5,
-            "kind": "FA",
-            "segment": "A5T_VpSReWI_2635-2681.wav",
-            "video": "A5T_VpSReWI"
-          },
-          {
-            "t": 49.5,
-            "kind": "FA",
-            "segment": "A5T_VpSReWI_2635-2681.wav",
-            "video": "A5T_VpSReWI"
-          },
-          {
-            "t": 20.5,
-            "kind": "FA",
-            "segment": "wVJjMu1oAQg_1622-1652.wav",
-            "video": "wVJjMu1oAQg"
-          },
-          {
-            "t": 22.62,
-            "kind": "FA",
-            "segment": "wVJjMu1oAQg_1622-1652.wav",
-            "video": "wVJjMu1oAQg"
-          },
-          {
             "t": 4.38,
             "kind": "INCERTAIN",
             "segment": "Y6tEUNIsBn0_33-66.wav",
             "video": "Y6tEUNIsBn0"
-          },
-          {
-            "t": 21.0,
-            "kind": "FA",
-            "segment": "Y6tEUNIsBn0_33-66.wav",
-            "video": "Y6tEUNIsBn0"
-          },
-          {
-            "t": 25.25,
-            "kind": "FA",
-            "segment": "Y6tEUNIsBn0_33-66.wav",
-            "video": "Y6tEUNIsBn0"
-          },
-          {
-            "t": 3.25,
-            "kind": "FA",
-            "segment": "h38_WTrtvf8_590-620.wav",
-            "video": "h38_WTrtvf8"
           },
           {
             "t": 8.88,
@@ -3777,7 +1842,7 @@
             "video": "h38_WTrtvf8"
           },
           {
-            "t": 26.75,
+            "t": 25.25,
             "kind": "FA",
             "segment": "h38_WTrtvf8_590-620.wav",
             "video": "h38_WTrtvf8"
@@ -3807,31 +1872,19 @@
             "video": "PSfD2Lj9Ul8"
           },
           {
-            "t": 3.25,
-            "kind": "FA",
-            "segment": "RECrbyhRjfw_124-154.wav",
-            "video": "RECrbyhRjfw"
-          },
-          {
-            "t": 13.88,
+            "t": 14.0,
             "kind": "INCERTAIN",
             "segment": "RECrbyhRjfw_124-154.wav",
             "video": "RECrbyhRjfw"
           },
           {
-            "t": 20.88,
+            "t": 15.75,
             "kind": "FA",
             "segment": "RECrbyhRjfw_124-154.wav",
             "video": "RECrbyhRjfw"
           },
           {
-            "t": 30.5,
-            "kind": "FA",
-            "segment": "RECrbyhRjfw_124-154.wav",
-            "video": "RECrbyhRjfw"
-          },
-          {
-            "t": 19.12,
+            "t": 19.25,
             "kind": "FA",
             "segment": "sV60XWz1b7c_29-59.wav",
             "video": "sV60XWz1b7c"
@@ -3843,7 +1896,7 @@
             "video": "N2qmU3sJZjw"
           },
           {
-            "t": 9.62,
+            "t": 9.75,
             "kind": "INCERTAIN",
             "segment": "N2qmU3sJZjw_0-36.wav",
             "video": "N2qmU3sJZjw"
@@ -3853,18 +1906,6 @@
             "kind": "INCERTAIN",
             "segment": "N2qmU3sJZjw_0-36.wav",
             "video": "N2qmU3sJZjw"
-          },
-          {
-            "t": 17.12,
-            "kind": "INCERTAIN",
-            "segment": "N2qmU3sJZjw_0-36.wav",
-            "video": "N2qmU3sJZjw"
-          },
-          {
-            "t": 5.0,
-            "kind": "INCERTAIN",
-            "segment": "-vxfAYywtBA_0-58.wav",
-            "video": "-vxfAYywtBA"
           },
           {
             "t": 8.75,
@@ -3879,26 +1920,14 @@
             "video": "-vxfAYywtBA"
           },
           {
-            "t": 17.25,
+            "t": 20.38,
             "kind": "FA",
             "segment": "-vxfAYywtBA_0-58.wav",
             "video": "-vxfAYywtBA"
           },
           {
-            "t": 25.0,
+            "t": 24.88,
             "kind": "FA",
-            "segment": "-vxfAYywtBA_0-58.wav",
-            "video": "-vxfAYywtBA"
-          },
-          {
-            "t": 29.75,
-            "kind": "FA",
-            "segment": "-vxfAYywtBA_0-58.wav",
-            "video": "-vxfAYywtBA"
-          },
-          {
-            "t": 33.62,
-            "kind": "INCERTAIN",
             "segment": "-vxfAYywtBA_0-58.wav",
             "video": "-vxfAYywtBA"
           },
@@ -3909,37 +1938,13 @@
             "video": "-vxfAYywtBA"
           },
           {
-            "t": 40.5,
-            "kind": "INCERTAIN",
-            "segment": "-vxfAYywtBA_0-58.wav",
-            "video": "-vxfAYywtBA"
-          },
-          {
-            "t": 3.38,
-            "kind": "FA",
-            "segment": "R6b324msgu8_8-38.wav",
-            "video": "R6b324msgu8"
-          },
-          {
-            "t": 6.88,
+            "t": 9.75,
             "kind": "INCERTAIN",
             "segment": "R6b324msgu8_8-38.wav",
             "video": "R6b324msgu8"
           },
           {
-            "t": 9.88,
-            "kind": "INCERTAIN",
-            "segment": "R6b324msgu8_8-38.wav",
-            "video": "R6b324msgu8"
-          },
-          {
-            "t": 19.12,
-            "kind": "FA",
-            "segment": "R6b324msgu8_8-38.wav",
-            "video": "R6b324msgu8"
-          },
-          {
-            "t": 27.88,
+            "t": 19.0,
             "kind": "FA",
             "segment": "R6b324msgu8_8-38.wav",
             "video": "R6b324msgu8"
@@ -3953,13 +1958,13 @@
         ]
       },
       "th0.8": {
-        "recall_stream": 0.88,
-        "frr_stream": 0.12,
-        "false_alarms": 66,
-        "fa_per_hour": 72.17496962332929,
-        "uncertain": 24,
+        "recall_stream": 0.76,
+        "frr_stream": 0.24,
+        "false_alarms": 29,
+        "fa_per_hour": 31.713244228432565,
+        "uncertain": 13,
         "n_occ": 25,
-        "detected": 22,
+        "detected": 19,
         "recall_by_form": {
           "autre": {
             "n_occ": 2,
@@ -3968,13 +1973,13 @@
           },
           "d'": {
             "n_occ": 7,
-            "detected": 5,
-            "recall": 0.7142857142857143
+            "detected": 3,
+            "recall": 0.42857142857142855
           },
           "l'": {
             "n_occ": 15,
-            "detected": 14,
-            "recall": 0.9333333333333333
+            "detected": 13,
+            "recall": 0.8666666666666667
           },
           "nu": {
             "n_occ": 1,
@@ -3984,109 +1989,37 @@
         },
         "events": [
           {
-            "t": 26.62,
+            "t": 313.5,
             "kind": "FA",
             "segment": "summre_004c_PAPH_013.wav",
             "video": "extra_summre_004c_PAPH_013"
           },
           {
-            "t": 132.25,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 224.25,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 249.0,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 307.88,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 486.38,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 720.25,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 742.0,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 764.12,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 943.62,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 1068.38,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 1078.75,
-            "kind": "FA",
-            "segment": "summre_004c_PAPH_013.wav",
-            "video": "extra_summre_004c_PAPH_013"
-          },
-          {
-            "t": 18.88,
+            "t": 299.75,
             "kind": "FA",
             "segment": "summre_006b_EADH_017.wav",
             "video": "extra_summre_006b_EADH_017"
           },
           {
-            "t": 94.5,
+            "t": 306.38,
             "kind": "FA",
             "segment": "summre_006b_EADH_017.wav",
             "video": "extra_summre_006b_EADH_017"
           },
           {
-            "t": 131.25,
+            "t": 319.88,
             "kind": "FA",
             "segment": "summre_006b_EADH_017.wav",
             "video": "extra_summre_006b_EADH_017"
           },
           {
-            "t": 306.5,
+            "t": 342.38,
             "kind": "FA",
             "segment": "summre_006b_EADH_017.wav",
             "video": "extra_summre_006b_EADH_017"
           },
           {
-            "t": 325.62,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 348.0,
+            "t": 348.12,
             "kind": "FA",
             "segment": "summre_006b_EADH_017.wav",
             "video": "extra_summre_006b_EADH_017"
@@ -4098,13 +2031,13 @@
             "video": "extra_summre_006b_EADH_017"
           },
           {
-            "t": 444.38,
+            "t": 441.25,
             "kind": "FA",
             "segment": "summre_006b_EADH_017.wav",
             "video": "extra_summre_006b_EADH_017"
           },
           {
-            "t": 467.12,
+            "t": 444.38,
             "kind": "FA",
             "segment": "summre_006b_EADH_017.wav",
             "video": "extra_summre_006b_EADH_017"
@@ -4116,49 +2049,19 @@
             "video": "extra_summre_006b_EADH_017"
           },
           {
-            "t": 507.88,
+            "t": 533.38,
             "kind": "FA",
             "segment": "summre_006b_EADH_017.wav",
             "video": "extra_summre_006b_EADH_017"
           },
           {
-            "t": 613.0,
+            "t": 614.0,
             "kind": "FA",
             "segment": "summre_006b_EADH_017.wav",
             "video": "extra_summre_006b_EADH_017"
           },
           {
-            "t": 620.5,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 635.25,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 694.62,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 767.12,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 800.62,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 855.12,
+            "t": 863.75,
             "kind": "FA",
             "segment": "summre_006b_EADH_017.wav",
             "video": "extra_summre_006b_EADH_017"
@@ -4170,61 +2073,31 @@
             "video": "extra_summre_006b_EADH_017"
           },
           {
-            "t": 976.12,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
             "t": 1036.25,
             "kind": "FA",
             "segment": "summre_006b_EADH_017.wav",
             "video": "extra_summre_006b_EADH_017"
           },
           {
-            "t": 1041.25,
+            "t": 1093.62,
             "kind": "FA",
             "segment": "summre_006b_EADH_017.wav",
             "video": "extra_summre_006b_EADH_017"
           },
           {
-            "t": 1048.5,
+            "t": 1157.38,
             "kind": "FA",
             "segment": "summre_006b_EADH_017.wav",
             "video": "extra_summre_006b_EADH_017"
           },
           {
-            "t": 1083.38,
+            "t": 1212.12,
             "kind": "FA",
             "segment": "summre_006b_EADH_017.wav",
             "video": "extra_summre_006b_EADH_017"
           },
           {
-            "t": 1093.5,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 1183.0,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 1198.12,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 1212.0,
-            "kind": "FA",
-            "segment": "summre_006b_EADH_017.wav",
-            "video": "extra_summre_006b_EADH_017"
-          },
-          {
-            "t": 1237.0,
+            "t": 1228.88,
             "kind": "FA",
             "segment": "summre_006b_EADH_017.wav",
             "video": "extra_summre_006b_EADH_017"
@@ -4236,34 +2109,22 @@
             "video": "wR7yHWRDiC8"
           },
           {
-            "t": 13.88,
-            "kind": "INCERTAIN",
-            "segment": "wR7yHWRDiC8_106-136.wav",
-            "video": "wR7yHWRDiC8"
-          },
-          {
             "t": 15.93,
             "kind": "FN",
             "segment": "wR7yHWRDiC8_106-136.wav",
             "video": "wR7yHWRDiC8"
           },
           {
-            "t": 68.62,
-            "kind": "FA",
-            "segment": "6f-X5IkV46I_340-414.wav",
-            "video": "6f-X5IkV46I"
-          },
-          {
-            "t": 73.25,
-            "kind": "FA",
-            "segment": "6f-X5IkV46I_340-414.wav",
-            "video": "6f-X5IkV46I"
-          },
-          {
-            "t": 8.5,
+            "t": 4.5,
             "kind": "INCERTAIN",
-            "segment": "RPWcc5t7B6E_8902-9006.wav",
-            "video": "RPWcc5t7B6E"
+            "segment": "6f-X5IkV46I_340-414.wav",
+            "video": "6f-X5IkV46I"
+          },
+          {
+            "t": 63.91,
+            "kind": "FN",
+            "segment": "6f-X5IkV46I_340-414.wav",
+            "video": "6f-X5IkV46I"
           },
           {
             "t": 15.88,
@@ -4278,46 +2139,22 @@
             "video": "RPWcc5t7B6E"
           },
           {
-            "t": 34.62,
-            "kind": "INCERTAIN",
-            "segment": "RPWcc5t7B6E_8902-9006.wav",
-            "video": "RPWcc5t7B6E"
-          },
-          {
-            "t": 36.38,
-            "kind": "INCERTAIN",
-            "segment": "RPWcc5t7B6E_8902-9006.wav",
-            "video": "RPWcc5t7B6E"
-          },
-          {
-            "t": 44.5,
+            "t": 44.62,
             "kind": "FA",
             "segment": "RPWcc5t7B6E_8902-9006.wav",
             "video": "RPWcc5t7B6E"
           },
           {
-            "t": 60.5,
+            "t": 71.5,
             "kind": "FA",
             "segment": "RPWcc5t7B6E_8902-9006.wav",
             "video": "RPWcc5t7B6E"
           },
           {
-            "t": 70.62,
-            "kind": "FA",
-            "segment": "RPWcc5t7B6E_8902-9006.wav",
-            "video": "RPWcc5t7B6E"
-          },
-          {
-            "t": 88.25,
-            "kind": "FA",
-            "segment": "RPWcc5t7B6E_8902-9006.wav",
-            "video": "RPWcc5t7B6E"
-          },
-          {
-            "t": 101.75,
-            "kind": "FA",
-            "segment": "RPWcc5t7B6E_8902-9006.wav",
-            "video": "RPWcc5t7B6E"
+            "t": 3.0,
+            "kind": "FN",
+            "segment": "MTPOjkqjHYk_55-85.wav",
+            "video": "MTPOjkqjHYk"
           },
           {
             "t": 14.46,
@@ -4326,28 +2163,10 @@
             "video": "MTPOjkqjHYk"
           },
           {
-            "t": 10.25,
-            "kind": "INCERTAIN",
-            "segment": "UEuKv08YSHI_3-48.wav",
-            "video": "UEuKv08YSHI"
-          },
-          {
-            "t": 21.25,
-            "kind": "INCERTAIN",
-            "segment": "UEuKv08YSHI_3-48.wav",
-            "video": "UEuKv08YSHI"
-          },
-          {
-            "t": 12.5,
-            "kind": "INCERTAIN",
-            "segment": "gim6xInUReM_7935-7965.wav",
-            "video": "gim6xInUReM"
-          },
-          {
-            "t": 23.88,
+            "t": 34.88,
             "kind": "FA",
-            "segment": "gim6xInUReM_7935-7965.wav",
-            "video": "gim6xInUReM"
+            "segment": "MTPOjkqjHYk_55-85.wav",
+            "video": "MTPOjkqjHYk"
           },
           {
             "t": 11.44,
@@ -4356,44 +2175,8 @@
             "video": "qA5IjCZ8w0Y"
           },
           {
-            "t": 20.25,
-            "kind": "FA",
-            "segment": "qA5IjCZ8w0Y_182-212.wav",
-            "video": "qA5IjCZ8w0Y"
-          },
-          {
-            "t": 3.5,
-            "kind": "FA",
-            "segment": "A5T_VpSReWI_2635-2681.wav",
-            "video": "A5T_VpSReWI"
-          },
-          {
-            "t": 11.62,
-            "kind": "INCERTAIN",
-            "segment": "A5T_VpSReWI_2635-2681.wav",
-            "video": "A5T_VpSReWI"
-          },
-          {
-            "t": 20.75,
-            "kind": "INCERTAIN",
-            "segment": "A5T_VpSReWI_2635-2681.wav",
-            "video": "A5T_VpSReWI"
-          },
-          {
             "t": 23.25,
             "kind": "INCERTAIN",
-            "segment": "A5T_VpSReWI_2635-2681.wav",
-            "video": "A5T_VpSReWI"
-          },
-          {
-            "t": 28.12,
-            "kind": "INCERTAIN",
-            "segment": "A5T_VpSReWI_2635-2681.wav",
-            "video": "A5T_VpSReWI"
-          },
-          {
-            "t": 33.0,
-            "kind": "FA",
             "segment": "A5T_VpSReWI_2635-2681.wav",
             "video": "A5T_VpSReWI"
           },
@@ -4404,20 +2187,8 @@
             "video": "A5T_VpSReWI"
           },
           {
-            "t": 45.5,
-            "kind": "FA",
-            "segment": "A5T_VpSReWI_2635-2681.wav",
-            "video": "A5T_VpSReWI"
-          },
-          {
-            "t": 49.5,
-            "kind": "FA",
-            "segment": "A5T_VpSReWI_2635-2681.wav",
-            "video": "A5T_VpSReWI"
-          },
-          {
-            "t": 20.62,
-            "kind": "FA",
+            "t": 10.41,
+            "kind": "FN",
             "segment": "wVJjMu1oAQg_1622-1652.wav",
             "video": "wVJjMu1oAQg"
           },
@@ -4428,20 +2199,8 @@
             "video": "Y6tEUNIsBn0"
           },
           {
-            "t": 3.38,
-            "kind": "FA",
-            "segment": "h38_WTrtvf8_590-620.wav",
-            "video": "h38_WTrtvf8"
-          },
-          {
             "t": 12.88,
             "kind": "INCERTAIN",
-            "segment": "h38_WTrtvf8_590-620.wav",
-            "video": "h38_WTrtvf8"
-          },
-          {
-            "t": 21.25,
-            "kind": "FA",
             "segment": "h38_WTrtvf8_590-620.wav",
             "video": "h38_WTrtvf8"
           },
@@ -4452,85 +2211,61 @@
             "video": "PSfD2Lj9Ul8"
           },
           {
+            "t": 4.75,
+            "kind": "INCERTAIN",
+            "segment": "PSfD2Lj9Ul8_1103-1133.wav",
+            "video": "PSfD2Lj9Ul8"
+          },
+          {
+            "t": 10.38,
+            "kind": "INCERTAIN",
+            "segment": "PSfD2Lj9Ul8_1103-1133.wav",
+            "video": "PSfD2Lj9Ul8"
+          },
+          {
             "t": 30.38,
             "kind": "FA",
             "segment": "PSfD2Lj9Ul8_1103-1133.wav",
             "video": "PSfD2Lj9Ul8"
           },
           {
-            "t": 13.88,
+            "t": 14.0,
             "kind": "INCERTAIN",
             "segment": "RECrbyhRjfw_124-154.wav",
             "video": "RECrbyhRjfw"
           },
           {
-            "t": 21.0,
-            "kind": "FA",
-            "segment": "RECrbyhRjfw_124-154.wav",
-            "video": "RECrbyhRjfw"
-          },
-          {
-            "t": 30.5,
-            "kind": "FA",
-            "segment": "RECrbyhRjfw_124-154.wav",
-            "video": "RECrbyhRjfw"
-          },
-          {
-            "t": 19.12,
+            "t": 19.25,
             "kind": "FA",
             "segment": "sV60XWz1b7c_29-59.wav",
             "video": "sV60XWz1b7c"
           },
           {
-            "t": 4.12,
+            "t": 9.75,
             "kind": "INCERTAIN",
             "segment": "N2qmU3sJZjw_0-36.wav",
             "video": "N2qmU3sJZjw"
           },
           {
-            "t": 5.12,
+            "t": 10.88,
             "kind": "INCERTAIN",
             "segment": "-vxfAYywtBA_0-58.wav",
             "video": "-vxfAYywtBA"
           },
           {
-            "t": 8.75,
-            "kind": "INCERTAIN",
-            "segment": "-vxfAYywtBA_0-58.wav",
-            "video": "-vxfAYywtBA"
-          },
-          {
-            "t": 33.62,
-            "kind": "INCERTAIN",
-            "segment": "-vxfAYywtBA_0-58.wav",
-            "video": "-vxfAYywtBA"
-          },
-          {
-            "t": 37.88,
-            "kind": "INCERTAIN",
-            "segment": "-vxfAYywtBA_0-58.wav",
-            "video": "-vxfAYywtBA"
-          },
-          {
-            "t": 40.5,
-            "kind": "INCERTAIN",
-            "segment": "-vxfAYywtBA_0-58.wav",
-            "video": "-vxfAYywtBA"
-          },
-          {
-            "t": 3.38,
+            "t": 24.88,
             "kind": "FA",
-            "segment": "R6b324msgu8_8-38.wav",
-            "video": "R6b324msgu8"
+            "segment": "-vxfAYywtBA_0-58.wav",
+            "video": "-vxfAYywtBA"
           },
           {
-            "t": 6.88,
+            "t": 9.75,
             "kind": "INCERTAIN",
             "segment": "R6b324msgu8_8-38.wav",
             "video": "R6b324msgu8"
           },
           {
-            "t": 19.12,
+            "t": 19.0,
             "kind": "FA",
             "segment": "R6b324msgu8_8-38.wav",
             "video": "R6b324msgu8"
