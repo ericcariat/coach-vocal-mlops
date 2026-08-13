@@ -41,6 +41,32 @@ lien `current/`. Ne jamais écrire un chemin de run en dur ailleurs.
   vérité terrain décalée ne donne pas un résultat imprécis, elle fabrique un
   résultat absurde — deuxième occurrence du motif (cf. banc de juillet).
 
+### Piste B, rounds 4-5 (ocean_fr) — 2026-08-13 — 🏆 LE QUADRANT GAGNANT ATTEINT
+- **Round 4** (océan 125 h seul) : rappel 96 % mais 199-506 FA/h — l'océan
+  générique multilingue ne sculpte pas ; diagnostic : le discriminant avait
+  dérivé vers « contexte français = positif » (le français ne pèse que 0,05 %
+  des négatifs).
+- **Round 5** (+ 12 000 fenêtres de FRANÇAIS continu, poids ×20 — segments du
+  corpus hors zones du mot + réunions SUMM-RE train) : **3,3 h de français ont
+  fait ce que 125 h d'océan ne faisaient pas.** Courbe complète (seed 42) :
+
+  | Seuil | Rappel | FA/h | vs champion v17 (48.1 % · 6.8 @0.8) |
+  |---|---|---|---|
+  | 0.8 | 96.3 % | 54.6 | — |
+  | 0.9 | 92.6 % | 20.5 | — |
+  | **0.95** | **92.6 %** | **9.1** | +44 pts de rappel à FA/h ≈ égales |
+  | **0.99** | **70.4 %** | **1.1** | **l'objectif « ~1 FA/h » atteint**, à rappel supérieur |
+
+  Avec « nu » 2/2 et « d' » 8-9/9 partout — tout ce que le CNN rate.
+- **La démonstration en 5 rounds est complète** : représentation pré-entraînée
+  (transfère) + positifs réels à contexte réel (le rappel) + négatifs du
+  DOMAINE à l'échelle (le silence). Chaque bascule prédite, testée, expliquée.
+- **PAS de promotion ce soir, volontairement** : run exploratoire (script,
+  1 seed, critère non pré-déclaré, modèle hors registre). Pour introniser :
+  ADR-008 (second front-end — dérogation à la règle du front-end unique),
+  protocole multi-seeds + élection fa_ambient, test voix de l'auteur, intégration
+  registre/serving. La démo, elle, sait déjà le faire tourner (sélecteur oww).
+
 ### Piste B, round 3 (ocean_ctx) — 2026-08-13 — l'hypothèse du contexte CONFIRMÉE
 - **Protocole** : positifs à CONTEXTE RÉEL (1 862/1 968 fenêtres de 2 s
   relocalisées par corrélation croisée dans les segments, fin du mot au bord ;

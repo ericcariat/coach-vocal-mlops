@@ -1,23 +1,114 @@
 {
-  "titre": "openWakeWord (têtes 64x3, entraînement ~100 % synthétique Piper) vs champion",
-  "date": "2026-08-13",
-  "protocole": "Banc étendu 54,9 min (18 segments YouTube + 3 réunions SUMM-RE), 25 occurrences réelles. Têtes ONNX oWW exécutées avec LEUR front-end (mel 32 bandes + embeddings Google, un score/80 ms) et NOTRE machine à états (pic d'énergie, 3 fenêtres consécutives, cooldown 1,5 s). Adaptateur : src/coachvocal/evaluation/oww_adapter.py — reproduire : coachvocal bench --run <tête>.onnx --minutes 60",
-  "reserve": "Notre règle des 3 fenêtres à leur cadence 80 ms = 240 ms de persistance (375 ms chez nous) : peut coûter un peu de rappel, pas un facteur 3-5 (vérifié par le balayage à 0.05).",
-  "colonnes": ["Modèle", "Seuil", "Rappel", "FA/h", "d'éloquence", "l'éloquence", "Taille"],
-  "lignes": [
-    ["v11_speech_300 (champion)", 0.8, "76.0 % (19/25)", 33.9, "3/7", "14/15", "~11 Mo"],
-    ["v11_speech_300 (champion)", 0.5, "76.0 % (19/25)", 66.7, "3/7", "14/15", "~11 Mo"],
-    ["oww 20260812_214534", 0.5, "16.0 % (4/25)", 1.1, "0/7", "3/15", "405 Ko"],
-    ["oww 20260812_222826", 0.5, "24.0 % (6/25)", 1.1, "0/7", "5/15", "405 Ko"],
-    ["oww 20260812_230955", 0.5, "24.0 % (6/25)", 1.1, "0/7", "5/15", "405 Ko"],
-    ["oww 20260812_235107", 0.5, "24.0 % (6/25)", 1.1, "0/7", "5/15", "405 Ko"],
-    ["oww 20260813_003237", 0.5, "20.0 % (5/25)", 1.1, "0/7", "4/15", "405 Ko"],
-    ["oww 20260812_230955 (seuil bas)", 0.05, "36.0 % (9/25)", 1.1, "0/7", "8/15", "405 Ko"]
+ "titre": "openWakeWord (têtes 64x3, entraînement ~100 % synthétique Piper) vs champion",
+ "date": "2026-08-13",
+ "protocole": "Banc étendu 54,9 min (18 segments YouTube + 3 réunions SUMM-RE), 25 occurrences réelles. Têtes ONNX oWW exécutées avec LEUR front-end (mel 32 bandes + embeddings Google, un score/80 ms) et NOTRE machine à états (pic d'énergie, 3 fenêtres consécutives, cooldown 1,5 s). Adaptateur : src/coachvocal/evaluation/oww_adapter.py — reproduire : coachvocal bench --run <tête>.onnx --minutes 60",
+ "reserve": "Notre règle des 3 fenêtres à leur cadence 80 ms = 240 ms de persistance (375 ms chez nous) : peut coûter un peu de rappel, pas un facteur 3-5 (vérifié par le balayage à 0.05).",
+ "colonnes": [
+  "Modèle",
+  "Seuil",
+  "Rappel",
+  "FA/h",
+  "d'éloquence",
+  "l'éloquence",
+  "Taille"
+ ],
+ "lignes": [
+  [
+   "v11_speech_300 (champion)",
+   0.8,
+   "76.0 % (19/25)",
+   33.9,
+   "3/7",
+   "14/15",
+   "~11 Mo"
   ],
-  "conclusions": [
-    "Le « ~50 % de rappel » du benchmark interne oWW (500 clips, large part synthétique) fond à 16-24 % sur du vrai français en flux : l'entraînement tout-synthétique ne généralise pas aux voix réelles.",
-    "« d'éloquence » : 0/7 pour les cinq modèles à TOUS les seuils — Piper ne produit pas cette élision, les modèles ne l'ont jamais entendue (prédit avant le run).",
-    "À leur crédit : ~1 FA/h (nous : 33.9) et 405 Ko — le transfert d'apprentissage sur embeddings est très silencieux et compact. Piste crédible pour un second étage ou l'embarqué, à condition de le nourrir de données réelles.",
-    "Référence CHANGELOG : « Comparatif openWakeWord — 2026-08-13 »."
+  [
+   "v11_speech_300 (champion)",
+   0.5,
+   "76.0 % (19/25)",
+   66.7,
+   "3/7",
+   "14/15",
+   "~11 Mo"
+  ],
+  [
+   "oww 20260812_214534",
+   0.5,
+   "16.0 % (4/25)",
+   1.1,
+   "0/7",
+   "3/15",
+   "405 Ko"
+  ],
+  [
+   "oww 20260812_222826",
+   0.5,
+   "24.0 % (6/25)",
+   1.1,
+   "0/7",
+   "5/15",
+   "405 Ko"
+  ],
+  [
+   "oww 20260812_230955",
+   0.5,
+   "24.0 % (6/25)",
+   1.1,
+   "0/7",
+   "5/15",
+   "405 Ko"
+  ],
+  [
+   "oww 20260812_235107",
+   0.5,
+   "24.0 % (6/25)",
+   1.1,
+   "0/7",
+   "5/15",
+   "405 Ko"
+  ],
+  [
+   "oww 20260813_003237",
+   0.5,
+   "20.0 % (5/25)",
+   1.1,
+   "0/7",
+   "4/15",
+   "405 Ko"
+  ],
+  [
+   "oww 20260812_230955 (seuil bas)",
+   0.05,
+   "36.0 % (9/25)",
+   1.1,
+   "0/7",
+   "8/15",
+   "405 Ko"
+  ],
+  [
+   "oww nos données+océan+FR (round 5)",
+   0.95,
+   "92.6 % (25/27)",
+   9.1,
+   "8/9",
+   "15/16",
+   "405 Ko + 2,4 Mo gelés"
+  ],
+  [
+   "oww nos données+océan+FR (round 5)",
+   0.99,
+   "70.4 % (19/27)",
+   1.1,
+   "7/9",
+   "11/16",
+   "405 Ko + 2,4 Mo gelés"
   ]
+ ],
+ "conclusions": [
+  "Le « ~50 % de rappel » du benchmark interne oWW (500 clips, large part synthétique) fond à 16-24 % sur du vrai français en flux : l'entraînement tout-synthétique ne généralise pas aux voix réelles.",
+  "« d'éloquence » : 0/7 pour les cinq modèles à TOUS les seuils — Piper ne produit pas cette élision, les modèles ne l'ont jamais entendue (prédit avant le run).",
+  "À leur crédit : ~1 FA/h (nous : 33.9) et 405 Ko — le transfert d'apprentissage sur embeddings est très silencieux et compact. Piste crédible pour un second étage ou l'embarqué, à condition de le nourrir de données réelles.",
+  "Référence CHANGELOG : « Comparatif openWakeWord — 2026-08-13 ».",
+  "Rounds 1-5 (13/08 soir) : en ré-entraînant la tête sur NOS positifs réels à contexte réel + l'océan ACAV + 3,3 h de négatifs français ×20, la courbe domine le champion partout — 92.6 % · 9.1 FA/h à 0.95, et 70.4 % · 1.1 FA/h à 0.99. La recette du quadrant gagnant est démontrée ; intronisation à protocoler (ADR-008)."
+ ]
 }
