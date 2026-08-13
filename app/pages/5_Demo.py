@@ -98,11 +98,27 @@ try:
 except Exception:
     devices = []
 
+# Les micros « Continuité » (iPhone/iPad) déclenchent un appairage Bluetooth
+# lent dès qu'on les ouvre : on les écarte de la liste. Défaut : le micro
+# intégré du MacBook s'il existe, sinon l'entrée par défaut du système.
+devices = [d for d in devices if "iphone" not in d["name"].lower()
+           and "ipad" not in d["name"].lower()]
+
 if not devices:
     st.warning("Aucun micro détecté (ou `sounddevice` indisponible).")
 else:
+    default_idx = next((i for i, d in enumerate(devices)
+                        if "macbook" in d["name"].lower()), None)
+    if default_idx is None:
+        try:
+            import sounddevice as _sd
+            sys_default = _sd.default.device[0]
+            default_idx = next((i for i, d in enumerate(devices)
+                                if d["index"] == sys_default), 0)
+        except Exception:
+            default_idx = 0
     dcol, tcol = st.columns([3, 1])
-    dev = dcol.selectbox("Micro", devices,
+    dev = dcol.selectbox("Micro", devices, index=default_idx,
                          format_func=lambda d: f"{d['index']} — {d['name']}")
     duration = tcol.number_input("Durée (s)", 10, 180, 30, 5)
 
