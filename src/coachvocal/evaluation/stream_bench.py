@@ -62,6 +62,12 @@ def eligible_segments(wakeword: str, forbidden_videos: set[str], minutes: float,
     without = [s for s in segments if not s.occurrences]
     rng.shuffle(with_occ)
     rng.shuffle(without)
+    # Le mot NU (« éloquence » sans élision) est rarissime dans le corpus
+    # éligible (la plupart de ses vidéos sont parties au train) : les segments
+    # qui en contiennent passent EN TÊTE de la sélection, sinon le banc ne
+    # mesure que les formes élidées (constat du 2026-08-13 : 0 nu sur 27).
+    with_occ.sort(key=lambda s: not any(
+        corpus_mod.surface_form(x, wakeword) == "nu" for x in (s.surfaces or [])))
 
     picked, seen = list(extra), set()
     for pool in (with_occ, without):
