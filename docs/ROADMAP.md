@@ -69,7 +69,8 @@ pour savoir si le modèle est plus faible sur une forme.
 
 ### P0 — Qualité des données et du banc (avant tout nouveau run « recette »)
 
-- [ ] **Étendre le corpus du banc à ~60 min maximum** (décision : on ne va pas
+- [x] **Étendre le corpus du banc à ~60 min maximum** — fait le 2026-08-13 :
+  54,9 min (banc YouTube + 42,4 min SUMM-RE), cf. CHANGELOG « Banc étendu ». (décision : on ne va pas
   au-delà d'une heure). Prérequis statistique de tout le reste : à
   23 occurrences / ~15 FA, un écart de 2 occurrences ou 5 FA est du bruit (vu
   sur la série Metal). Débloque aussi les hard negatives (on peut sacrifier
@@ -115,12 +116,12 @@ pour savoir si le modèle est plus faible sur une forme.
   Conserver pour chaque enregistrement : source, licence, date de
   téléchargement, identifiant précis (→ ligne DATA.md, DVC si non
   régénérable). Plafond total : 1 h.
-- [ ] **Re-découper les positifs : fin du mot près de la fin de fenêtre,
+- [x] **Re-découper les positifs : fin du mot près de la fin de fenêtre,
   jitter ~200 ms** (recette de découpe, sources brutes inchangées). Expérience
   dédiée vs v03_replica, critère avant le run. C'est le levier n°1 suggéré
   par la littérature ET par l'audit. Explication visuelle :
   `docs/FENETRE_GLISSANTE_ET_JITTER.html` (à ouvrir dans un navigateur).
-- [ ] **Porte qualité automatique dans la construction des pools** — le
+- [x] **Porte qualité automatique dans la construction des pools** — le
   chantier pivot, AVANT toute exploitation manuelle. Étendre l'audit existant
   (`data/quality.py`, aujourd'hui informatif) en **filtre à trois sorties**
   mesurant par clip : durée, RMS, pic/saturation, SNR estimé, énergie des
@@ -135,7 +136,8 @@ pour savoir si le modèle est plus faible sur une forme.
   porte s'applique au prochain build ; nouvelle empreinte de dataset =
   nouvelle expérience, jugée au banc. Mêmes mesures branchées sur le futur
   studio d'enregistrement (P2) — un seul code.
-- [ ] **Tout repasse par la porte — après elle, pas avant** :
+- [x] **Tout repasse par la porte — après elle, pas avant** (fait ; reste
+  l'audit humain des douteux dans la page Qualité) :
   - les **551 clips de `curation.db`** ne sont pas repris sur la foi de la
     curation manuelle : ils repassent par la porte comme n'importe quel clip,
     et c'est elle qui décide accepté / rejeté / à revoir dans Streamlit ;
@@ -144,28 +146,31 @@ pour savoir si le modèle est plus faible sur une forme.
     doivent être attrapés par les mesures de la porte, les 5
     « Dauphine-Éloquence » par la vérité `surface` de `discovery.db` ;
     l'humain n'intervient que sur la file « douteux ».
-- [ ] **Rappel par forme au banc** : reporter séparément éloquence nu /
+- [x] **Rappel par forme au banc** — fait ; première mesure : d' 3/7 (43 %)
+  contre l' 13/15 (87 %) — : reporter séparément éloquence nu /
   l'éloquence / d'éloquence (la vérité `surface` est dans `discovery.db`).
 
 ### P1 — Recette : les expériences dosées
 
-- [ ] **Sweep parole continue 0/100/300/500** (train seulement), sur banc
+- [~] **Sweep parole continue 0/100/300/500** — configs v11 prêtes, runs en file (train seulement), sur banc
   étendu. La question v04 posée proprement : la dose, pas le tout-ou-rien.
   Arrêt : quand le gain marginal passe sous la dispersion des candidats
   (ADR-003).
-- [ ] **Augmentation RIR + multi-SNR** (une expérience à part, pas mélangée au
+- [~] **Augmentation RIR + multi-SNR** — implémentée + testée (MIT IR Survey), run v12 en file (une expérience à part, pas mélangée au
   sweep). Réponses impulsionnelles MIT/BIRD, SNR tirés dans une plage déclarée.
 - [ ] **Hard negatives** : les 15 FA confirmées à l'oreille (verdicts du
   banc) + confusables TTS français de la liste ViolaWake. Après extension du
   banc uniquement (anti-fuite).
-- [ ] **Sélection par FA/h sous contrainte de rappel** : construire une
+- [~] **Sélection par FA/h sous contrainte de rappel** — implémentée (élection
+  fa_ambient, val_ambient = 34,5 min SUMM-RE hors banc), run v13 en file : construire une
   `val_ambient` (1-2 h de flux négatif hors banc), élire les candidats dessus
   au lieu de la seule val_loss. Change `selection_metric` — gros gain
   méthodologique possible.
 
 ### P2 — Outillage de collecte (l'idée « studio guidé »)
 
-- [ ] **Page Streamlit « Studio d'enregistrement »** sur le modèle de la
+- [~] **Page Streamlit « Studio d'enregistrement »** — codée (page 7 + source
+  studio) ; test micro par l'auteur en attente sur le modèle de la
   console ViolaWake : campagne scriptée (10× normal, fort, joyeux, rapide,
   lent, 50 cm / 1 m / 2,5 m), contrôles qualité immédiats (RMS, saturation,
   SNR, réécoute, re-prise), découpe automatique, une session = un groupe de
