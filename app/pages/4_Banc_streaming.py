@@ -25,7 +25,8 @@ WAKEWORD = "eloquence"
 
 
 bench_dir = paths.report_dir("stream_bench")
-archives = sorted(bench_dir.glob(f"{WAKEWORD}_*.json"), reverse=True)
+archives = sorted((p for p in bench_dir.glob(f"{WAKEWORD}_2*.json")
+                   if "verdicts" not in p.name), reverse=True)
 
 
 def _label(p):
