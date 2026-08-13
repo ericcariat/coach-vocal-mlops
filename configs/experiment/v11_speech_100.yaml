@@ -1,0 +1,25 @@
+# Sweep dose-réponse parole continue — point 100 (ROADMAP P1).
+# Critère du SWEEP, écrit avant les runs (commun aux 3 points + v03_replica
+# comme dose 0) : retenir la dose qui minimise les FA/h au banc SOUS CONTRAINTE
+# rappel ≥ v03_replica − 2 points. Arrêt : gain marginal entre deux doses
+# inférieur à la dispersion des candidats (ADR-003). Le banc à ~1 h (extension
+# ROADMAP P0) est prérequis pour départager les petits écarts.
+name: v11_speech_100
+description: >
+  tts500 + 100 fenêtres de parole continue en négatif (train seulement) —
+  point 100 du sweep dose-réponse.
+
+wakeword: eloquence
+dataset: speech_neg_100
+model: cnn_baseline
+
+training:
+  epochs: 30
+  batch_size: 64
+  learning_rate: 0.001
+  early_stopping_patience: 5
+  class_weight: true
+  threshold: 0.5
+  seeds: [42, 43, 44, 45, 46]
+  selection_metric: val_loss
+  use_gpu: false

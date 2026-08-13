@@ -1,0 +1,20 @@
+# Sweep dose-réponse de la parole continue en négatif (ROADMAP P1).
+# v04 (1500 en train + val/test) a écrasé les FA (−44 %) mais tué le rappel
+# (−30 pts) : l'overdose, comme le TTS à 2000. Ce sweep cherche la dose utile :
+# 500 fenêtres, EN TRAIN SEULEMENT (val/test inchangés → clips comparables
+# à v03_replica, contrairement à v04).
+extends: tts500
+name: speech_neg_500
+
+sources:
+  # nom distinct par dose => cache artifacts/cache/... distinct (piège documenté)
+  - name: speech_neg_500
+    type: speech_negatives
+    label: 0
+    splits: [train]
+    params:
+      budget: [500, 0, 0]
+      stride_s: 1.0
+      guard_s: 2.0
+      min_peak: 0.02
+      max_per_video: 60
