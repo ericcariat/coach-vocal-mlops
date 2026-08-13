@@ -2,7 +2,8 @@ version = 1
 revision = 3
 requires-python = "==3.11.*"
 resolution-markers = [
-    "sys_platform != 'win32'",
+    "platform_machine != 's390x' and sys_platform != 'win32'",
+    "platform_machine == 's390x' and sys_platform != 'win32'",
     "sys_platform == 'win32'",
 ]
 
@@ -242,8 +243,8 @@ name = "astunparse"
 version = "1.6.3"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "six" },
-    { name = "wheel" },
+    { name = "six", marker = "platform_machine != 's390x' or sys_platform == 'win32'" },
+    { name = "wheel", marker = "platform_machine != 's390x' or sys_platform == 'win32'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/f3/af/4182184d3c338792894f34a62672919db7ca008c89abee9b564dd34d8029/astunparse-1.6.3.tar.gz", hash = "sha256:5ad93a8456f0d084c3456d059fd9a92cce667963232cbf763eac3bc5b7940872", size = 18290, upload-time = "2019-12-22T18:12:13.129Z" }
 wheels = [
@@ -531,10 +532,12 @@ dependencies = [
 dev = [
     { name = "ipykernel" },
     { name = "jupyterlab" },
+    { name = "onnx" },
     { name = "onnxruntime" },
     { name = "pytest" },
     { name = "pytest-cov" },
     { name = "ruff" },
+    { name = "tf2onnx" },
 ]
 mlops = [
     { name = "dvc" },
@@ -570,10 +573,12 @@ requires-dist = [
 dev = [
     { name = "ipykernel", specifier = ">=6.29" },
     { name = "jupyterlab", specifier = ">=4.2" },
+    { name = "onnx", specifier = "==1.16.2" },
     { name = "onnxruntime", specifier = ">=1.28.0" },
     { name = "pytest", specifier = ">=8.2" },
     { name = "pytest-cov", specifier = ">=5.0" },
     { name = "ruff", specifier = ">=0.5" },
+    { name = "tf2onnx", specifier = ">=1.17.0" },
 ]
 mlops = [{ name = "dvc", specifier = ">=3.51" }]
 
@@ -1193,7 +1198,7 @@ name = "google-pasta"
 version = "0.2.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "six" },
+    { name = "six", marker = "platform_machine != 's390x' or sys_platform == 'win32'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/35/4a/0bd53b36ff0323d10d5f24ebd67af2de10a1117f5cf4d7add90df92756f1/google-pasta-0.2.0.tar.gz", hash = "sha256:c9f2c8dfc8f96d0d5808299920721be30c9eec37f2389f28904f454565c8a16e", size = 40430, upload-time = "2020-03-13T18:57:50.34Z" }
 wheels = [
@@ -1271,7 +1276,7 @@ name = "grpcio"
 version = "1.83.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "typing-extensions" },
+    { name = "typing-extensions", marker = "platform_machine != 's390x' or sys_platform == 'win32'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/0c/98/304898ac4e04e2d5e4e4c2eadc178b1f2a16d5f4bc2f91306c87d64680b9/grpcio-1.83.0.tar.gz", hash = "sha256:7674587248fbbb2ac6e4eecf83a8a0f3d91a928f941de571acfd3a2f007fbc24", size = 13428824, upload-time = "2026-07-23T15:20:37.759Z" }
 wheels = [
@@ -1327,7 +1332,7 @@ name = "h5py"
 version = "3.16.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "numpy" },
+    { name = "numpy", marker = "platform_machine != 's390x' or sys_platform == 'win32'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/db/33/acd0ce6863b6c0d7735007df01815403f5589a21ff8c2e1ee2587a38f548/h5py-3.16.0.tar.gz", hash = "sha256:a0dbaad796840ccaa67a4c144a0d0c8080073c34c76d5a6941d6818678ef2738", size = 446526, upload-time = "2026-03-06T13:49:08.07Z" }
 wheels = [
@@ -1783,14 +1788,14 @@ name = "keras"
 version = "3.15.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "absl-py" },
-    { name = "h5py" },
-    { name = "ml-dtypes" },
-    { name = "namex" },
-    { name = "numpy" },
-    { name = "optree" },
-    { name = "packaging" },
-    { name = "rich" },
+    { name = "absl-py", marker = "platform_machine != 's390x' or sys_platform == 'win32'" },
+    { name = "h5py", marker = "platform_machine != 's390x' or sys_platform == 'win32'" },
+    { name = "ml-dtypes", marker = "platform_machine != 's390x' or sys_platform == 'win32'" },
+    { name = "namex", marker = "platform_machine != 's390x' or sys_platform == 'win32'" },
+    { name = "numpy", marker = "platform_machine != 's390x' or sys_platform == 'win32'" },
+    { name = "optree", marker = "platform_machine != 's390x' or sys_platform == 'win32'" },
+    { name = "packaging", marker = "platform_machine != 's390x' or sys_platform == 'win32'" },
+    { name = "rich", marker = "platform_machine != 's390x' or sys_platform == 'win32'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/02/0a/c2524cda024e5b24038726de899c4b0ae2603dd0324a30cbc129d6b6314e/keras-3.15.0.tar.gz", hash = "sha256:0123749ac2a704d63f691994b18e432e006cb8ae910cc0ea7035d777aed9c00d", size = 1326815, upload-time = "2026-06-24T23:17:12.332Z" }
 wheels = [
@@ -2025,7 +2030,7 @@ name = "ml-dtypes"
 version = "0.3.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "numpy" },
+    { name = "numpy", marker = "platform_machine != 's390x' or sys_platform == 'win32'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/39/7d/8d85fcba868758b3a546e6914e727abd8f29ea6918079f816975c9eecd63/ml_dtypes-0.3.2.tar.gz", hash = "sha256:533059bc5f1764fac071ef54598db358c167c51a718f68f5bb55e3dee79d2967", size = 692014, upload-time = "2024-01-03T19:21:23.615Z" }
 wheels = [
@@ -2283,6 +2288,23 @@ wheels = [
 ]
 
 [[package]]
+name = "onnx"
+version = "1.16.2"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "numpy" },
+    { name = "protobuf" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/d8/83/09d7715612f72236b439eba6ebfecdaac59d99562dfc1d7a90dddb6168e1/onnx-1.16.2.tar.gz", hash = "sha256:b33a282b038813c4b69e73ea65c2909768e8dd6cc10619b70632335daf094646", size = 12308861, upload-time = "2024-08-01T13:12:17.539Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/ea/d0/b6e02665c3e7ec097f194a75afc16698ce7729b810f0e67ac085a735f6e5/onnx-1.16.2-cp311-cp311-macosx_11_0_universal2.whl", hash = "sha256:859b41574243c9bfd0abce03c15c78a1f270cc03c7f99629b984daf7adfa5003", size = 16505840, upload-time = "2024-08-01T13:10:42.275Z" },
+    { url = "https://files.pythonhosted.org/packages/82/fc/04b03e31b6741c3b430d04cfa055660242eba800e15c1c3394db3082098d/onnx-1.16.2-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:39a57d196fe5d73861e70d9625674e6caf8ca13c5e9c740462cf530a07cd2e1c", size = 15793427, upload-time = "2024-08-01T13:10:46.6Z" },
+    { url = "https://files.pythonhosted.org/packages/0b/8b/443486985df06b2e934d1a833f44786f22af06f2ba144ec5ce61f63beb2e/onnx-1.16.2-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:7b98aa9733bd4b781eb931d33b4078ff2837e7d68062460726d6dd011f332bd4", size = 15924140, upload-time = "2024-08-01T13:10:50.416Z" },
+    { url = "https://files.pythonhosted.org/packages/de/20/74f04969a7d0112ce261e549a8b776bf0a262dc109c1e5e70b794ebecedb/onnx-1.16.2-cp311-cp311-win32.whl", hash = "sha256:e9f018b2e172efeea8c2473a51a825652767726374145d7cfdebdc7a27446fdd", size = 14338020, upload-time = "2024-08-01T13:10:53.968Z" },
+    { url = "https://files.pythonhosted.org/packages/41/d3/6f18b81626b9bc7f53f85e766fb688026e803da4ff20160afd80172542e7/onnx-1.16.2-cp311-cp311-win_amd64.whl", hash = "sha256:e66e4512a30df8916db5cf84f47d47b3250b9ab9a98d9cffe142c98c54598ba0", size = 14439804, upload-time = "2024-08-01T13:10:57.393Z" },
+]
+
+[[package]]
 name = "onnxruntime"
 version = "1.28.0"
 source = { registry = "https://pypi.org/simple" }
@@ -2353,7 +2375,7 @@ name = "optree"
 version = "0.19.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "typing-extensions" },
+    { name = "typing-extensions", marker = "platform_machine != 's390x' or sys_platform == 'win32'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/44/63/92328a17ab7836562fe0129e605f685a88db35ce98427c34ff48ee4ec157/optree-0.19.1.tar.gz", hash = "sha256:4497d1c9197b8c6842e511368163d318ce536521ebdcff8bebb7551dcdfac532", size = 177531, upload-time = "2026-05-06T02:32:39.704Z" }
 wheels = [
@@ -3456,15 +3478,15 @@ name = "tensorboard"
 version = "2.16.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "absl-py" },
-    { name = "grpcio" },
-    { name = "markdown" },
-    { name = "numpy" },
-    { name = "protobuf" },
-    { name = "setuptools" },
-    { name = "six" },
-    { name = "tensorboard-data-server" },
-    { name = "werkzeug" },
+    { name = "absl-py", marker = "platform_machine != 's390x' or sys_platform == 'win32'" },
+    { name = "grpcio", marker = "platform_machine != 's390x' or sys_platform == 'win32'" },
+    { name = "markdown", marker = "platform_machine != 's390x' or sys_platform == 'win32'" },
+    { name = "numpy", marker = "platform_machine != 's390x' or sys_platform == 'win32'" },
+    { name = "protobuf", marker = "platform_machine != 's390x' or sys_platform == 'win32'" },
+    { name = "setuptools", marker = "platform_machine != 's390x' or sys_platform == 'win32'" },
+    { name = "six", marker = "platform_machine != 's390x' or sys_platform == 'win32'" },
+    { name = "tensorboard-data-server", marker = "platform_machine != 's390x' or sys_platform == 'win32'" },
+    { name = "werkzeug", marker = "platform_machine != 's390x' or sys_platform == 'win32'" },
 ]
 wheels = [
     { url = "https://files.pythonhosted.org/packages/3a/d0/b97889ffa769e2d1fdebb632084d5e8b53fc299d43a537acee7ec0c021a3/tensorboard-2.16.2-py3-none-any.whl", hash = "sha256:9f2b4e7dad86667615c0e5cd072f1ea8403fc032a299f0072d6f74855775cc45", size = 5490335, upload-time = "2024-02-16T19:56:55.912Z" },
@@ -3483,28 +3505,28 @@ name = "tensorflow"
 version = "2.16.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "absl-py", marker = "sys_platform != 'win32'" },
-    { name = "astunparse", marker = "sys_platform != 'win32'" },
-    { name = "flatbuffers", marker = "sys_platform != 'win32'" },
-    { name = "gast", marker = "sys_platform != 'win32'" },
-    { name = "google-pasta", marker = "sys_platform != 'win32'" },
-    { name = "grpcio", marker = "sys_platform != 'win32'" },
-    { name = "h5py", marker = "sys_platform != 'win32'" },
-    { name = "keras", marker = "sys_platform != 'win32'" },
-    { name = "libclang", marker = "sys_platform != 'win32'" },
-    { name = "ml-dtypes", marker = "sys_platform != 'win32'" },
-    { name = "numpy", marker = "sys_platform != 'win32'" },
-    { name = "opt-einsum", marker = "sys_platform != 'win32'" },
-    { name = "packaging", marker = "sys_platform != 'win32'" },
-    { name = "protobuf", marker = "sys_platform != 'win32'" },
-    { name = "requests", marker = "sys_platform != 'win32'" },
-    { name = "setuptools", marker = "sys_platform != 'win32'" },
-    { name = "six", marker = "sys_platform != 'win32'" },
-    { name = "tensorboard", marker = "sys_platform != 'win32'" },
-    { name = "tensorflow-io-gcs-filesystem", marker = "sys_platform != 'win32'" },
-    { name = "termcolor", marker = "sys_platform != 'win32'" },
-    { name = "typing-extensions", marker = "sys_platform != 'win32'" },
-    { name = "wrapt", marker = "sys_platform != 'win32'" },
+    { name = "absl-py", marker = "platform_machine != 's390x' and sys_platform != 'win32'" },
+    { name = "astunparse", marker = "platform_machine != 's390x' and sys_platform != 'win32'" },
+    { name = "flatbuffers", marker = "platform_machine != 's390x' and sys_platform != 'win32'" },
+    { name = "gast", marker = "platform_machine != 's390x' and sys_platform != 'win32'" },
+    { name = "google-pasta", marker = "platform_machine != 's390x' and sys_platform != 'win32'" },
+    { name = "grpcio", marker = "platform_machine != 's390x' and sys_platform != 'win32'" },
+    { name = "h5py", marker = "platform_machine != 's390x' and sys_platform != 'win32'" },
+    { name = "keras", marker = "platform_machine != 's390x' and sys_platform != 'win32'" },
+    { name = "libclang", marker = "platform_machine != 's390x' and sys_platform != 'win32'" },
+    { name = "ml-dtypes", marker = "platform_machine != 's390x' and sys_platform != 'win32'" },
+    { name = "numpy", marker = "platform_machine != 's390x' and sys_platform != 'win32'" },
+    { name = "opt-einsum", marker = "platform_machine != 's390x' and sys_platform != 'win32'" },
+    { name = "packaging", marker = "platform_machine != 's390x' and sys_platform != 'win32'" },
+    { name = "protobuf", marker = "platform_machine != 's390x' and sys_platform != 'win32'" },
+    { name = "requests", marker = "platform_machine != 's390x' and sys_platform != 'win32'" },
+    { name = "setuptools", marker = "platform_machine != 's390x' and sys_platform != 'win32'" },
+    { name = "six", marker = "platform_machine != 's390x' and sys_platform != 'win32'" },
+    { name = "tensorboard", marker = "platform_machine != 's390x' and sys_platform != 'win32'" },
+    { name = "tensorflow-io-gcs-filesystem", marker = "platform_machine != 's390x' and sys_platform != 'win32'" },
+    { name = "termcolor", marker = "platform_machine != 's390x' and sys_platform != 'win32'" },
+    { name = "typing-extensions", marker = "platform_machine != 's390x' and sys_platform != 'win32'" },
+    { name = "wrapt", marker = "platform_machine != 's390x' and sys_platform != 'win32'" },
 ]
 wheels = [
     { url = "https://files.pythonhosted.org/packages/9d/72/6f09443493b9df2fd8a9585c9af4d9453762906a8e5735a8a5efa6e3d1e3/tensorflow-2.16.2-cp311-cp311-macosx_12_0_arm64.whl", hash = "sha256:2c8a0e79395639b762e62002db99b2f6cc608f744312c9940899c1128f325331", size = 227025342, upload-time = "2024-06-28T18:51:19.421Z" },
@@ -3595,6 +3617,22 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/8a/11/965c6fd8e5cc254f1fe142d547387da17a8ebfd75a3455f637c663fb38a0/terminado-0.18.1.tar.gz", hash = "sha256:de09f2c4b85de4765f7714688fff57d3e75bad1f909b589fde880460c753fd2e", size = 32701, upload-time = "2024-03-12T14:34:39.026Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/6a/9e/2064975477fdc887e47ad42157e214526dcad8f317a948dee17e1659a62f/terminado-0.18.1-py3-none-any.whl", hash = "sha256:a4468e1b37bb318f8a86514f65814e1afc977cf29b3992a4500d9dd305dcceb0", size = 14154, upload-time = "2024-03-12T14:34:36.569Z" },
+]
+
+[[package]]
+name = "tf2onnx"
+version = "1.17.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "flatbuffers" },
+    { name = "numpy" },
+    { name = "onnx" },
+    { name = "protobuf" },
+    { name = "requests" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/8e/62/09bc2e8a91c717a2b37b6631ad08535f1f04d951010abbc5b6e446c988eb/tf2onnx-1.17.0.tar.gz", hash = "sha256:998dc1841d5e2405226d985f28287570569034b7609924a52fb297b42462c1c1", size = 591633, upload-time = "2026-03-04T19:37:23.256Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/98/83/05d2b28b2246118105c48a7a8c02e3419f2ea0fff0bb49a8bd7876e7373c/tf2onnx-1.17.0-py3-none-any.whl", hash = "sha256:64506e0ff12ddb21918b5659541577a4e9eec06d6bb1f2c7c4ebba5b09f30dba", size = 839132, upload-time = "2026-03-04T19:37:21.236Z" },
 ]
 
 [[package]]
