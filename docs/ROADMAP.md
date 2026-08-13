@@ -152,17 +152,19 @@ pour savoir si le modèle est plus faible sur une forme.
 
 ### P1 — Recette : les expériences dosées
 
-- [~] **Sweep parole continue 0/100/300/500** — configs v11 prêtes, runs en file (train seulement), sur banc
+- [x] **Sweep parole continue 0/100/300/500** — FAIT : dose 300 promue champion
+  (76 % · 33.9 FA/h, −49 % à rappel égal) (train seulement), sur banc
   étendu. La question v04 posée proprement : la dose, pas le tout-ou-rien.
   Arrêt : quand le gain marginal passe sous la dispersion des candidats
   (ADR-003).
-- [~] **Augmentation RIR + multi-SNR** — implémentée + testée (MIT IR Survey), run v12 en file (une expérience à part, pas mélangée au
+- [x] **Augmentation RIR + multi-SNR** — fait ; v12 : rappel record 88 % mais
+  FA/h 72 ; cumul v14 : 84 % · 51.4 (critère raté de peu) → piste v14+fa_ambient (une expérience à part, pas mélangée au
   sweep). Réponses impulsionnelles MIT/BIRD, SNR tirés dans une plage déclarée.
 - [ ] **Hard negatives** : les 15 FA confirmées à l'oreille (verdicts du
   banc) + confusables TTS français de la liste ViolaWake. Après extension du
   banc uniquement (anti-fuite).
-- [~] **Sélection par FA/h sous contrainte de rappel** — implémentée (élection
-  fa_ambient, val_ambient = 34,5 min SUMM-RE hors banc), run v13 en file : construire une
+- [x] **Sélection par FA/h sous contrainte de rappel** — fait ; v13 : l'élection
+  seule égale le champion (seeds de 8.7 à 31.4 FA/h ambiantes, ×3,6) : construire une
   `val_ambient` (1-2 h de flux négatif hors banc), élire les candidats dessus
   au lieu de la seule val_loss. Change `selection_metric` — gros gain
   méthodologique possible.

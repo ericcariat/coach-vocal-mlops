@@ -41,6 +41,18 @@ lien `current/`. Ne jamais écrire un chemin de run en dur ailleurs.
   vérité terrain décalée ne donne pas un résultat imprécis, elle fabrique un
   résultat absurde — deuxième occurrence du motif (cf. banc de juillet).
 
+### v14_rir_speech300 — 2026-08-13 — ❌ de peu : le cumul est partiel
+- **But** : cumuler les deux gains orthogonaux (dose 300 + RIR/multi-SNR).
+  Critère : rappel ≥ 80 % ET FA/h ≤ 45.
+- **Banc étendu (seuil 0.8)** : rappel **84.0 %** (21/25, d' 4/7) ·
+  **51.4 FA/h**. ✅ rappel, ❌ FA/h (51.4 > 45). Vs champion v11 : +8 pts de
+  rappel pour +17.5 FA/h — un compromis, pas une domination.
+- **Verdict** : pas de promotion (critère non atteint, et le champion garde
+  les FA/h). Le cumul retient l'essentiel du gain de rappel de v12 mais pas
+  toute la baisse de FA de v11. **Suite la plus prometteuse** : v14 élu par
+  `fa_ambient` (v13 a montré ×3,6 de dispersion entre seeds) — le candidat
+  le plus silencieux de cette recette pourrait passer sous 45.
+
 ### v13_fa_select — 2026-08-13 — ✅ critère atteint : l'élection vaut une recette
 - **But** : élire les candidats par FA/h sur 34,5 min de flux ambiant SUMM-RE
   (hors banc) sous contrainte rappel val ≥ 90 %, au lieu de min(val_loss) —

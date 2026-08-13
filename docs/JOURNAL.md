@@ -111,6 +111,18 @@ Session autonome d'exécution de la feuille de route. Livré et committé :
   (v12 prêt) ; **sweep parole continue** configuré (v11 ×3) ; **studio
   d'enregistrement** écrit (page 7, source `studio`) — test micro en attente.
 
+**Bilan des runs de la nuit (v09-v14, détail au CHANGELOG)** : le sweep a
+trouvé la dose — **v11_speech_300 promu champion** (76 % · 33.9 FA/h, FA/h
+divisées par deux à rappel intact ; 100 ne fait rien, 500 entame le rappel,
+1500 = v04 était l'overdose). v12 (RIR) décroche le rappel record (88 %,
+« d'éloquence » 5/7) mais paie en FA/h ; v13 démontre que l'élection
+`fa_ambient` seule égale le champion (dispersion ×3,6 entre seeds à recette
+identique) ; v14 (cumul dose+RIR) rate son critère de peu (84 % · 51.4).
+La re-découpe (v10) a d'abord révélé un bug de vérité terrain (temps dérivés
+de −0.1 à −0.9 s → « rappel 100 % » absurde, corrigé par corrélation croisée)
+puis, propre, s'est montrée inférieure — hypothèse du couplage avec la machine
+à états consignée. Prochain levier déclaré : v14 élu par `fa_ambient`.
+
 ---
 
 ## 2026-08-13 — Audit des positifs + synthèse des études : la feuille de route
