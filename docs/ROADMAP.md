@@ -79,21 +79,30 @@ pour savoir si le modèle est plus faible sur une forme.
   dédiée vs v03_replica, critère avant le run. C'est le levier n°1 suggéré
   par la littérature ET par l'audit. Explication visuelle :
   `docs/FENETRE_GLISSANTE_ET_JITTER.html` (à ouvrir dans un navigateur).
-- [ ] **Exploiter `curation.db`** : 551 clips curés à la main (crop_start/end,
-  10 rejetés) jamais injectés dans le pool actuel. De la curation humaine
-  gratuite qui dort.
-- [ ] **Porte qualité automatique dans la construction des pools** : étendre
-  l'audit existant (`data/quality.py`, aujourd'hui informatif) en **filtre**
-  mesurant par clip durée, RMS, pic/saturation, SNR estimé, énergie des
+- [ ] **Porte qualité automatique dans la construction des pools** — le
+  chantier pivot, AVANT toute exploitation manuelle. Étendre l'audit existant
+  (`data/quality.py`, aujourd'hui informatif) en **filtre à trois sorties**
+  mesurant par clip : durée, RMS, pic/saturation, SNR estimé, énergie des
   tranches de tête et de queue (débordement du mot suivant), padding de zéros.
-  Seuils déclarés en config, clips rejetés listés dans un rapport HTML
-  écoutable — jamais supprimés silencieusement. Pas trop tard : les pools sont
-  régénérables, la porte s'applique au prochain build (nouvelle empreinte de
-  dataset = nouvelle expérience, comparée au banc comme le reste). Mêmes
-  mesures branchées sur le futur studio d'enregistrement (P2) — un seul code.
-- [ ] **Nettoyage ciblé** : retirer les 5 « Dauphine-Éloquence » (nom propre) ;
-  écouter les ~17 % de fins chargées (page d'audit à l'oreille) ; corriger
-  l'encodage cassé des fichiers `moi_*.wav`.
+  1. **accepté** → entre dans le jeu de données, sans intervention humaine ;
+  2. **rejeté** (hors seuils francs) → écarté automatiquement, listé dans un
+     rapport écoutable — jamais supprimé silencieusement ;
+  3. **douteux** (zone grise entre les deux seuils) → file d'audit humain dans
+     Streamlit, verdict oui/non persisté (même mécanique que les verdicts du
+     banc).
+  Seuils déclarés en config (rien en dur). Les pools étant régénérables, la
+  porte s'applique au prochain build ; nouvelle empreinte de dataset =
+  nouvelle expérience, jugée au banc. Mêmes mesures branchées sur le futur
+  studio d'enregistrement (P2) — un seul code.
+- [ ] **Tout repasse par la porte — après elle, pas avant** :
+  - les **551 clips de `curation.db`** ne sont pas repris sur la foi de la
+    curation manuelle : ils repassent par la porte comme n'importe quel clip,
+    et c'est elle qui décide accepté / rejeté / à revoir dans Streamlit ;
+  - le **nettoyage ciblé** n'est plus une passe manuelle : les ~17 % de fins
+    chargées et les clips anormaux (encodage cassé des `moi_*.wav` compris)
+    doivent être attrapés par les mesures de la porte, les 5
+    « Dauphine-Éloquence » par la vérité `surface` de `discovery.db` ;
+    l'humain n'intervient que sur la file « douteux ».
 - [ ] **Rappel par forme au banc** : reporter séparément éloquence nu /
   l'éloquence / d'éloquence (la vérité `surface` est dans `discovery.db`).
 
