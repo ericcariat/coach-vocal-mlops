@@ -109,10 +109,26 @@ def embed_files(files: list[Path], mel_sess, emb_sess, tag: str) -> np.ndarray:
     return out
 
 
+def acav_windows(path: str, stride: int = 8) -> np.ndarray:
+    """Le fichier oWW est un FLUX d'embeddings (N, 96), un par 80 ms : on le
+    découpe en fenêtres [16, 96] — les négatifs « océan » qui sculptent la
+    frontière (l'ingrédient n°2 de leur silence)."""
+    stream = np.load(path, mmap_mode="r")
+    idx = np.arange(0, len(stream) - HEAD_EMBEDDINGS, stride)
+    out = np.empty((len(idx), HEAD_EMBEDDINGS, 96), np.float32)
+    for k, i in enumerate(idx):
+        out[k] = stream[i:i + HEAD_EMBEDDINGS]
+    return out
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--seeds", type=int, nargs="+", default=[42, 43, 44])
     ap.add_argument("--epochs", type=int, default=40)
+    ap.add_argument("--acav", type=str, default=None,
+                    help="features négatives oWW (.npy, flux N×96)")
+    ap.add_argument("--acav-stride", type=int, default=8)
+    ap.add_argument("--tag", type=str, default="nosdonnees")
     args = ap.parse_args()
 
     import onnxruntime as ort
@@ -125,8 +141,15 @@ def main():
     print(f"📦  {len(pos_files)} positifs réels · {len(neg_files)} négatifs (recette)")
     X_pos = embed_files(pos_files, mel, emb, "pos")
     X_neg = embed_files(neg_files, mel, emb, "neg")
-    X = np.concatenate([X_pos, X_neg])
-    y = np.concatenate([np.ones(len(X_pos)), np.zeros(len(X_neg))]).astype(np.float32)
+    parts_X, parts_y = [X_pos, X_neg], [np.ones(len(X_pos)), np.zeros(len(X_neg))]
+    if args.acav:
+        X_acav = acav_windows(args.acav, args.acav_stride)
+        print(f"    + océan ACAV : {X_acav.shape} "
+              f"({len(X_acav) * 0.08 * args.acav_stride / 3600:.1f} h de flux)")
+        parts_X.append(X_acav)
+        parts_y.append(np.zeros(len(X_acav)))
+    X = np.concatenate(parts_X)
+    y = np.concatenate(parts_y).astype(np.float32)
     print(f"    features : {X.shape}")
 
     runtime.configure(use_gpu=False)
@@ -160,7 +183,7 @@ def main():
                      monitor="val_auc", mode="max", patience=6,
                      restore_best_weights=True)])
 
-        out = EXPORT_DIR / f"eloquence_nosdonnees_64x3_seed{seed}.onnx"
+        out = EXPORT_DIR / f"eloquence_{args.tag}_64x3_seed{seed}.onnx"
         import tf2onnx
 
         # tf2onnx ne connaît pas les modèles Keras 3 : on exporte via une
