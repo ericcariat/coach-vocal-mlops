@@ -41,6 +41,25 @@ lien `current/`. Ne jamais écrire un chemin de run en dur ailleurs.
   vérité terrain décalée ne donne pas un résultat imprécis, elle fabrique un
   résultat absurde — deuxième occurrence du motif (cf. banc de juillet).
 
+### Banc recomposé + v15b/v16 — 2026-08-13 — le champion tient, la frontière est claire
+- **Banc recomposé** : les 10 vidéos sacrifiées aux hard negatives sont
+  sorties, remplacées automatiquement — 53,1 min, **27 occurrences dont 10
+  « d'éloquence »** (vs 7 avant : plus dur sur la forme faible). Nouvelle
+  référence champion : **63.0 % · 29.4 FA/h** @0.8 (les 76 % d'avant
+  mesuraient un autre échantillon — ne jamais comparer entre bancs).
+- **v15b_summre_75** : 55.6 % · 15.8 — FA −46 % mais rappel −7.4 pts ❌.
+- **v15b_summre_150** : 40.7 % · 26.0 ❌.
+- **v16_hardneg (boost ×10)** : 33.3 % · **4.5 FA/h** — le plus silencieux
+  jamais mesuré (0.0 FA/h ambiantes !) et le plus sourd. Le boost ×10
+  (540 fenêtres effectives pour 18 FA réelles) était une overdose — à
+  réessayer à ×2-3.
+- **Le motif de la journée, énoncé** : TOUT levier anti-FA basé sur des
+  négatifs paie en rappel — le modèle est à sa frontière de capacité. Le seul
+  levier qui a MONTÉ le rappel est v12 (RIR, +12 pts). La suite logique n'est
+  plus « encore des négatifs » mais le CUMUL rappel d'abord :
+  v17 = RIR + dose SUMM-RE 75 + hard negatives ×2, élu fa_ambient — ou
+  accepter le point produit actuel. Champion inchangé : v11_speech_300.
+
 ### v15_summre_neg — 2026-08-13 — ❌ rappel, ✅ hypothèse de domaine
 - **But** : champion + 300 négatifs de réunions SUMM-RE (split train, réunions
   et locuteurs disjoints du banc/val_ambient — test anti-fuite dédié) +
