@@ -126,6 +126,7 @@ from . import (  # noqa: E402,F401
     musan,
     silence,
     speech_negatives,
+    studio,
     tts_piper,
     word_clips,
     word_clips_recut,

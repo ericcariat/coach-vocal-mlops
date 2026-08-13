@@ -39,8 +39,21 @@ def eligible_segments(wakeword: str, forbidden_videos: set[str], minutes: float,
                       seed: int = 42, uncertain_s: float = 5.0) -> list:
     """Sélection reproductible : ~moitié de segments contenant le mot, moitié
     sans, une seule occurrence par vidéo, et **jamais** une vidéo vue à
-    l'entraînement (sinon on mesurerait de la mémorisation)."""
+    l'entraînement (sinon on mesurerait de la mémorisation).
+
+    Les segments ADDITIONNELS (`data/external/bench_extra/`, extension ROADMAP
+    P0 — SUMM-RE etc.) passent en premier : ils ne viennent jamais de vidéos
+    d'entraînement et leur vérité terrain est vérifiée. Le budget `minutes`
+    restant est rempli par le corpus YouTube comme avant."""
     import random
+
+    extra, used = [], 0.0
+    for s in corpus_mod.list_extra_segments(wakeword):
+        if used + s.duration > minutes * 60:     # le budget --minutes est un plafond
+            break
+        extra.append(s)
+        used += s.duration
+    budget_left = max(0.0, minutes * 60 - used)
 
     segments = [s for s in corpus_mod.list_segments(wakeword, uncertain_s=uncertain_s)
                 if s.video_id not in forbidden_videos]
@@ -50,9 +63,9 @@ def eligible_segments(wakeword: str, forbidden_videos: set[str], minutes: float,
     rng.shuffle(with_occ)
     rng.shuffle(without)
 
-    picked, seen = [], set()
+    picked, seen = list(extra), set()
     for pool in (with_occ, without):
-        budget, used = minutes * 60 / 2, 0.0
+        budget, used = budget_left / 2, 0.0
         for s in pool:
             if s.video_id in seen or used >= budget:
                 continue

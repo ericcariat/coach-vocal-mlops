@@ -121,6 +121,43 @@ def db_word_spans(word: str, db: Path | None = None,
     return out
 
 
+def list_extra_segments(word: str, root: Path | None = None) -> list["Segment"]:
+    """Segments de banc ADDITIONNELS, hors corpus YouTube (extension ROADMAP P0).
+
+    `data/external/bench_extra/` : des WAV (16 kHz mono) + `ground_truth.json` :
+        {"segments": {"nom.wav": {"occurrences": [t…], "uncertain": [t…],
+                                  "surfaces": ["l'éloquence", …]}}}
+    La vérité vient d'une transcription vérifiée (WhisperX) : un fichier absent
+    du JSON n'est PAS utilisé — jamais de « négatif présumé » sans preuve.
+    Ces segments ne proviennent pas de vidéos d'entraînement : ils sont
+    toujours éligibles au banc."""
+    import json
+
+    import soundfile as sf
+
+    root = root or paths.EXTERNAL / "bench_extra"
+    gt_path = root / "ground_truth.json"
+    if not gt_path.exists():
+        return []
+    gt = json.loads(gt_path.read_text()).get("segments", {})
+    segments = []
+    for name, truth in sorted(gt.items()):
+        wav = root / name
+        if not wav.exists():
+            continue
+        try:
+            duration = sf.info(wav).duration
+        except Exception:
+            continue
+        segments.append(Segment(
+            wav=wav, video_id=f"extra_{wav.stem}", start=0, end=int(duration),
+            vtt=None,
+            occurrences=[float(t) for t in truth.get("occurrences", [])],
+            surfaces=list(truth.get("surfaces", [])) or None,
+            uncertain=[float(t) for t in truth.get("uncertain", [])]))
+    return segments
+
+
 def surface_form(surface: str, word: str) -> str:
     """Regroupe une surface en forme comparable : « nu », « l' », « d' », « autre »
     (accents et apostrophes typographiques neutralisés)."""
