@@ -1,11 +1,18 @@
 {
   "champion": {
-    "run": "v11_speech_300",
+    "run": "v17_stack",
     "promoted": "2026-08-13",
-    "reason": "Banc étendu 54.9 min (seuil 0.8) : FA/h 66.7 → 33.9 (−49 %) à rappel identique 76.0 % vs v03. Dose 300 = optimum du sweep 0/100/300/500 (500 : rappel −8 pts). Critère pré-déclaré du sweep rempli.",
+    "reason": "Banc 53.1 min : 48.1 % · 6.8 FA/h au seuil 0.8 (v11 : 63.0 · 29.4) — FA ÷4.3, priorité silence assumée ; voix de l'auteur 10/10 en guidé ; 0.65 en réserve (55.6 · 9.1) si les ratés gênent",
     "evidence": {}
   },
   "history": [
+    {
+      "run": "v11_speech_300",
+      "promoted": "2026-08-13",
+      "reason": "Banc étendu 54.9 min (seuil 0.8) : FA/h 66.7 → 33.9 (−49 %) à rappel identique 76.0 % vs v03. Dose 300 = optimum du sweep 0/100/300/500 (500 : rappel −8 pts). Critère pré-déclaré du sweep rempli.",
+      "evidence": {},
+      "retired": "2026-08-13"
+    },
     {
       "run": "v03",
       "promoted": "2026-07-28",

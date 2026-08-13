@@ -41,6 +41,18 @@ lien `current/`. Ne jamais écrire un chemin de run en dur ailleurs.
   vérité terrain décalée ne donne pas un résultat imprécis, elle fabrique un
   résultat absurde — deuxième occurrence du motif (cf. banc de juillet).
 
+### v17_stack — 2026-08-13 — ⭐ PROMU (seuil live 0.8, priorité silence)
+- **Décision de l'auteur** : priorité aux FA/h. Au banc courant (53,1 min, 27 occ.,
+  2 nus difficiles inclus) : **48.1 % · 6.8 FA/h** au seuil 0.8 — contre
+  63.0 % · 29.4 pour v11 : **FA ÷ 4.3**, au prix du rappel banc assumé.
+- Mesure décisive du balayage : **0.7 est un point DOMINÉ** (9.1 FA/h comme
+  0.65 mais −3.7 pts) — seuls 0.65 (55.6 · 9.1) et 0.8 (48.1 · 6.8) sont des
+  choix rationnels ; 0.65 reste la réserve « rappel » (une ligne de config).
+- Contexte personnel : v17 fait **10/10 (proba 1.00)** sur la voix de l'auteur au
+  mot nu en test guidé — le rappel banc mesure des voix YouTube/réunion, pas
+  l'usage micro réel.
+- Seuil live : déjà 0.80 dans la config du mot — aucun changement nécessaire.
+
 ### v18_guided — 2026-08-13 — ❌ la boucle personnelle dégrade le banc
 - **But** : v17 + les 33 essais guidés de l'auteur (10 TP mot nu ×10, 15 FP
   « éloquente/élégance » + 8 TN ×5). Critère : ≥ v17 − 2 pts et FA/h ≤ v17.
