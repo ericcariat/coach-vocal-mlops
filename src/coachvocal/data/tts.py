@@ -25,6 +25,7 @@ import csv
 import json
 import subprocess
 import tempfile
+import zlib
 from datetime import datetime
 from pathlib import Path
 
@@ -58,8 +59,33 @@ def _synthesize(text: str, model: Path, speaker: int, length_scale: float,
     return sorted(set(out_dir.glob("*.wav")) - before)
 
 
-def _postprocess(src: Path, dst: Path, sr: int, clip_samples: int) -> float | None:
-    """22 050 Hz → 16 kHz, silences ôtés, recadrage centré 1 s, normalisation
+def place_word(trimmed: np.ndarray, clip_samples: int, align: str = "center",
+               margin: int = 0) -> np.ndarray:
+    """Place un mot rogné dans une fenêtre de `clip_samples`.
+
+    - `center` : historique (v01-v03) — padding réparti des deux côtés.
+    - `end` : fin du mot à `margin` échantillons du bord droit — la géométrie
+      du déclenchement streaming (cf. docs/FENETRE_GLISSANTE_ET_JITTER.html),
+      pertinente surtout pour les clips SYNTHÉTIQUES et STUDIO où l'on
+      contrôle la découpe. À coupler avec `augmentation.noise_prob` : le
+      padding de tête est du zéro, le bruit mélangé l'habille.
+    """
+    if len(trimmed) >= clip_samples:
+        if align == "end":
+            return trimmed[len(trimmed) - clip_samples:]
+        start = (len(trimmed) - clip_samples) // 2
+        return trimmed[start:start + clip_samples]
+    pad = clip_samples - len(trimmed)
+    if align == "end":
+        tail = min(margin, pad)
+        return np.pad(trimmed, (pad - tail, tail))
+    return np.pad(trimmed, (pad // 2, pad - pad // 2))
+
+
+def _postprocess(src: Path, dst: Path, sr: int, clip_samples: int,
+                 align: str = "center", jitter_s: float = 0.2,
+                 rng: np.random.Generator | None = None) -> float | None:
+    """22 050 Hz → 16 kHz, silences ôtés, recadrage (`align`), normalisation
     du pic. Renvoie la durée du mot après rognage (None si illisible)."""
     import librosa
 
@@ -69,12 +95,8 @@ def _postprocess(src: Path, dst: Path, sr: int, clip_samples: int) -> float | No
         return None
     trimmed, _ = librosa.effects.trim(audio, top_db=30)
     duration = len(trimmed) / sr
-    if len(trimmed) >= clip_samples:
-        start = (len(trimmed) - clip_samples) // 2
-        clip = trimmed[start:start + clip_samples]
-    else:
-        pad = clip_samples - len(trimmed)
-        clip = np.pad(trimmed, (pad // 2, pad - pad // 2))
+    margin = int((rng or np.random.default_rng(0)).uniform(0, jitter_s) * sr)
+    clip = place_word(trimmed, clip_samples, align, margin)
     peak = np.abs(clip).max()
     if peak > 0:
         clip = clip * (0.7 / peak)
@@ -84,7 +106,8 @@ def _postprocess(src: Path, dst: Path, sr: int, clip_samples: int) -> float | No
 
 def generate_pool(word_dir: Path, text: str, voices: list[dict], length_scales: list[float],
                   noise_scales: list[float], per_combo: int, sr: int, clip_samples: int,
-                  out_name: str = "tts_positives") -> dict:
+                  out_name: str = "tts_positives", align: str = "center",
+                  jitter_s: float = 0.2) -> dict:
     """Génère le pool complet + `manifest.csv` (une ligne par clip, avec sa
     combinaison — c'est ce qui rend l'échantillonnage stratifié possible)."""
     out_dir = word_dir / "generated" / out_name
@@ -107,7 +130,9 @@ def generate_pool(word_dir: Path, text: str, voices: list[dict], length_scales: 
                                        raw_dir, need)
                     for wav in wavs:
                         name = f"{tag}_{produced:04d}.wav"
-                        duration = _postprocess(wav, out_dir / name, sr, clip_samples)
+                        rng = np.random.default_rng(zlib.crc32(f"{out_name}|{name}".encode()))
+                        duration = _postprocess(wav, out_dir / name, sr, clip_samples,
+                                                align, jitter_s, rng)
                         wav.unlink(missing_ok=True)
                         if duration is None or not (QA_DUR_MIN_S <= duration <= QA_DUR_MAX_S):
                             (out_dir / name).unlink(missing_ok=True)

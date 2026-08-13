@@ -184,6 +184,19 @@ pour savoir si le modèle est plus faible sur une forme.
   sous-processus, ADR-006) → recette standard. Après synthèse, sauf
   besoin jury.
 
+- [ ] **Calage fin-de-fenêtre là où on contrôle la découpe** (décidé le
+  2026-08-13 soir) : le TTS (`tts.align: end` + `jitter_s`, pool_name distinct)
+  et le studio (`align: end` dans la source) savent désormais générer des clips
+  calés fin — la géométrie du déclenchement, sans les pièges des découpes
+  YouTube. Expérience : recette avec `tts_positives_end` vs champion.
+- [ ] **Accorder la machine à états au jitter** (hypothèse v10, précisée) :
+  la règle exige 3 fenêtres consécutives, soit ~375 ms de plage à hop 125 ms,
+  alors que le jitter d'un calage fin n'étale le pic que sur ~200 ms — les
+  références tiennent parce que leur cadence est plus fine (30 ms
+  microWakeWord, 80 ms openWakeWord : 3-5 confirmations ≈ 150-400 ms pour des
+  modèles PLUS tolérants en position). Pistes : jitter ≥ ~450 ms, ou
+  n_consecutive: 2, ou hop plus fin — chaque option re-calibre le banc.
+
 ### P3 — Architectures et benchmarks externes
 
 - [ ] Comparer `dscnn` à `cnn_baseline` au banc (déjà au backlog).

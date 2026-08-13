@@ -70,6 +70,11 @@ class TTSConfig(Base):
     noise_scales: list[float] = [0.5, 0.667, 0.9]
     per_combo: int = 50
     pool_name: str = "tts_positives"
+    # Placement du mot dans la fenêtre : "center" (historique) ou "end" (fin du
+    # mot à 0-`jitter_s` du bord droit — géométrie du déclenchement streaming).
+    # Un placement différent = un pool_name différent (cache).
+    align: Literal["center", "end"] = "center"
+    jitter_s: float = 0.2
 
 
 class WakewordConfig(Base):

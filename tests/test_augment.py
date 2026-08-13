@@ -69,3 +69,32 @@ def test_load_bank_rir_et_bruit(tmp_path):
 
 def test_load_bank_dossier_vide(tmp_path):
     assert _load_bank(str(tmp_path / "vide"), SR, None, 8, 42) is None
+
+
+# ── Placement du mot dans la fenêtre (TTS / studio) ───────────────────────────
+
+def test_place_word_end_aligne_la_fin():
+    from coachvocal.data.tts import place_word
+    word = np.ones(8000, np.float32)             # « mot » de 0,5 s
+    clip = place_word(word, SR, "end", margin=1600)   # marge 100 ms
+    assert len(clip) == SR
+    assert clip[-1600:].max() == 0.0             # marge de queue silencieuse
+    assert clip[-1601] == 1.0                    # fin du mot juste avant
+    assert clip[: SR - 8000 - 1600].max() == 0.0  # tête = padding
+
+
+def test_place_word_center_historique():
+    from coachvocal.data.tts import place_word
+    word = np.ones(8000, np.float32)
+    clip = place_word(word, SR, "center")
+    assert len(clip) == SR
+    lead = int((clip != 0).argmax())
+    assert abs(lead - (SR - 8000) // 2) <= 1     # centré
+
+
+def test_place_word_mot_plus_long_que_la_fenetre():
+    from coachvocal.data.tts import place_word
+    word = np.arange(SR + 4000, dtype=np.float32)
+    clip = place_word(word, SR, "end")
+    assert len(clip) == SR
+    assert clip[-1] == word[-1]                  # end : on garde la FIN du mot

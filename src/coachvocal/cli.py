@@ -153,7 +153,8 @@ def data_tts_pool(wakeword: str, per_combo: Optional[int] = None):
         paths.word_dir(wakeword), word.tts.text,
         [v.model_dump() for v in word.tts.voices], word.tts.length_scales,
         word.tts.noise_scales, per_combo or word.tts.per_combo,
-        word.sample_rate, word.clip_samples, word.tts.pool_name)
+        word.sample_rate, word.clip_samples, word.tts.pool_name,
+        word.tts.align, word.tts.jitter_s)
 
 
 @data_app.command("sources")

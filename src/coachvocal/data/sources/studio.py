@@ -25,10 +25,20 @@ from .guided import _center_crop
 
 @source("studio")
 def studio(src: SourceConfig, ctx: SourceContext) -> SplitPools:
-    """Params : `exclude_sessions` (liste de noms), `crop` (défaut true :
-    recadre 1 s autour du centre d'énergie), `dir` (défaut studio)."""
+    """Params : `exclude_sessions` (liste de noms), `crop` (défaut true),
+    `align` (« center » historique ou « end » : fin du mot à 0-`jitter_s` du
+    bord droit — géométrie du déclenchement streaming), `jitter_s` (0.2),
+    `dir` (défaut studio)."""
+    import zlib
+
+    import numpy as np
+
+    from ..tts import place_word
+
     exclude = set(src.params.get("exclude_sessions", []))
     do_crop = bool(src.params.get("crop", True))
+    align = str(src.params.get("align", "center"))
+    jitter_s = float(src.params.get("jitter_s", 0.2))
     root = ctx.word_dir / src.params.get("dir", "studio")
     out_root = ctx.cache(src.name) / "train"
     out_root.mkdir(parents=True, exist_ok=True)
@@ -50,8 +60,17 @@ def studio(src: SourceConfig, ctx: SourceContext) -> SplitPools:
                 out = out_root / f"{session.name}_{f.name}"
                 if not out.exists():
                     audio, _ = sf.read(f, dtype="float32")
-                    sf.write(out, _center_crop(audio, ctx.clip_samples, ctx.sr),
-                             ctx.sr, subtype="PCM_16")
+                    if align == "end":
+                        # rogner les silences puis caler la fin du mot au bord
+                        env = np.abs(audio)
+                        active = (env > env.max() * 0.1).nonzero()[0]
+                        word = audio[active[0]:active[-1] + 1] if len(active) else audio
+                        rng = np.random.default_rng(zlib.crc32(out.name.encode()))
+                        margin = int(rng.uniform(0, jitter_s) * ctx.sr)
+                        clip = place_word(word, ctx.clip_samples, "end", margin)
+                    else:
+                        clip = _center_crop(audio, ctx.clip_samples, ctx.sr)
+                    sf.write(out, clip, ctx.sr, subtype="PCM_16")
                 picked.append(out)
 
     # Même règle que les clips guidés : ma voix collectée après coup → train
