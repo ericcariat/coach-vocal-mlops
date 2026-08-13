@@ -114,6 +114,8 @@ def acav_windows(path: str, stride: int = 8) -> np.ndarray:
     découpe en fenêtres [16, 96] — les négatifs « océan » qui sculptent la
     frontière (l'ingrédient n°2 de leur silence)."""
     stream = np.load(path, mmap_mode="r")
+    if stream.ndim == 3:                         # déjà fenêtré (N, 16, 96)
+        return np.asarray(stream[::stride], dtype=np.float32)
     idx = np.arange(0, len(stream) - HEAD_EMBEDDINGS, stride)
     out = np.empty((len(idx), HEAD_EMBEDDINGS, 96), np.float32)
     for k, i in enumerate(idx):
