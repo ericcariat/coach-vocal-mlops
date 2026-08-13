@@ -94,11 +94,27 @@ pour savoir si le modèle est plus faible sur une forme.
   - Rappel anti-fuite : MUSAN, Common Voice, GSC sont interdits au banc (déjà
     dans l'entraînement).
 
-  **Protocole retenu** : ~45 min YouTube français non thématique + ~10-15 min
-  de stress (brouhaha type DiPCo ou équivalent français type café/bureau
-  YouTube). **Chaque fichier passe par WhisperX** pour certifier l'absence du
-  mot « éloquence » (et, s'il y est, l'occurrence entre dans la vérité
-  terrain au lieu d'être ignorée). Plafond total : 1 h.
+  **Corpus français de conversation continue** (sélection du 2026-08-13) :
+
+  | Source | Description et intérêt | Accès |
+  |---|---|---|
+  | **SUMM-RE — choix recommandé** | ~95 h de réunions spontanées en français, 3-4 participants. Une session ≈ trois discussions de 20 min → une heure continue de type « bureau » facilement. Licence CC BY-SA 4.0. | [Hugging Face](https://huggingface.co/datasets/linagora/SUMM-RE) · [Article](https://aclanthology.org/2024.jeptalnrecital-taln.35/) |
+  | **CID — Corpus of Interactional Data** | Huit conversations spontanées d'1 h entre deux francophones. Excellente parole continue, mais salle anéchoïque : à compléter avec du bruit de café/bureau. | [ATALA](https://www.atala.org/node/810) · [Accès](https://sppas.org/bigi/Doc/2015-SPPAS-Tutorial-HongKong/SPPAS-tutorial_02_introduction.html) |
+  | **ESLO** | Grand corpus de français parlé : repas, réunions, commerces, quotidien. Le plus proche du contexte « repas/café », sélection moins directe. | [Présentation](https://segcor.cnrs.fr/lll-eslo/) · [ESLO-FLEU HF](https://huggingface.co/datasets/FrancophonIA/ESLO-FLEU) |
+  | **TCOF** | Interactions entre adultes téléchargeables : conversations, entretiens, réunions, de quelques minutes à 45 min+. Diversifie conditions et locuteurs. | [Corpus](https://ct3.ortolang.fr/data/tcof/) · [ORTOLANG](https://hdl.handle.net/11403/tcof/v2) |
+  | **Libre à vous !** | Émission de débat FR en MP3/OGG (~1 h 30, plusieurs intervenants, transcriptions). Parole continue légalement réutilisable, mais son de podcast traité, pas un vrai café. | [Archives](https://www.april.org/les-podcasts-libre-a-vous-pour-accompagner-votre-ete-4) · [Licences](https://www.april.org/libre-a-vous-diffusee-mardi-28-septembre-2021) |
+
+  **Protocole retenu** : commencer par une session présentielle complète de
+  **SUMM-RE** (~1 h de réunion française, licence claire), compléter si besoin
+  par CID/ESLO/TCOF pour la conversation familière et les environnements
+  naturels, ou par du YouTube non thématique via le scraper (dialogues, café,
+  bureau, rue) ; garder DiPCo comme sous-ensemble de stress optionnel.
+  **Chaque fichier passe par WhisperX** pour certifier l'absence de
+  « éloquence » / « l'éloquence » / « d'éloquence » (et si le mot y est,
+  l'occurrence entre dans la vérité terrain au lieu d'être ignorée).
+  Conserver pour chaque enregistrement : source, licence, date de
+  téléchargement, identifiant précis (→ ligne DATA.md, DVC si non
+  régénérable). Plafond total : 1 h.
 - [ ] **Re-découper les positifs : fin du mot près de la fin de fenêtre,
   jitter ~200 ms** (recette de découpe, sources brutes inchangées). Expérience
   dédiée vs v03_replica, critère avant le run. C'est le levier n°1 suggéré
