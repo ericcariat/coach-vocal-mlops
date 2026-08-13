@@ -82,6 +82,37 @@ inexploitable, 6 FN tous confirmés.
 
 ---
 
+## 2026-08-13 (nuit) — Exécution de la ROADMAP P0-P2 : porte, banc étendu, découpe
+
+Session autonome d'exécution de la feuille de route. Livré et committé :
+
+- **Porte qualité ADR-007** (`data/gate.py`, config, CLI `data gate` /
+  `gate-dir`, page Streamlit « Qualité », 11 tests). Première passe : 5 610
+  douteux → recalibrage par POOL (fin chargée : mots isolés seulement ; pools
+  de bruit indulgents sur pic/SNR) → 8 664 acceptés · 134 rejetés · 622
+  douteux dont 336 positifs à fin chargée. Leçon : des seuils uniques sont
+  aveugles au contexte — le critère dépend de la nature du pool.
+- **Lot curation.db repassé par la porte** (2 007 raw) : la machine confirme
+  96 % des « checked » humains, rejette 14 (durées > 3 s — clips bruts longs),
+  et accepterait 4 des 10 rejets humains → les 10 rejets humains sont importés
+  comme verdicts « non » (l'oreille voit ce que l'énergie ne voit pas).
+- **Banc étendu à 54,9 min** avec 42,4 min de SUMM-RE (3 réunions, vérité
+  terrain = alignements mot à mot du dataset, licence CC BY-SA). **Surprise :
+  les réunions ordinaires font PLUS de FA que le corpus thématique** (~72/h
+  contre ~48/h pour v03) — « thématique = pire cas » est réfuté.
+- **Rappel par forme au banc** : « d'éloquence » 3/7 (43 %) contre
+  « l'éloquence » 13/15 (87 %) — le point faible est une forme précise, pas
+  « le mot » en général.
+- **v09_gate** (recette filtrée) : FA/h −39 % à 0.8 mais rappel −8 pts —
+  la sévérité de la porte (622 douteux exclus) coûte du rappel ; l'audit
+  humain des douteux doit précéder un nouveau run.
+- **Re-découpe fin-de-fenêtre** (`word_clips_recut`, dataset `tts500_recut`,
+  run v10 en cours) ; **RIR MIT + bruit multi-SNR** implémentés et testés
+  (v12 prêt) ; **sweep parole continue** configuré (v11 ×3) ; **studio
+  d'enregistrement** écrit (page 7, source `studio`) — test micro en attente.
+
+---
+
 ## 2026-08-13 — Audit des positifs + synthèse des études : la feuille de route
 
 Cinq lectures en parallèle (les quatre études `ETUDE_*.md` + un audit chiffré

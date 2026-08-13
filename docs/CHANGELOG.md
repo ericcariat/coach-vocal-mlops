@@ -23,6 +23,30 @@ lien `current/`. Ne jamais écrire un chemin de run en dur ailleurs.
 
 ## Runs
 
+### Banc étendu — 2026-08-13 — nouvelle référence de mesure
+- **54,9 min** (18 segments YouTube + 3 pistes SUMM-RE de 42,4 min), 25
+  occurrences. Le banc reporte désormais le **rappel par forme** (nu/l'/d').
+- **v03_replica sur ce banc (seuil 0.8)** : rappel 76.0 % (19/25) ·
+  **66.7 FA/h** — la nouvelle référence pour toutes les comparaisons.
+- **Deux découvertes** : (1) les réunions françaises ordinaires déclenchent
+  PLUS de FA que le corpus thématique (51 des 61 FA sur SUMM-RE, ~72/h contre
+  ~48/h sur YouTube) — l'hypothèse « thématique = pire cas » est réfutée, la
+  robustesse au champ lointain devient prioritaire (→ v12_rir) ; (2) le rappel
+  s'effondre sur la forme élidée **« d'éloquence » : 3/7 (43 %)** contre 13/15
+  (87 %) pour « l'éloquence » — piste de données ciblée.
+
+### v09_gate — 2026-08-13 — 🔬 porte qualité : FA/h −39 % mais rappel −8 pts @0.8
+- **But** : valider la porte ADR-007 de bout en bout (recette v03 filtrée :
+  134 rejetés + 622 douteux exclus en attendant l'audit humain).
+- **Banc étendu (seuil 0.8)** : rappel 68.0 % (17/25) · **40.5 FA/h** — contre
+  76.0 % · 66.7 pour v03_replica. Critère ❌ sur le rappel (seuil : ≥ 74 %),
+  ✅ sur les FA/h. À 0.5, v09 DOMINE (76.0 % · 85.3/h contre 72.0 % · 118.1) —
+  le compromis dépend du seuil.
+- **Verdict** : l'infrastructure de la porte est validée ; sa SÉVÉRITÉ actuelle
+  (622 douteux exclus dont 336 positifs) coûte du rappel à seuil haut.
+  Prochain geste : l'audit humain des douteux (page Qualité) réintégrera les
+  vrais positifs — puis re-run. Pas de promotion.
+
 ### v08_metal_maxrelu — 2026-08-13 — ❌ le test d'attribution condamne le backend
 - **But** : séparer l'effet backend de l'effet activation, ce que v06/v07 ne
   permettaient pas. `relu_max` (`tf.maximum(x, 0)`) est mathématiquement
