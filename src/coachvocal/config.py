@@ -110,12 +110,46 @@ class AugmentationConfig(Base):
     enabled: bool = True
 
 
+class QualityGateConfig(Base):
+    """Porte qualité à trois sorties (accepté / rejeté / douteux) — ADR-007.
+
+    Deux niveaux de seuils : le seuil FRANC rejette automatiquement, la zone
+    entre les deux envoie le clip dans la file d'audit humain (Streamlit).
+    Opt-in par recette : `enabled: false` laisse les recettes historiques
+    strictement comparables."""
+
+    enabled: bool = False
+    min_duration_s: float = 0.3
+    max_duration_s: float = 2.0
+    reject_peak_below: float = 0.001           # muet
+    doubt_peak_below: float = 0.02
+    reject_saturation_above: float = 0.05      # >5 % d'échantillons saturés
+    doubt_saturation_above: float = 0.01
+    reject_snr_db_below: float = 0.0
+    doubt_snr_db_below: float = 6.0            # seuil d'avertissement ViolaWake
+    doubt_tail_energy_above: float = 0.5       # fin « chargée » (mot suivant ?)
+    frame_ms: int = 100
+    # Le contrôle de fin chargée n'a de sens que pour des clips de MOT ISOLÉ :
+    # une tranche de parole continue ou de bruit finit énergique par nature.
+    tail_check_pools: list[str] = ["positif", "proche", "guided", "moi"]
+    # Pools de bruit/musique : faibles et sans contraste par nature — les
+    # contrôles de DOUTE (pic faible, SNR) n'y signifient rien ; les rejets
+    # francs (muet, saturé, durée, sr) s'appliquent toujours.
+    lenient_pools: list[str] = ["musan", "noise", "music"]
+    # Un douteux non tranché par l'humain est exclu (« exclude ») ou gardé
+    # (« include ») — la règle du projet : le doute n'entre pas sans audit.
+    doubt_policy: Literal["exclude", "include"] = "exclude"
+    # Pools jamais filtrés (silencieux par conception — cf. QUIET_BY_DESIGN)
+    skip_pools: list[str] = ["silence", "fragments"]
+
+
 class DatasetConfig(Base):
     name: str
     data_seed: int = 42                        # seed DONNÉES — ne jamais changer
     splits_csv: str = "splits.csv"
     sources: list[SourceConfig]
     augmentation: AugmentationConfig = AugmentationConfig()
+    quality_gate: QualityGateConfig = QualityGateConfig()
 
     def enabled_sources(self) -> list[SourceConfig]:
         return [s for s in self.sources if s.enabled]

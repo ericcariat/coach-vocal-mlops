@@ -300,6 +300,24 @@
       "speed_min": 0.85,
       "speed_max": 1.15,
       "enabled": true
+    },
+    "quality_gate": {
+      "enabled": false,
+      "min_duration_s": 0.3,
+      "max_duration_s": 2.0,
+      "reject_peak_below": 0.001,
+      "doubt_peak_below": 0.02,
+      "reject_saturation_above": 0.05,
+      "doubt_saturation_above": 0.01,
+      "reject_snr_db_below": 0.0,
+      "doubt_snr_db_below": 6.0,
+      "doubt_tail_energy_above": 0.5,
+      "frame_ms": 100,
+      "doubt_policy": "exclude",
+      "skip_pools": [
+        "silence",
+        "fragments"
+      ]
     }
   },
   "model": {

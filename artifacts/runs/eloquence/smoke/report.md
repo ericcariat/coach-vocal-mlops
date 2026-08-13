@@ -8,7 +8,7 @@ Contrôle de bout en bout du pipeline (résultats sans valeur scientifique).
 - dataset : **smoke** (seed données 42, empreinte `8ecbf4603ae3e769`)
 - modèle : **cnn_baseline** (`cnn_baseline`)
 - entraînement : 2/2 epochs, batch 64, lr 0.001, seeds [42] (élu par `val_loss`)
-- durée : **22 s** au total, dont 20.0 s de `model.fit` cumulés — backend **CPU** (GPU visibles : [])
+- durée : **23 s** au total, dont 20.5 s de `model.fit` cumulés — backend **CPU** (GPU visibles : [])
 
 ## Composition du jeu de données
 
@@ -22,11 +22,11 @@ Contrôle de bout en bout du pipeline (résultats sans valeur scientifique).
 
 | Métrique | Valeur |
 |---|---:|
-| Accuracy | 93.55% |
-| F1 (classe positive) | 0.8863 |
+| Accuracy | 91.88% |
+| F1 (classe positive) | 0.8610 |
 | **FRR** (mot raté) | 5.04% |
-| **FAR** (fausse alarme) | 6.96% |
-| ROC-AUC | 0.9711 |
+| **FAR** (fausse alarme) | 9.23% |
+| ROC-AUC | 0.9710 |
 | Clips évalués | 899 (dont 238 positifs) |
 
 > Rappel : ces chiffres décrivent des clips de 1 s pré-découpés. La
@@ -41,7 +41,7 @@ Contrôle de bout en bout du pipeline (résultats sans valeur scientifique).
 
 | Seed | val_loss | F1 test | FRR | FAR | Epochs |
 |---|---:|---:|---:|---:|---:|
-| 42 ⭐ | 0.2376 | 0.8863 | 5.04% | 6.96% | 2 |
+| 42 ⭐ | 0.2548 | 0.8610 | 5.04% | 9.23% | 2 |
 
 > L'élection se fait sur `val_loss`. Les colonnes de test sont montrées
 > *a posteriori* pour l'audit : les utiliser pour choisir serait un biais

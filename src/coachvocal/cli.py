@@ -92,6 +92,31 @@ def data_audit(experiment: str, set_: list[str] = typer.Option(None, "--set", he
     console.print(f"{'✅  aucun problème' if rep['ok'] else '⚠️  problèmes détectés'} — {png}")
 
 
+@data_app.command("gate")
+def data_gate(experiment: str, set_: list[str] = typer.Option(None, "--set", help=SET_HELP)):
+    """Porte qualité (ADR-007) : mesure chaque clip de la recette et le classe
+    accepté / rejeté / douteux. Les douteux s'auditent dans l'interface
+    (page Qualité), puis `quality_gate.enabled: true` filtre le build."""
+    from .data import sources as src_registry
+    from .data.gate import gate_dir, run_gate
+
+    cfg = load_experiment(experiment, set_)
+    gate_cfg = cfg.dataset.quality_gate
+    ctx = src_registry.SourceContext(wakeword=cfg.wakeword, dataset=cfg.dataset)
+    files: dict[str, list] = {}
+    for source_cfg in cfg.dataset.enabled_sources():
+        if any(tag in source_cfg.name for tag in gate_cfg.skip_pools):
+            continue                       # silencieux par conception
+        pools = src_registry.get(source_cfg.type)(source_cfg, ctx)
+        files[source_cfg.name] = sorted({f for s in source_cfg.splits
+                                         for f in pools.get(s, [])})
+    report = run_gate(files, gate_cfg, cfg.wakeword.sample_rate, cfg.wakeword.name)
+    n_doubt = report["counts"]["douteux"]
+    if n_doubt:
+        console.print(f"👂  {n_doubt} douteux à auditer : make ui → page Qualité")
+    console.print(f"💾  {gate_dir(cfg.wakeword.name)}")
+
+
 @data_app.command("tts-pool")
 def data_tts_pool(wakeword: str, per_combo: Optional[int] = None):
     """Génère le pool de positifs synthétiques Piper décrit dans la config du mot."""

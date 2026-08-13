@@ -22,11 +22,27 @@ def build(cfg: ExperimentConfig, verbose: bool = True) -> Manifest:
     if verbose:
         print(f"=== Dataset « {cfg.dataset.name} » (seed données {cfg.dataset.data_seed}) ===")
 
+    gate_cfg = cfg.dataset.quality_gate
+    excluded: set[str] | None = None
+    if gate_cfg.enabled:
+        from .gate import load_exclusions
+        excluded = load_exclusions(cfg.wakeword.name, gate_cfg.doubt_policy)
+        if excluded is None:
+            raise RuntimeError(
+                "quality_gate.enabled=true mais aucune porte n'a tourné : lancer "
+                "`coachvocal data gate <experiment>` d'abord (le build ne filtre "
+                "jamais en silence).")
+        if verbose:
+            print(f"  porte qualité active : {len(excluded)} clip(s) exclus")
+
     for source_cfg in cfg.dataset.enabled_sources():
         fn = src_registry.get(source_cfg.type)
         pools = fn(source_cfg, ctx)
+        skip = any(tag in source_cfg.name for tag in gate_cfg.skip_pools)
         for split in source_cfg.splits:
             files = pools.get(split, [])
+            if excluded is not None and not skip:
+                files = [f for f in files if Path(f).name not in excluded]
             if files:
                 manifest.add(source_cfg.name, files, source_cfg.label, split, source_cfg.copies)
         if verbose:
