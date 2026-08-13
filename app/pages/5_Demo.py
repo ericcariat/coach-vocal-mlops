@@ -117,57 +117,99 @@ else:
                                 if d["index"] == sys_default), 0)
         except Exception:
             default_idx = 0
-    dcol, tcol = st.columns([3, 1])
-    dev = dcol.selectbox("Micro", devices, index=default_idx,
-                         format_func=lambda d: f"{d['index']} — {d['name']}")
-    duration = tcol.number_input("Durée (s)", 10, 180, 30, 5)
+    dev = st.selectbox("Micro", devices, index=default_idx,
+                       format_func=lambda d: f"{d['index']} — {d['name']}")
 
-    if st.button("▶️ Démarrer l'écoute", type="primary"):
-        import queue as _queue
-        import time
+    # La capture tourne dans un THREAD (l'interface reste réactive) ; un
+    # fragment Streamlit se rafraîchit tout seul pour afficher l'état.
+    class _Listener:
+        def __init__(self, detector, sample_rate: int, device: int):
+            self.detector = detector
+            self.sample_rate = sample_rate
+            self.device = device
+            self.running = False
+            self.proba = 0.0
+            self.peak = 0.0
+            self.detections: list[str] = []
+            self.last_trigger = 0.0
+            self.error: str | None = None
 
-        import sounddevice as sd
+        def start(self):
+            import threading
+            self.running = True
+            threading.Thread(target=self._loop, daemon=True).start()
 
+        def stop(self):
+            self.running = False
+
+        def _loop(self):
+            import queue as _queue
+            import time
+
+            import sounddevice as sd
+            q: _queue.Queue = _queue.Queue()
+
+            def _cb(indata, frames, time_info, s):  # noqa: ARG001
+                q.put(indata[:, 0].copy())
+
+            try:
+                with sd.InputStream(samplerate=self.sample_rate,
+                                    blocksize=self.detector.hop, channels=1,
+                                    dtype="float32", device=self.device,
+                                    callback=_cb):
+                    while self.running:
+                        try:
+                            chunk = q.get(timeout=0.5)
+                        except _queue.Empty:
+                            continue
+                        event = self.detector.push(chunk)
+                        if not event:
+                            continue
+                        self.proba, self.peak = float(event["proba"]), float(event["peak"])
+                        if event["triggered"]:
+                            self.last_trigger = time.monotonic()
+                            self.detections.append(time.strftime("%H:%M:%S"))
+            except Exception as exc:                     # micro débranché, etc.
+                self.error = str(exc)
+                self.running = False
+
+    listener = st.session_state.get("demo_listener")
+    en_cours = listener is not None and listener.running
+
+    c_start, c_stop = st.columns(2)
+    if c_start.button("▶️ Démarrer l'écoute", type="primary", disabled=en_cours):
         with st.spinner("Chargement du modèle…"):
             detector = _load_selected_detector()
-        status = st.empty()
-        gauge = st.empty()
-        journal = st.empty()
+        listener = _Listener(detector, word.sample_rate, dev["index"])
+        st.session_state["demo_listener"] = listener
+        listener.start()
+        st.rerun()
+    if c_stop.button("⏹ Arrêter", disabled=not en_cours):
+        listener.stop()
+        st.rerun()
 
-        q: _queue.Queue = _queue.Queue()
+    @st.fragment(run_every=0.4 if en_cours else None)
+    def _live_status():
+        import time
+        lst = st.session_state.get("demo_listener")
+        if lst is None:
+            st.caption("Prêt — choisis un modèle et démarre l'écoute.")
+            return
+        if lst.error:
+            st.error(f"Capture interrompue : {lst.error}")
+            return
+        if lst.running and time.monotonic() - lst.last_trigger < 2.5:
+            st.success(f"## 🚨 « {WAKEWORD} » détecté !")
+        elif lst.running:
+            st.info(f"🎙 J'écoute… — {len(lst.detections)} détection(s)")
+        else:
+            st.info(f"🏁 Session terminée — {len(lst.detections)} détection(s).")
+        st.progress(min(1.0, lst.proba),
+                    text=f"probabilité {lst.proba:.0%} · pic {lst.peak:.2f}")
+        if lst.detections:
+            st.success("Détections à : " + " · ".join(lst.detections))
 
-        def _cb(indata, frames, time_info, s):  # noqa: ARG001
-            q.put(indata[:, 0].copy())
-
-        detections: list[str] = []
-        flash_until = 0.0
-        t_end = time.monotonic() + duration
-        with sd.InputStream(samplerate=word.sample_rate, blocksize=detector.hop,
-                            channels=1, dtype="float32", device=dev["index"],
-                            callback=_cb):
-            while time.monotonic() < t_end:
-                try:
-                    chunk = q.get(timeout=0.5)
-                except _queue.Empty:
-                    continue
-                event = detector.push(chunk)
-                now = time.monotonic()
-                if event and event["triggered"]:
-                    flash_until = now + 2.5      # le bandeau reste ~2,5 s
-                    detections.append(time.strftime("%H:%M:%S"))
-                if flash_until > now:
-                    status.success(f"## 🚨 « {WAKEWORD} » détecté !")
-                else:
-                    reste = int(t_end - now)
-                    status.info(f"🎙 J'écoute… ({reste} s restantes) — "
-                                f"{len(detections)} détection(s)")
-                if event:
-                    gauge.progress(min(1.0, float(event["proba"])),
-                                   text=f"probabilité {event['proba']:.0%} · "
-                                        f"pic {event['peak']:.2f}")
-        status.info(f"🏁 Session terminée — {len(detections)} détection(s).")
-        if detections:
-            journal.success("Détections à : " + " · ".join(detections))
+    _live_status()
 
 st.divider()
 st.subheader("En ligne de commande")
