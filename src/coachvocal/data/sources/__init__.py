@@ -120,6 +120,7 @@ def mark_done(root: Path) -> SplitPools:
 # Import des modules concrets → remplit le registre (effet de bord assumé).
 from . import (  # noqa: E402,F401
     common_voice,
+    continuous_dir,
     fragments,
     gsc,
     guided,
