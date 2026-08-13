@@ -23,17 +23,23 @@ lien `current/`. Ne jamais écrire un chemin de run en dur ailleurs.
 
 ## Runs
 
-### v10_recut — 2026-08-13 — ❌ instructif : la géométrie seule casse tout
-- **But** : positifs re-découpés fin-de-fenêtre + jitter (levier n°1 de la
-  littérature), une seule variable vs v03.
-- **Banc étendu (seuil 0.8)** : rappel **100 %** (25/25, toutes formes) mais
-  **781.9 FA/h** — le modèle tire sur tout.
-- **Diagnostic** : les positifs re-découpés (contexte réel + mot) sont les
-  SEULS exemples d'entraînement ressemblant à un flux naturel ; face à des
-  négatifs restés « mots isolés / crops d'1 s », le modèle apprend « parole
-  continue = positif ». **La re-découpe et les négatifs de parole continue
-  sont un couple** — v10b les teste ensemble. Rétrospectivement, ceci éclaire
-  aussi v04 : sa chute de rappel était l'image miroir du même déséquilibre.
+### v10_recut / v10b (1ᵉ version) — 2026-08-13 — ❌ un bug de découpe, pas la géométrie
+- **Symptôme** : rappel « 100 % » mais 782-810 FA/h — le modèle tirait sur tout.
+- **Premier diagnostic (faux)** : « la géométrie seule casse tout ». La
+  vérification par corrélation croisée a montré la vraie cause : **~2/3 des
+  fenêtres re-découpées ne contenaient pas le mot**. Deux pièges superposés :
+  `t_end` de discovery.db n'est pas la fin du mot (spans jusqu'à 15 s), et les
+  temps dérivent de −0.1 à −0.9 s selon les segments (ré-encodage yt-dlp).
+  Les « positifs » étaient donc en grande partie de la parole quelconque —
+  d'où « tout est positif ».
+- **Correctif** : la source `word_clips_recut` localise désormais chaque mot
+  **par corrélation croisée avec le clip propre d'origine** (précis à
+  l'échantillon, auto-vérifiant : occurrence introuvable → écartée, jamais
+  découpée à l'aveugle), et mesure la longueur du mot sur le padding de zéros
+  du clip. Vérifié : 24/25 fenêtres échantillonnées contiennent le mot, début
+  entre 0.03 et 0.38 s (fin près du bord). Leçon pour le notebook : une
+  vérité terrain décalée ne donne pas un résultat imprécis, elle fabrique un
+  résultat absurde — deuxième occurrence du motif (cf. banc de juillet).
 
 ### Banc étendu — 2026-08-13 — nouvelle référence de mesure
 - **54,9 min** (18 segments YouTube + 3 pistes SUMM-RE de 42,4 min), 25
