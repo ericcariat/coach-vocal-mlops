@@ -1,9 +1,17 @@
 {
   "champion": {
-    "run": "v03",
-    "promoted": "2026-07-28",
-    "reason": "Champion repris de coach-vocal_etape1 : banc streaming 16 min, rappel 68.4% et 52.7 FA/h au seuil 0.8 (meilleur des 3 finalistes). Reverifie apres migration sur 3.3 min : rappel 80% (4/5), 54 FA/h.",
+    "run": "v11_speech_300",
+    "promoted": "2026-08-13",
+    "reason": "Banc étendu 54.9 min (seuil 0.8) : FA/h 66.7 → 33.9 (−49 %) à rappel identique 76.0 % vs v03. Dose 300 = optimum du sweep 0/100/300/500 (500 : rappel −8 pts). Critère pré-déclaré du sweep rempli.",
     "evidence": {}
   },
-  "history": []
+  "history": [
+    {
+      "run": "v03",
+      "promoted": "2026-07-28",
+      "reason": "Champion repris de coach-vocal_etape1 : banc streaming 16 min, rappel 68.4% et 52.7 FA/h au seuil 0.8 (meilleur des 3 finalistes). Reverifie apres migration sur 3.3 min : rappel 80% (4/5), 54 FA/h.",
+      "evidence": {},
+      "retired": "2026-08-13"
+    }
+  ]
 }

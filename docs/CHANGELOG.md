@@ -41,6 +41,20 @@ lien `current/`. Ne jamais écrire un chemin de run en dur ailleurs.
   vérité terrain décalée ne donne pas un résultat imprécis, elle fabrique un
   résultat absurde — deuxième occurrence du motif (cf. banc de juillet).
 
+### v11_speech_300 — 2026-08-13 — ⭐ PROMU : la dose utile de parole continue
+- **Sweep dose-réponse 0/100/300/500** (train seulement, val/test intacts —
+  contrairement à v04), critère écrit avant les runs : minimiser les FA/h au
+  banc sous contrainte rappel ≥ référence − 2 pts.
+- **Banc étendu (seuil 0.8)** : dose 0 → 76.0 % · 66.7 FA/h ; dose 100 →
+  76.0 % · 91.9 ; **dose 300 → 76.0 % · 33.9 (−49 %)** ; dose 500 → 68.0 % ·
+  33.9 (le rappel commence à céder). Clips : F1 0.9347 (comparable, val/test
+  inchangés).
+- **Verdict** : la courbe complète confirme le récit v04 : 1500 était
+  l'overdose, 500 en est le début, 300 est l'optimum — FA/h divisées par deux
+  à rappel strictement identique. **Promu champion** sur les faits du banc.
+- Reste vrai : « d'éloquence » 3/7 — la dose ne corrige pas la forme faible
+  (piste données ciblée, backlog).
+
 ### v10b_recut_speech (découpe corrigée) — 2026-08-13 — ❌ sous la référence
 - **Banc étendu (seuil 0.8)** : rappel 64.0 % (16/25) · 118.1 FA/h — contre
   76.0 % · 66.7 pour v03_replica. Critère ❌ sur les deux volets. À 0.5 :
