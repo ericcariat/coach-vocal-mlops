@@ -41,6 +41,21 @@ lien `current/`. Ne jamais écrire un chemin de run en dur ailleurs.
   vérité terrain décalée ne donne pas un résultat imprécis, elle fabrique un
   résultat absurde — deuxième occurrence du motif (cf. banc de juillet).
 
+### v10b_recut_speech (découpe corrigée) — 2026-08-13 — ❌ sous la référence
+- **Banc étendu (seuil 0.8)** : rappel 64.0 % (16/25) · 118.1 FA/h — contre
+  76.0 % · 66.7 pour v03_replica. Critère ❌ sur les deux volets. À 0.5 :
+  80 % · 378/h.
+- **Verdict** : même correctement découpée, la géométrie fin-de-fenêtre (+300
+  négatifs continus) ne bat pas l'ancienne sur ce banc, à architecture et
+  protocole constants. **Hypothèse mécanique à tester avant d'enterrer la
+  piste** : la règle de décision exige 3 fenêtres consécutives > seuil, or un
+  modèle entraîné « fin de mot au bord » ne pique par construction que sur
+  ~1-2 positions de fenêtre (hop 125 ms, jitter 200 ms) — la géométrie l'a
+  rendu PRÉCIS en temps, et la machine à états punit cette précision.
+  À explorer : jitter élargi (~400 ms) ou n_consecutive adapté — mais c'est
+  une expérience à part entière (la machine à états est commune banc/live,
+  la changer re-calibre tout). La géométrie historique reste en place.
+
 ### Banc étendu — 2026-08-13 — nouvelle référence de mesure
 - **54,9 min** (18 segments YouTube + 3 pistes SUMM-RE de 42,4 min), 25
   occurrences. Le banc reporte désormais le **rappel par forme** (nu/l'/d').
