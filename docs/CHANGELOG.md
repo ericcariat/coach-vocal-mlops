@@ -41,6 +41,19 @@ lien `current/`. Ne jamais écrire un chemin de run en dur ailleurs.
   vérité terrain décalée ne donne pas un résultat imprécis, elle fabrique un
   résultat absurde — deuxième occurrence du motif (cf. banc de juillet).
 
+### Piste B, round 3 (ocean_ctx) — 2026-08-13 — l'hypothèse du contexte CONFIRMÉE
+- **Protocole** : positifs à CONTEXTE RÉEL (1 862/1 968 fenêtres de 2 s
+  relocalisées par corrélation croisée dans les segments, fin du mot au bord ;
+  106 replis padding) + océan ACAV 11 h. 3 seeds.
+- **Résultat** : le rappel revient — **92-100 %**, avec « nu » 2/2 et « d' »
+  8-9/9 SYSTÉMATIQUES (ces têtes détectent tout ce que le CNN rate). Mais la
+  frontière reste lâche : 235-645 FA/h.
+- **Lecture** : le remède contexte fonctionne (hypothèse du round 2 confirmée
+  par l'expérience) ; en contrepartie les positifs ressemblent désormais aux
+  négatifs de flux — 11 h d'océan ne suffisent plus à séparer (eux : 2 000 à
+  31 000 h). **Round 4 en attente** : le fichier ACAV 2 000 h (16 Go, en
+  téléchargement) — le dernier ingrédient d'échelle.
+
 ### Piste B, round 2 (ocean11h) — 2026-08-13 — la balançoire, et sa cause
 - **Protocole** : mêmes positifs réels + 60 167 fenêtres de négatifs ACAV
   pré-calculés (~11 h, ratio 30:1). 3 seeds.
