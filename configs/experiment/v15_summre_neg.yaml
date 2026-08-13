@@ -1,0 +1,31 @@
+# L'attaque sur les FA/h de réunion (2026-08-13) : recette du champion + 300
+# fenêtres de réunions SUMM-RE en négatif (le domaine où v11 fait encore ~50
+# FA/h au banc), ÉLECTION fa_ambient (v13 : dispersion ×3,6 entre seeds).
+#
+# Critère de succès, écrit AVANT le run (banc étendu, seuil 0.8) :
+#   • FA/h ≤ 27 (champion : 33.9, soit −20 % minimum) ;
+#   • rappel ≥ 74 % (champion : 76.0).
+#   • Lecture secondaire : les FA sur les segments SUMM-RE du banc doivent
+#     porter l'essentiel de la baisse (c'est l'hypothèse de domaine).
+# Vérification : coachvocal bench --run v11_speech_300 --run v15_summre_neg --minutes 60
+name: v15_summre_neg
+description: >
+  Champion + 300 négatifs de réunions SUMM-RE (train, réunions disjointes du
+  banc et de val_ambient) + élection fa_ambient — cibler les FA du domaine
+  réunion.
+
+wakeword: eloquence
+dataset: speech_neg_300_summre
+model: cnn_baseline
+
+training:
+  epochs: 30
+  batch_size: 64
+  learning_rate: 0.001
+  early_stopping_patience: 5
+  class_weight: true
+  threshold: 0.5
+  seeds: [42, 43, 44, 45, 46]
+  selection_metric: fa_ambient
+  selection_min_val_recall: 0.90
+  use_gpu: false

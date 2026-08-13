@@ -1,0 +1,18 @@
+# Champion (dose 300 YouTube) + 300 fenêtres de RÉUNIONS FRANÇAISES (SUMM-RE,
+# split train, réunions 001a/001b — disjointes du banc ET de val_ambient).
+# Motivation mesurée : le banc étendu montre que les réunions produisent ~72
+# FA/h contre ~48 sur YouTube — on entraîne enfin sur le domaine qui fait mal.
+extends: speech_neg_300
+name: speech_neg_300_summre
+
+sources:
+  - name: summre_neg_300
+    type: continuous_dir
+    label: 0
+    splits: [train]
+    params:
+      dir: data/external/summre_train
+      budget: 300
+      stride_s: 1.0
+      min_peak: 0.02
+      max_per_file: 200

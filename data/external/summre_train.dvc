@@ -1,0 +1,6 @@
+outs:
+- md5: 4f2c92b989ef9261317d741ee9569ed7.dir
+  size: 76385380
+  nfiles: 2
+  hash: md5
+  path: summre_train
