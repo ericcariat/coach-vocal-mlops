@@ -79,10 +79,23 @@ def _fit_candidate(cfg: ExperimentConfig, manifest: Manifest, seed: int, out_dir
     y_true = np.concatenate([lab.numpy() for _, lab in test_ds]).ravel().astype(int)
     test_metrics = clip_eval.evaluate(y_true, y_proba, cfg.training.threshold)
 
+    # Rappel sur les positifs de VAL (contrainte de l'élection fa_ambient) —
+    # jamais le test : le test ne sert qu'une fois, à la fin.
+    va_proba = model.predict(val_ds, verbose=0).ravel()
+    va_true = np.concatenate([lab.numpy() for _, lab in val_ds]).ravel().astype(int)
+    pos = va_true == 1
+    val_recall = float((va_proba[pos] >= cfg.training.threshold).mean()) if pos.any() else 0.0
+
+    fa_ambient = None
+    if cfg.training.selection_metric == "fa_ambient":
+        fa_ambient = _ambient_fa_per_hour(model, cfg)
+
     best_ep = int(np.argmin(history["val_loss"]))
     candidate = {
         "seed": seed,
         "fit_s": fit_s,
+        "val_recall": val_recall,
+        "fa_ambient": fa_ambient,
         "epochs_run": len(history["loss"]),
         "best_epoch": best_ep + 1,
         "val_loss": float(history["val_loss"][best_ep]),
@@ -102,6 +115,60 @@ def _fit_candidate(cfg: ExperimentConfig, manifest: Manifest, seed: int, out_dir
                          **{f"test_{k}": v for k, v in test_metrics.items()
                             if isinstance(v, (int, float))}})
     return candidate
+
+
+def _ambient_fa_per_hour(model, cfg: ExperimentConfig) -> float | None:
+    """FA/h du candidat sur le flux ambiant de validation (sans occurrence du
+    mot, vérifié) — la MÊME machine à états que le live et le banc.
+    None si le dossier val_ambient est vide."""
+    import soundfile as sf
+
+    from ..inference.detector import WakeWordDetector
+
+    root = paths.word_dir(cfg.wakeword.name) / "val_ambient"
+    wavs = sorted(root.glob("*.wav")) if root.exists() else []
+    if not wavs:
+        return None
+    detector = WakeWordDetector(model, cfg.wakeword)
+    triggers, seconds = 0, 0.0
+    for wav in wavs:
+        audio, sr = sf.read(wav, dtype="float32")
+        if sr != cfg.wakeword.sample_rate:
+            continue
+        triggers += len(detector.run_offline(audio))
+        seconds += len(audio) / sr
+    return round(triggers / (seconds / 3600), 2) if seconds else None
+
+
+def _elect(candidates: list[dict], training) -> tuple[dict, str]:
+    """Élection par la VALIDATION (jamais le test). Renvoie (élu, motif).
+
+    - val_loss / val_accuracy : historique (min loss / max accuracy) ;
+    - fa_ambient : formulation PRODUIT (microWakeWord, LiveKit) — parmi les
+      candidats à rappel val ≥ contrainte, celui aux FA/h ambiantes minimales.
+      Si aucun ne satisfait la contrainte : le meilleur rappel val (et on le
+      dit), plutôt qu'un modèle sourd champion du silence."""
+    metric = training.selection_metric
+    if metric == "fa_ambient":
+        with_fa = [c for c in candidates if c.get("fa_ambient") is not None]
+        if not with_fa:
+            raise RuntimeError("selection_metric=fa_ambient mais aucun candidat "
+                               "n'a de FA/h ambiantes (val_ambient/ vide ?)")
+        ok = [c for c in with_fa if c["val_recall"] >= training.selection_min_val_recall]
+        if ok:
+            best = min(ok, key=lambda c: c["fa_ambient"])
+            return best, (f"min FA/h ambiantes ({best['fa_ambient']}/h) parmi "
+                          f"{len(ok)} candidat(s) à rappel val ≥ "
+                          f"{training.selection_min_val_recall:.0%}")
+        best = max(with_fa, key=lambda c: c["val_recall"])
+        return best, (f"AUCUN candidat n'atteint le rappel val "
+                      f"{training.selection_min_val_recall:.0%} — repli sur le "
+                      f"meilleur rappel ({best['val_recall']:.1%})")
+    if metric.replace("val_", "") == "loss":
+        best = min(candidates, key=lambda c: c["val_loss"])
+        return best, f"min(val_loss {best['val_loss']:.4f})"
+    best = max(candidates, key=lambda c: c["val_accuracy"])
+    return best, f"max(val_accuracy {best['val_accuracy']:.4f})"
 
 
 def train(cfg: ExperimentConfig, run_id: str | None = None, track: bool = True,
@@ -142,11 +209,8 @@ def train(cfg: ExperimentConfig, run_id: str | None = None, track: bool = True,
                     _fit_candidate(cfg, manifest, seed, run_dir / "candidates" / f"seed{seed}", t))
 
         # ── Élection par la VALIDATION (jamais par le test) ───────────────────
-        key = cfg.training.selection_metric.replace("val_", "")
-        best = min(candidates, key=lambda c: c["val_loss"]) if key == "loss" \
-            else max(candidates, key=lambda c: c["val_accuracy"])
-        print(f"\n🏅  Élu : seed {best['seed']} "
-              f"(val_loss {best['val_loss']:.4f} — sélection par la validation)")
+        best, motif = _elect(candidates, cfg.training)
+        print(f"\n🏅  Élu : seed {best['seed']} ({motif} — sélection par la validation)")
 
         summary = _finalize(cfg, run_id, run_dir, manifest, candidates, best, quality, started)
         tracker.log_metrics({f"selected_test_{k}": v for k, v in best["test"].items()
@@ -188,6 +252,8 @@ def _finalize(cfg, run_id, run_dir: Path, manifest: Manifest, candidates: list[d
         "fit_s_total": round(sum(c.get("fit_s", 0) for c in candidates), 1),
         "use_gpu": cfg.training.use_gpu,
         "candidates": [{"seed": c["seed"], "val_loss": c["val_loss"],
+                        "val_recall": c.get("val_recall"),
+                        "fa_ambient": c.get("fa_ambient"),
                         "test_f1": c["test"]["f1_pos"], "test_frr": c["test"]["frr"],
                         "test_far": c["test"]["far"], "epochs": c["epochs_run"],
                         "fit_s": c.get("fit_s")}

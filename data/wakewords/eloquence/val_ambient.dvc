@@ -1,0 +1,6 @@
+outs:
+- md5: 6aff514cf2706ae6f3bb3c0124600f18.dir
+  size: 66131160
+  nfiles: 2
+  hash: md5
+  path: val_ambient

@@ -183,7 +183,13 @@ class TrainingConfig(Base):
     threshold: float = 0.5                      # seuil d'évaluation par clip
     # Protocole anti-variance CPU : N candidats, élu par la VAL, jamais le test.
     seeds: list[int] = [42]
+    # "val_loss" | "val_accuracy" | "fa_ambient" — ce dernier élit le candidat
+    # aux FA/h minimales sur le flux ambiant de validation
+    # (data/wakewords/<mot>/val_ambient/, jamais les mêmes enregistrements que
+    # le banc), sous contrainte de rappel val (formulation produit,
+    # cf. microWakeWord/LiveKit — ROADMAP P1).
     selection_metric: str = "val_loss"
+    selection_min_val_recall: float = 0.90     # contrainte pour fa_ambient
     use_gpu: bool = False                       # cf. docs/decisions/ADR-002
 
 

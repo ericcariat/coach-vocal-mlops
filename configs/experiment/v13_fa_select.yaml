@@ -1,0 +1,34 @@
+# Élection PRODUIT (ROADMAP P1) : recette v03 inchangée, seule l'ÉLECTION des
+# candidats change — au lieu de min(val_loss), on élit le candidat aux FA/h
+# minimales sur 34,5 min de flux ambiant de validation (2 réunions SUMM-RE
+# DISJOINTES du banc, zéro occurrence vérifiée), sous contrainte de rappel
+# val ≥ 90 %. C'est la sélection de microWakeWord/LiveKit : une métrique
+# produit, pas une loss.
+#
+# Critère de succès, écrit AVANT le run :
+#   • banc étendu (seuil 0.8) : FA/h < v03_replica (66.7) à rappel ≥ 74 % —
+#     l'hypothèse est que val_loss élit des candidats bavards, et qu'un
+#     critère FA/h ambiantes transfère au banc ;
+#   • lecture secondaire : la dispersion des FA/h ambiantes entre les 5 seeds
+#     (si elle est faible, l'élection ne peut rien trier et on le saura).
+# Vérification : coachvocal bench --run v03_replica --run v13_fa_select --minutes 60
+name: v13_fa_select
+description: >
+  Recette v03 élue par FA/h sur flux ambiant de validation (SUMM-RE hors banc)
+  sous contrainte de rappel val ≥ 90 % — sélection produit, pas val_loss.
+
+wakeword: eloquence
+dataset: tts500
+model: cnn_baseline
+
+training:
+  epochs: 30
+  batch_size: 64
+  learning_rate: 0.001
+  early_stopping_patience: 5
+  class_weight: true
+  threshold: 0.5
+  seeds: [42, 43, 44, 45, 46]
+  selection_metric: fa_ambient
+  selection_min_val_recall: 0.90
+  use_gpu: false
