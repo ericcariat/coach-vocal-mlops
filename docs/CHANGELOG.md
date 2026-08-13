@@ -41,6 +41,21 @@ lien `current/`. Ne jamais écrire un chemin de run en dur ailleurs.
   vérité terrain décalée ne donne pas un résultat imprécis, elle fabrique un
   résultat absurde — deuxième occurrence du motif (cf. banc de juillet).
 
+### v17_stack — 2026-08-13 — la courbe domine, le point de fonctionnement bouge
+- **Recette** : cumul rappel-d'abord — RIR/multi-SNR (+ rappel), dose 300
+  YouTube, SUMM-RE 75, hard negatives ×2, élection fa_ambient (élu : seed 42,
+  1.74 FA/h ambiantes).
+- **Critère pré-déclaré (seuil 0.8)** : ❌ au pied de la lettre (51.9 % à 0.8 —
+  la recette décale la calibration vers le bas). MAIS le balayage de seuils
+  montre que **la courbe de v17 domine celle du champion sur toute sa longueur
+  utile** : à 0.55 → **70.4 % · 18.1 FA/h** (champion@0.8 : 63.0 · 29.4 —
+  mieux sur les DEUX axes) ; à 0.65 → 63.0 % · **9.0 FA/h** (rappel égal,
+  FA ÷ 3.3). Et « d'éloquence » : **8/10** (record, effet RIR).
+- **Honnêteté méthodologique** : promouvoir v17 implique de changer AUSSI le
+  seuil de fonctionnement live (0.8 → 0.55 ou 0.65), un paramètre produit —
+  le critère écrit ne l'avait pas prévu. Décision laissée à l'auteur : point
+  « rappel » (0.55) ou point « silence » (0.65). Pas de promotion automatique.
+
 ### Banc recomposé + v15b/v16 — 2026-08-13 — le champion tient, la frontière est claire
 - **Banc recomposé** : les 10 vidéos sacrifiées aux hard negatives sont
   sorties, remplacées automatiquement — 53,1 min, **27 occurrences dont 10
