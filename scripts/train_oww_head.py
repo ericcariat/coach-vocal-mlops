@@ -121,6 +121,101 @@ def acav_windows(path: str, stride: int = 8) -> np.ndarray:
     return out
 
 
+
+def collect_context_positives() -> list[np.ndarray]:
+    """Positifs à CONTEXTE RÉEL (remède au round 2) : fenêtres de PAD_S s
+    découpées dans les segments du corpus, fin du mot au bord droit, mot
+    localisé par corrélation croisée avec le clip propre (la méthode
+    auto-vérifiante de word_clips_recut). Les clips sans segment source
+    (moi/guided) restent padés de silence — minoritaires."""
+    import re
+
+    import soundfile as sf
+
+    from coachvocal.data import corpus as corpus_mod
+
+    pad_n = int(PAD_S * SR)
+    out: list[np.ndarray] = []
+    seg_index = {}
+    for wav in (corpus_mod.CORPUS / "audio").glob("*.wav"):
+        m = re.match(r"(.+)_(\d+)-(\d+)$", wav.stem)
+        if m:
+            seg_index.setdefault(m.group(1), []).append(
+                (int(m.group(2)), int(m.group(3)), wav))
+
+    files = sorted((ROOT / "exports/oww_training_b/positifs_reels").glob("*.wav"))
+    n_ctx = n_pad = 0
+    for f in files:
+        clip, csr = sf.read(f, dtype="float32")
+        if csr != SR:
+            continue
+        if clip.ndim > 1:
+            clip = clip.mean(axis=1)
+        m = re.match(rf"yt_({corpus_mod.VIDEO_ID})_.*_(\d+(?:\.\d+)?)s", f.stem)
+        placed = False
+        if m:
+            vid, t0 = m.group(1), float(m.group(2))
+            for s0, s1, seg_wav in seg_index.get(vid, []):
+                if not (s0 <= t0 <= s1):
+                    continue
+                audio, sr2 = sf.read(seg_wav, dtype="float32")
+                if sr2 != SR:
+                    break
+                if audio.ndim > 1:
+                    audio = audio.mean(axis=1)
+                expected = int((t0 - s0) * SR)
+                lo = max(0, expected - 2 * SR)
+                hi = min(len(audio), expected + 2 * SR + SR)
+                template = clip[: SR // 2]
+                zone = audio[lo:hi]
+                if len(zone) < len(template) + 1:
+                    break
+                corr = np.correlate(zone, template, mode="valid")
+                energy = np.convolve(zone ** 2, np.ones(len(template)), "valid")
+                ncc = corr / (np.sqrt(energy * np.sum(template ** 2)) + 1e-9)
+                if float(ncc.max()) < 0.6:
+                    break
+                w_start = lo + int(np.argmax(ncc))
+                nz = (np.abs(clip) > 1e-5).nonzero()[0]
+                w_len = int(nz[-1] + 1) if len(nz) else len(clip)
+                end = min(len(audio), w_start + w_len + int(0.1 * SR))
+                start = end - pad_n
+                if start < 0:
+                    break
+                out.append(audio[start:end].astype(np.float32))
+                n_ctx += 1
+                placed = True
+                break
+        if not placed:                        # repli : silence en tête
+            a = clip[-pad_n:] if len(clip) >= pad_n else np.pad(
+                clip, (pad_n - len(clip), 0))
+            out.append(a.astype(np.float32))
+            n_pad += 1
+    print(f"    positifs contexte réel : {n_ctx} · repli padding : {n_pad}")
+    return out
+
+
+def embed_arrays(arrays, mel_sess, emb_sess, tag: str) -> np.ndarray:
+    """Comme embed_files mais depuis des tampons audio déjà chargés."""
+    CACHE.mkdir(parents=True, exist_ok=True)
+    cache_file = CACHE / f"{tag}_{len(arrays)}.npy"
+    if cache_file.exists():
+        return np.load(cache_file)
+    out = np.zeros((len(arrays), HEAD_EMBEDDINGS, 96), np.float32)
+    for i, audio in enumerate(arrays):
+        mel = mel_sess.run(None, {"input": audio[np.newaxis, :]})[0]
+        frames = np.squeeze(mel) / 10.0 + 2.0
+        wins = np.stack([frames[j:j + EMB_WIN_FRAMES]
+                         for j in range(0, len(frames) - EMB_WIN_FRAMES + 1,
+                                        EMB_STEP_FRAMES)])
+        embs = emb_sess.run(None, {"input_1": wins[:, :, :, np.newaxis]})[0]
+        out[i] = embs.reshape(len(embs), 96)[-HEAD_EMBEDDINGS:]
+        if i % 500 == 0:
+            print(f"    {tag} : {i}/{len(arrays)}", flush=True)
+    np.save(cache_file, out)
+    return out
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--seeds", type=int, nargs="+", default=[42, 43, 44])
@@ -129,6 +224,8 @@ def main():
                     help="features négatives oWW (.npy, flux N×96)")
     ap.add_argument("--acav-stride", type=int, default=8)
     ap.add_argument("--tag", type=str, default="nosdonnees")
+    ap.add_argument("--context", action="store_true",
+                    help="positifs à contexte réel (fenêtres 2 s du corpus)")
     args = ap.parse_args()
 
     import onnxruntime as ort
@@ -139,7 +236,10 @@ def main():
 
     pos_files, neg_files = collect_files()
     print(f"📦  {len(pos_files)} positifs réels · {len(neg_files)} négatifs (recette)")
-    X_pos = embed_files(pos_files, mel, emb, "pos")
+    if args.context:
+        X_pos = embed_arrays(collect_context_positives(), mel, emb, "pos_ctx")
+    else:
+        X_pos = embed_files(pos_files, mel, emb, "pos")
     X_neg = embed_files(neg_files, mel, emb, "neg")
     parts_X, parts_y = [X_pos, X_neg], [np.ones(len(X_pos)), np.zeros(len(X_neg))]
     if args.acav:
