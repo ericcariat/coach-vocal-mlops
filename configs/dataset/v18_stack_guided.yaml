@@ -1,0 +1,9 @@
+# v17 + les 33 essais guidés de l'auteur du 2026-08-13 (10 TP mot nu à proba 1.00,
+# 15 FP « éloquente/élégance » à 0.87-1.00, 8 TN) — tous passés par la porte
+# qualité. Boost des négatifs guidés plafonné ×5 (leçon v16 : ×10 assourdit).
+extends: v17_stack
+name: v18_stack_guided
+
+sources:
+  - name: guided_hard_neg
+    copies: 5

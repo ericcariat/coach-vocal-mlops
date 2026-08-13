@@ -1,0 +1,31 @@
+# La boucle personnelle fermée : test guidé (ta voix) → TP/FP/TN étiquetés à
+# l'oreille → recette. Les 15 FP « éloquente/élégance » (probas 0.87-1.00 !)
+# sont le déficit mesuré n°1 au micro proche ; les 10 TP mot nu renforcent la
+# forme rare.
+#
+# Critère de succès, écrit AVANT le run (banc courant, seuil 0.55) :
+#   • FA/h ≤ v17 (18.2) ET rappel ≥ v17 − 2 pts (63.0 → ≥ 61) au même banc,
+#     mesurés dans le MÊME run de banc ;
+#   • contrôle personnel : re-session guidée — pièges FP < 15/23, TP mot nu
+#     toujours 10/10 (ne pas gagner les pièges en perdant ta voix).
+# Vérification : coachvocal bench --run v17_stack --run v18_guided --minutes 60 --thresholds 0.55,0.65
+name: v18_guided
+description: >
+  v17 + essais guidés de l'auteur (TP mot nu + 15 FP cousins en négatifs durs ×5) —
+  la boucle test guidé → entraînement.
+
+wakeword: eloquence
+dataset: v18_stack_guided
+model: cnn_baseline
+
+training:
+  epochs: 30
+  batch_size: 64
+  learning_rate: 0.001
+  early_stopping_patience: 5
+  class_weight: true
+  threshold: 0.5
+  seeds: [42, 43, 44, 45, 46]
+  selection_metric: fa_ambient
+  selection_min_val_recall: 0.90
+  use_gpu: false
