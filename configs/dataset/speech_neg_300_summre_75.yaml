@@ -1,0 +1,11 @@
+# Sweep de la dose SUMM-RE (v15 à 300 : FA réunions 17→2 mais rappel −24 pts).
+# Une variable : la dose de réunions. Le reste = recette du champion.
+extends: speech_neg_300
+name: speech_neg_300_summre_75
+
+sources:
+  - name: summre_neg_75
+    type: continuous_dir
+    label: 0
+    splits: [train]
+    params: {dir: data/external/summre_train, budget: 75, stride_s: 1.0, min_peak: 0.02, max_per_file: 200}

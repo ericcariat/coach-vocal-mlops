@@ -1,0 +1,23 @@
+# Point 150 du sweep de dose SUMM-RE. Critère commun, écrit avant les runs :
+# retenir la dose qui minimise FA/h au banc SOUS CONTRAINTE rappel ≥ 74 %.
+# v15 (dose 300) : 8.7 FA/h mais 52 % de rappel — hors contrainte.
+name: v15b_summre_150
+description: >
+  Champion + 150 négatifs de réunions SUMM-RE (train) — point 150 du
+  sweep de dose du domaine réunion.
+
+wakeword: eloquence
+dataset: speech_neg_300_summre_150
+model: cnn_baseline
+
+training:
+  epochs: 30
+  batch_size: 64
+  learning_rate: 0.001
+  early_stopping_patience: 5
+  class_weight: true
+  threshold: 0.5
+  seeds: [42, 43, 44, 45, 46]
+  selection_metric: fa_ambient
+  selection_min_val_recall: 0.90
+  use_gpu: false
