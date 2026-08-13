@@ -1,0 +1,37 @@
+# Validation de bout en bout de la porte qualité (ADR-007) : recette v03 avec
+# la porte activée. Exclus : 134 rejetés automatiques + 622 douteux non
+# tranchés (doubt_policy: exclude) — dont les 336 positifs YouTube à fin
+# chargée. Le test par clips n'est PLUS comparable à v03_replica (val/test
+# filtrés aussi) ; seul le banc l'est.
+#
+# Critère de succès, écrit AVANT le run :
+#   • banc streaming : rappel ≥ v03_replica − 2 points (73.9 % → ≥ 71.9 %)
+#     ET FA/h ≤ v03_replica (47.1). Hypothèse : retirer les clips défectueux
+#     ne coûte rien en rappel et peut réduire les FA (moins de bruit appris).
+#   • si le rappel chute davantage : les « douteux » exclus contenaient de
+#     vrais positifs utiles → resserrer les seuils ou attendre l'audit humain,
+#     et le noter — c'est une mesure de la sévérité de la porte, pas un échec
+#     de la porte elle-même.
+# Vérification : coachvocal bench --run v03_replica --run v09_gate --minutes 16
+name: v09_gate
+description: >
+  Recette v03 (tts500) filtrée par la porte qualité ADR-007
+  (134 rejetés + 622 douteux exclus en attendant l'audit humain).
+
+wakeword: eloquence
+dataset:
+  ref: tts500
+  quality_gate:
+    enabled: true
+model: cnn_baseline
+
+training:
+  epochs: 30
+  batch_size: 64
+  learning_rate: 0.001
+  early_stopping_patience: 5
+  class_weight: true
+  threshold: 0.5
+  seeds: [42, 43, 44, 45, 46]
+  selection_metric: val_loss
+  use_gpu: false

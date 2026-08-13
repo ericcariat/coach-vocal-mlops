@@ -39,14 +39,15 @@ def build(cfg: ExperimentConfig, verbose: bool = True) -> Manifest:
         fn = src_registry.get(source_cfg.type)
         pools = fn(source_cfg, ctx)
         skip = any(tag in source_cfg.name for tag in gate_cfg.skip_pools)
+        got = {}
         for split in source_cfg.splits:
             files = pools.get(split, [])
             if excluded is not None and not skip:
                 files = [f for f in files if Path(f).name not in excluded]
+            got[split] = len(files)
             if files:
                 manifest.add(source_cfg.name, files, source_cfg.label, split, source_cfg.copies)
         if verbose:
-            got = {s: len(pools.get(s, [])) for s in source_cfg.splits}
             boost = f" ×{source_cfg.copies}" if source_cfg.copies > 1 else ""
             print(f"  {source_cfg.name:<18} {source_cfg.type:<18} label={source_cfg.label}"
                   f"{boost:<4} {got}")
