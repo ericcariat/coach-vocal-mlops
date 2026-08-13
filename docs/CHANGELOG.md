@@ -41,6 +41,20 @@ lien `current/`. Ne jamais écrire un chemin de run en dur ailleurs.
   vérité terrain décalée ne donne pas un résultat imprécis, elle fabrique un
   résultat absurde — deuxième occurrence du motif (cf. banc de juillet).
 
+### v18_guided — 2026-08-13 — ❌ la boucle personnelle dégrade le banc
+- **But** : v17 + les 33 essais guidés de l'auteur (10 TP mot nu ×10, 15 FP
+  « éloquente/élégance » + 8 TN ×5). Critère : ≥ v17 − 2 pts et FA/h ≤ v17.
+- **Banc (0.55)** : 51.9 % · 39.8 FA/h contre 63.0 % · 18.2 pour v17 — ❌ sur
+  les deux axes.
+- **Verdict** : surpondérer une acoustique unique (une voix, un micro, une
+  pièce — 310 positifs effectifs) fait glisser le modèle hors du domaine du
+  banc. **Enseignement de fond : l'objectif « banc » (voix variées, champ
+  lointain) et l'objectif « ma voix au micro » sont deux cibles distinctes qui
+  peuvent diverger.** La voie propre pour la seconde : boost modeste (×2-3),
+  ou un banc personnel dédié, ou une adaptation finale légère — pas un ×10.
+  Side-note : la session guidée elle-même a mesuré v17 à 10/10 sur la voix
+  de l'auteur (mot nu, proba 1.00) — le besoin personnel est déjà couvert par v17.
+
 ### v17_stack — 2026-08-13 — la courbe domine, le point de fonctionnement bouge
 - **Recette** : cumul rappel-d'abord — RIR/multi-SNR (+ rappel), dose 300
   YouTube, SUMM-RE 75, hard negatives ×2, élection fa_ambient (élu : seed 42,
