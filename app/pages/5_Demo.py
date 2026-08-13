@@ -72,6 +72,77 @@ if uploaded:
                     "exactement ce qui évite la plupart des fausses alarmes.")
         _ = times
 
+# ── Écoute en direct au micro ─────────────────────────────────────────────────
+st.divider()
+st.subheader("🎙 Écoute en direct")
+st.caption("Le micro de CETTE machine (Streamlit tourne en local). Même modèle, "
+           "même seuil et même machine à états que le banc et `live listen`.")
+
+try:
+    from coachvocal.inference.live import list_devices
+    devices = list_devices()
+except Exception:
+    devices = []
+
+if not devices:
+    st.warning("Aucun micro détecté (ou `sounddevice` indisponible).")
+else:
+    dcol, tcol = st.columns([3, 1])
+    dev = dcol.selectbox("Micro", devices,
+                         format_func=lambda d: f"{d['index']} — {d['name']}")
+    duration = tcol.number_input("Durée (s)", 10, 180, 30, 5)
+
+    if st.button("▶️ Démarrer l'écoute", type="primary"):
+        import queue as _queue
+        import time
+
+        import sounddevice as sd
+
+        runtime.configure(use_gpu=False)     # Metal fausse les probas (ADR-002)
+        from coachvocal.inference.detector import load_detector
+
+        with st.spinner("Chargement du modèle…"):
+            detector = load_detector(paths.run_dir(WAKEWORD, run) / "model.keras",
+                                     word, threshold)
+        status = st.empty()
+        gauge = st.empty()
+        journal = st.empty()
+
+        q: _queue.Queue = _queue.Queue()
+
+        def _cb(indata, frames, time_info, s):  # noqa: ARG001
+            q.put(indata[:, 0].copy())
+
+        detections: list[str] = []
+        flash_until = 0.0
+        t_end = time.monotonic() + duration
+        with sd.InputStream(samplerate=word.sample_rate, blocksize=detector.hop,
+                            channels=1, dtype="float32", device=dev["index"],
+                            callback=_cb):
+            while time.monotonic() < t_end:
+                try:
+                    chunk = q.get(timeout=0.5)
+                except _queue.Empty:
+                    continue
+                event = detector.push(chunk)
+                now = time.monotonic()
+                if event and event["triggered"]:
+                    flash_until = now + 2.5      # le bandeau reste ~2,5 s
+                    detections.append(time.strftime("%H:%M:%S"))
+                if flash_until > now:
+                    status.success(f"## 🚨 « {WAKEWORD} » détecté !")
+                else:
+                    reste = int(t_end - now)
+                    status.info(f"🎙 J'écoute… ({reste} s restantes) — "
+                                f"{len(detections)} détection(s)")
+                if event:
+                    gauge.progress(min(1.0, float(event["proba"])),
+                                   text=f"probabilité {event['proba']:.0%} · "
+                                        f"pic {event['peak']:.2f}")
+        status.info(f"🏁 Session terminée — {len(detections)} détection(s).")
+        if detections:
+            journal.success("Détections à : " + " · ".join(detections))
+
 st.divider()
 st.subheader("En ligne de commande")
 st.code("uv run coachvocal live listen                # micro always-on\n"
