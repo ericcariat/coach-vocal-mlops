@@ -214,8 +214,15 @@ def bench_cmd(wakeword: str = "eloquence",
 
     out = paths.report_dir("stream_bench") / f"{wakeword}.json"
     out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(json.dumps(payload, indent=2, ensure_ascii=False, default=str))
-    console.print(f"\n💾  {out}")
+    body = json.dumps(payload, indent=2, ensure_ascii=False, default=str)
+    out.write_text(body)                          # « dernier banc » (compat)
+    # Archive horodatée : un banc n'écrase JAMAIS les événements d'un autre —
+    # la page Banc streaming permet de choisir lequel auditer.
+    from datetime import datetime as _dt
+    stamp = _dt.now().strftime("%Y%m%d_%H%M%S")
+    archive = out.parent / f"{wakeword}_{stamp}.json"
+    archive.write_text(body)
+    console.print(f"\n💾  {out}  (+ archive {archive.name})")
 
 
 # ── Registre ──────────────────────────────────────────────────────────────────

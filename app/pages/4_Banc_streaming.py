@@ -19,7 +19,30 @@ st.set_page_config(page_title="Banc streaming", page_icon="🎬", layout="wide")
 st.title("🎬 Banc streaming")
 
 WAKEWORD = "eloquence"
-bench = registry.bench_results(WAKEWORD)
+
+# Chaque banc est archivé horodaté (un run n'écrase jamais les événements d'un
+# autre) : on choisit ici lequel afficher/auditer. Défaut : le plus récent.
+
+
+bench_dir = paths.report_dir("stream_bench")
+archives = sorted(bench_dir.glob(f"{WAKEWORD}_*.json"), reverse=True)
+
+
+def _label(p):
+    try:
+        d = json.loads(p.read_text())
+        return (f"{d.get('date', p.stem)[:16]} — "
+                f"{', '.join(list(d.get('results', {}))[:3])}"
+                + ("…" if len(d.get("results", {})) > 3 else ""))
+    except Exception:
+        return p.name
+
+
+if archives:
+    chosen = st.selectbox("Banc à afficher", archives, format_func=_label)
+    bench = json.loads(chosen.read_text())
+else:
+    bench = registry.bench_results(WAKEWORD)
 
 st.markdown("""
 On rejoue la **logique live exacte** (fenêtre d'1 s, décision toutes les 125 ms,
