@@ -145,3 +145,47 @@ def test_run_gate_et_exclusions(tmp_path, cfg, monkeypatch):
 
 def test_exclusions_sans_rapport():
     assert gate.load_exclusions("mot_inexistant", "exclude") is None
+
+
+# ── Source studio : consommation d'une session (sans micro) ───────────────────
+
+def test_source_studio_consomme_une_session(tmp_path, monkeypatch):
+    """Une session simulée : seules les prises keep=true, recadrées 1 s,
+    partent au train — le contrat de la page Studio."""
+    import json
+
+    import soundfile as _sf
+
+    from coachvocal.config import SourceConfig, load_wakeword
+    from coachvocal.data.sources import SourceContext
+    from coachvocal.data.sources.studio import studio as studio_source
+
+    word = load_wakeword("eloquence")
+    session = tmp_path / "word" / "studio" / "2026-08-13"
+    session.mkdir(parents=True)
+    rng = np.random.default_rng(0)
+    for name in ("normal_01.wav", "normal_02.wav", "fort_01.wav"):
+        _sf.write(session / name,
+                  (0.3 * rng.normal(0, 0.5, int(1.5 * 16000))).astype(np.float32), 16000)
+    (session / "metadata.json").write_text(json.dumps({"takes": {
+        "normal_01.wav": {"keep": True, "condition": "normal"},
+        "normal_02.wav": {"keep": False, "condition": "normal"},   # refusée
+        "fort_01.wav": {"keep": True, "condition": "fort"},
+    }}))
+
+    class Ctx(SourceContext):
+        @property
+        def word_dir(self):
+            return tmp_path / "word"
+
+        def cache(self, name):
+            return tmp_path / "cache" / name
+
+    ctx = Ctx(wakeword=word, dataset=None)
+    src = SourceConfig(name="studio_positif", type="studio", label=1)
+    pools = studio_source(src, ctx)
+    assert len(pools["train"]) == 2                    # keep=false écartée
+    assert pools["val"] == [] and pools["test"] == []  # train uniquement
+    for f in pools["train"]:
+        audio, sr = _sf.read(f)
+        assert sr == 16000 and len(audio) == word.clip_samples   # recadrée 1 s
