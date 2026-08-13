@@ -38,3 +38,4 @@ artifacts/reports/**/*.wav
 .DS_Store
 .idea/
 .vscode/
+exports/
