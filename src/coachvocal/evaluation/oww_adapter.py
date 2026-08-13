@@ -94,7 +94,10 @@ class OwwDetector:
         from collections import deque
 
         sr = self.wakeword.sample_rate
-        n = int(self.window_s * sr)
+        # Tampon > fenêtre de la tête : il faut 196 trames mel PLEINES (16
+        # embeddings), soit un peu plus d'audio que window_s — 1,96 s donnait
+        # ~194 trames et la tête ne tournait jamais (proba 0 permanente).
+        n = int((self.window_s + 0.1) * sr)
         if not hasattr(self, "_buffer"):
             self._buffer = deque(maxlen=n)
             self._buffer.extend(np.zeros(n, np.float32))
