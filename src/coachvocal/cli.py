@@ -117,6 +117,28 @@ def data_gate(experiment: str, set_: list[str] = typer.Option(None, "--set", hel
     console.print(f"💾  {gate_dir(cfg.wakeword.name)}")
 
 
+@data_app.command("gate-dir")
+def data_gate_dir(directory: Path, pool: str = typer.Option(..., help="nom du pool dans le rapport"),
+                  wakeword: str = "eloquence",
+                  max_duration_s: float = 3.0):
+    """Porte qualité sur un dossier arbitraire (ex. raw/, lot curation.db) —
+    mêmes seuils que la recette, durée max adaptée aux clips non recadrés."""
+    from .config import QualityGateConfig
+    from .data.gate import gate_dir, run_gate
+
+    word = load_wakeword(wakeword)
+    cfg = QualityGateConfig(max_duration_s=max_duration_s)
+    files = sorted(directory.glob("*.wav"))
+    if not files:
+        raise typer.BadParameter(f"aucun wav dans {directory}")
+    report = run_gate({pool: files}, cfg, word.sample_rate, wakeword)
+    n_doubt = sum(1 for c in report["clips"].values()
+                  if c["pool"] == pool and c["verdict"] == "douteux")
+    if n_doubt:
+        console.print(f"👂  {n_doubt} douteux à auditer : make ui → page Qualité")
+    console.print(f"💾  {gate_dir(wakeword)}")
+
+
 @data_app.command("tts-pool")
 def data_tts_pool(wakeword: str, per_combo: Optional[int] = None):
     """Génère le pool de positifs synthétiques Piper décrit dans la config du mot."""
