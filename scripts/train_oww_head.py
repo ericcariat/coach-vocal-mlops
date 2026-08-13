@@ -162,10 +162,27 @@ def main():
 
         out = EXPORT_DIR / f"eloquence_nosdonnees_64x3_seed{seed}.onnx"
         import tf2onnx
+
+        # tf2onnx ne connaît pas les modèles Keras 3 : on exporte via une
+        # tf.function qui enveloppe l'appel du modèle.
         spec = (tf.TensorSpec((1, HEAD_EMBEDDINGS, 96), tf.float32, name="input"),)
-        tf2onnx.convert.from_keras(head, input_signature=spec, opset=17,
-                                   output_path=str(out))
-        print(f"💾  {out.name}")
+
+        @tf.function(input_signature=spec)
+        def infer(x, _head=head):                 # lie la tête de CETTE itération
+            return {"proba": _head(x, training=False)}
+
+        tf2onnx.convert.from_function(infer, input_signature=spec, opset=17,
+                                      output_path=str(out))
+        # contrôle : l'ONNX doit rendre les mêmes probas que Keras
+        import onnxruntime as _ort
+        sess = _ort.InferenceSession(str(out), providers=["CPUExecutionProvider"])
+        probe = X[va[:8]].astype(np.float32)
+        p_onnx = np.concatenate([sess.run(None, {"input": probe[k:k+1]})[0].ravel()
+                                 for k in range(len(probe))])
+        p_keras = head.predict(probe, verbose=0).ravel()
+        assert np.allclose(p_onnx, p_keras, atol=1e-4), "export ONNX ≠ Keras !"
+        print(f"💾  {out.name}  (export vérifié, écart max "
+              f"{np.abs(p_onnx - p_keras).max():.2e})")
 
     print("\nBanc : uv run coachvocal bench --run open_wake_word_compare/"
           "eloquence_nosdonnees_64x3_seed42.onnx --minutes 60 --thresholds 0.05,0.2,0.5,0.8")
