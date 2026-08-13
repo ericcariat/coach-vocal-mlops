@@ -41,6 +41,20 @@ lien `current/`. Ne jamais écrire un chemin de run en dur ailleurs.
   vérité terrain décalée ne donne pas un résultat imprécis, elle fabrique un
   résultat absurde — deuxième occurrence du motif (cf. banc de juillet).
 
+### v15_summre_neg — 2026-08-13 — ❌ rappel, ✅ hypothèse de domaine
+- **But** : champion + 300 négatifs de réunions SUMM-RE (split train, réunions
+  et locuteurs disjoints du banc/val_ambient — test anti-fuite dédié) +
+  élection fa_ambient. Critère : FA/h ≤ 27 ET rappel ≥ 74 %.
+- **Banc étendu (seuil 0.8)** : **8.7 FA/h** (✅, dont réunions 17 → 2 FA —
+  l'hypothèse « entraîner sur le domaine qui fait mal » est confirmée net)
+  mais rappel **52.0 %** (❌, −24 pts). Effet secondaire notable : la recette
+  écrase aussi la dispersion ambiante des seeds (5.2-7.0 FA/h contre 8.7-31.4
+  sans — l'élection n'avait presque plus rien à trier).
+- **Verdict** : motif v04 rejoué — 600 fenêtres continues au total assourdissent.
+  Chaque domaine de négatifs a SA dose : le sweep SUMM-RE (75/150) reste à
+  faire, et les hard negatives ciblés (FA confirmées à l'oreille) restent la
+  voie sans coût de rappel. Champion inchangé (v11_speech_300).
+
 ### Comparatif openWakeWord — 2026-08-13 — le banc tranche : 5× moins de rappel
 - **Protocole** : 5 têtes oWW « éloquence » (64x3, 115 k steps, entraînées par
   l'auteur sur le pipeline openWakeWord, ~100 % synthétique) passées sur NOTRE banc
