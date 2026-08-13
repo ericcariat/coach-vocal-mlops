@@ -1,0 +1,15 @@
+# Recette du champion + HARD NEGATIVES : les 18 FA YouTube confirmées à
+# l'oreille (2026-08-13, verdicts v11@0.5), 3 fenêtres par FA (celle qui a
+# déclenché ± 0,25 s), boost ×10 (pool minuscule mais en or — même logique que
+# moi_positif). Les 10 vidéos sources sont retirées du banc à jamais
+# (hard_negative_videos.json).
+extends: speech_neg_300
+name: speech_neg_300_hn
+
+sources:
+  - name: hard_neg
+    type: hard_negatives
+    label: 0
+    copies: 10
+    splits: [train]
+    params: {model: v11_speech_300, threshold: th0.5}

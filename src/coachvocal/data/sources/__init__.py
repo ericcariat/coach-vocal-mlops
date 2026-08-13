@@ -124,6 +124,7 @@ from . import (  # noqa: E402,F401
     fragments,
     gsc,
     guided,
+    hard_negatives,
     musan,
     silence,
     speech_negatives,

@@ -1,0 +1,31 @@
+# La boucle fermée (2026-08-13) : banc → oreille de l'auteur (60 FA confirmées,
+# dont 18 YouTube exploitables) → hard negatives → nouveau run. C'est le
+# levier « sans coût de rappel » : on n'ajoute pas un domaine entier (leçon
+# v15), on corrige des erreurs PRÉCISES du champion.
+#
+# Critère de succès, écrit AVANT le run (banc étendu, seuil 0.8) :
+#   • FA/h ≤ 27 (champion : 33.9) ET rappel ≥ 74 % ;
+#   • ATTENTION comparabilité : les 10 vidéos sacrifiées sortent du banc, qui
+#     se recompose — le champion est re-mesuré DANS LE MÊME RUN de banc, c'est
+#     cette paire-là qui fait foi (jamais les chiffres d'un banc antérieur).
+# Vérification : coachvocal bench --run v11_speech_300 --run v16_hardneg --minutes 60
+name: v16_hardneg
+description: >
+  Champion + hard negatives (18 FA YouTube confirmées à l'oreille, ×3 fenêtres,
+  boost 10) + élection fa_ambient — la boucle banc → humain → entraînement.
+
+wakeword: eloquence
+dataset: speech_neg_300_hn
+model: cnn_baseline
+
+training:
+  epochs: 30
+  batch_size: 64
+  learning_rate: 0.001
+  early_stopping_patience: 5
+  class_weight: true
+  threshold: 0.5
+  seeds: [42, 43, 44, 45, 46]
+  selection_metric: fa_ambient
+  selection_min_val_recall: 0.90
+  use_gpu: false

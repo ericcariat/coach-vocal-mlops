@@ -90,5 +90,273 @@
   "v03_replica|th0.5|R6b324msgu8_8-38.wav|18.88|FA": {
     "verdict": "🗑️ Inexploitable (à exclure du banc)",
     "saved_at": "2026-08-12"
+  },
+  "v11_speech_300|th0.5|summre_004c_PAPH_013.wav|26.62|FA": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v11_speech_300|th0.5|summre_004c_PAPH_013.wav|74.75|FA": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v11_speech_300|th0.5|summre_004c_PAPH_013.wav|313.62|FA": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v11_speech_300|th0.5|summre_004c_PAPH_013.wav|560.38|FA": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v11_speech_300|th0.5|summre_004c_PAPH_013.wav|720.12|FA": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v11_speech_300|th0.5|summre_004c_PAPH_013.wav|786.12|FA": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v11_speech_300|th0.5|summre_004c_PAPH_013.wav|870.0|FA": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v11_speech_300|th0.5|summre_004c_PAPH_013.wav|897.5|FA": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v11_speech_300|th0.5|summre_004c_PAPH_013.wav|1001.12|FA": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v11_speech_300|th0.5|summre_004c_PAPH_013.wav|1015.75|FA": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v11_speech_300|th0.5|summre_004c_PAPH_013.wav|1245.88|FA": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v11_speech_300|th0.5|summre_006b_EADH_017.wav|65.88|FA": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v11_speech_300|th0.5|summre_006b_EADH_017.wav|117.0|FA": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v11_speech_300|th0.5|summre_006b_EADH_017.wav|295.0|FA": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v11_speech_300|th0.5|summre_006b_EADH_017.wav|299.62|FA": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v11_speech_300|th0.5|summre_006b_EADH_017.wav|319.75|FA": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v11_speech_300|th0.5|summre_006b_EADH_017.wav|325.62|FA": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v11_speech_300|th0.5|summre_006b_EADH_017.wav|330.62|FA": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v11_speech_300|th0.5|summre_006b_EADH_017.wav|342.38|FA": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v11_speech_300|th0.5|summre_006b_EADH_017.wav|348.12|FA": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v11_speech_300|th0.5|summre_006b_EADH_017.wav|363.62|FA": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v11_speech_300|th0.5|summre_006b_EADH_017.wav|380.12|FA": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v11_speech_300|th0.5|summre_006b_EADH_017.wav|409.88|FA": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v11_speech_300|th0.5|summre_006b_EADH_017.wav|414.25|FA": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v11_speech_300|th0.5|summre_006b_EADH_017.wav|444.38|FA": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v11_speech_300|th0.5|summre_006b_EADH_017.wav|474.5|FA": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v11_speech_300|th0.5|summre_006b_EADH_017.wav|495.25|FA": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v11_speech_300|th0.5|summre_006b_EADH_017.wav|512.5|FA": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v11_speech_300|th0.5|summre_006b_EADH_017.wav|613.88|FA": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v11_speech_300|th0.5|summre_006b_EADH_017.wav|616.5|FA": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v11_speech_300|th0.5|summre_006b_EADH_017.wav|634.88|FA": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v11_speech_300|th0.5|summre_006b_EADH_017.wav|834.88|FA": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v11_speech_300|th0.5|summre_006b_EADH_017.wav|876.12|FA": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v11_speech_300|th0.5|summre_006b_EADH_017.wav|1036.12|FA": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v11_speech_300|th0.5|summre_006b_EADH_017.wav|1083.38|FA": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v11_speech_300|th0.5|summre_006b_EADH_017.wav|1130.62|FA": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v11_speech_300|th0.5|summre_006b_EADH_017.wav|1147.62|FA": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v11_speech_300|th0.5|summre_006b_EADH_017.wav|1157.38|FA": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v11_speech_300|th0.5|summre_006b_EADH_017.wav|1161.12|FA": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v11_speech_300|th0.5|summre_006b_EADH_017.wav|1212.0|FA": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v11_speech_300|th0.5|summre_006b_EADH_017.wav|1237.12|FA": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v11_speech_300|th0.5|summre_006b_EADH_017.wav|1256.12|FA": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v11_speech_300|th0.5|6f-X5IkV46I_340-414.wav|59.38|FA": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v11_speech_300|th0.5|RPWcc5t7B6E_8902-9006.wav|15.88|FA": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v11_speech_300|th0.5|RPWcc5t7B6E_8902-9006.wav|44.5|FA": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v11_speech_300|th0.5|RPWcc5t7B6E_8902-9006.wav|60.25|FA": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v11_speech_300|th0.5|RPWcc5t7B6E_8902-9006.wav|68.75|FA": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v11_speech_300|th0.5|RPWcc5t7B6E_8902-9006.wav|71.38|FA": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v11_speech_300|th0.5|MTPOjkqjHYk_55-85.wav|31.88|FA": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v11_speech_300|th0.5|MTPOjkqjHYk_55-85.wav|34.88|FA": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v11_speech_300|th0.5|qA5IjCZ8w0Y_182-212.wav|20.25|FA": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v11_speech_300|th0.5|A5T_VpSReWI_2635-2681.wav|40.0|FA": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v11_speech_300|th0.5|h38_WTrtvf8_590-620.wav|3.38|FA": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v11_speech_300|th0.5|h38_WTrtvf8_590-620.wav|28.0|FA": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v11_speech_300|th0.5|PSfD2Lj9Ul8_1103-1133.wav|30.38|FA": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v11_speech_300|th0.5|RECrbyhRjfw_124-154.wav|21.0|FA": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v11_speech_300|th0.5|sV60XWz1b7c_29-59.wav|19.0|FA": {
+    "verdict": "❌ Pas une erreur (vérité terrain à revoir)",
+    "saved_at": "2026-08-13"
+  },
+  "v11_speech_300|th0.5|-vxfAYywtBA_0-58.wav|13.25|FA": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v11_speech_300|th0.5|-vxfAYywtBA_0-58.wav|24.88|FA": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v11_speech_300|th0.5|R6b324msgu8_8-38.wav|18.88|FA": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v11_speech_300|th0.5|R6b324msgu8_8-38.wav|27.88|FA": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v11_speech_300|th0.5|wR7yHWRDiC8_106-136.wav|15.93|FN": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v11_speech_300|th0.5|MTPOjkqjHYk_55-85.wav|3.0|FN": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v11_speech_300|th0.5|MTPOjkqjHYk_55-85.wav|14.46|FN": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v11_speech_300|th0.5|qA5IjCZ8w0Y_182-212.wav|11.44|FN": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v11_speech_300|th0.5|A5T_VpSReWI_2635-2681.wav|14.03|FN": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
+  },
+  "v11_speech_300|th0.5|wVJjMu1oAQg_1622-1652.wav|10.41|FN": {
+    "verdict": "✅ Erreur confirmée",
+    "saved_at": "2026-08-13"
   }
 }

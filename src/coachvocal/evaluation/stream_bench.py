@@ -124,6 +124,18 @@ def run(models: dict[str, Path], wakeword: WakewordConfig, minutes: float = 16.0
     # avec le même modèle et le même audio). Voir ADR-002.
     runtime.configure(use_gpu=use_gpu)
     forbidden = forbidden_from_splits(splits_csv) if splits_csv else set()
+    # Vidéos sacrifiées aux hard negatives : entrées à l'entraînement via la
+    # source `hard_negatives`, donc interdites au banc pour toujours.
+    import json as _json
+
+    from .. import paths as _paths
+    reg = _paths.word_dir(wakeword.name) / "hard_negative_videos.json"
+    if reg.exists():
+        sacrificed = set(_json.loads(reg.read_text()))
+        if sacrificed:
+            print(f"🚫  {len(sacrificed)} vidéo(s) sacrifiées aux hard negatives — "
+                  "exclues du banc")
+        forbidden |= sacrificed
     segments = eligible_segments(wakeword.name, forbidden, minutes, seed)
     if not segments:
         raise RuntimeError("aucun segment éligible — corpus absent ou tout interdit ?")
