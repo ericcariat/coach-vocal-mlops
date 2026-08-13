@@ -99,7 +99,8 @@ def score(triggers: list[float], occurrences: list[float], uncertain: list[float
             events.append({"t": round(t, 2), "kind": "FA"})
     events += [{"t": round(o, 2), "kind": "FN"} for o, h in zip(occurrences, hit) if not h]
     return {"n_occ": len(occurrences), "detected": sum(hit), "false_alarms": false_alarms,
-            "uncertain": unknown, "events": sorted(events, key=lambda e: e["t"])}
+            "uncertain": unknown, "hits": hit,
+            "events": sorted(events, key=lambda e: e["t"])}
 
 
 def run(models: dict[str, Path], wakeword: WakewordConfig, minutes: float = 16.0,
@@ -125,6 +126,9 @@ def run(models: dict[str, Path], wakeword: WakewordConfig, minutes: float = 16.0
         detector = load_detector(path, wakeword)
         agg = {th: {"n_occ": 0, "detected": 0, "false_alarms": 0, "uncertain": 0}
                for th in thresholds}
+        # Rappel PAR FORME (nu / l' / d') : 85 % des occurrences réelles sont
+        # élidées — il faut voir si le modèle est plus faible sur une forme.
+        forms: dict = {th: {} for th in thresholds}
         events: dict = {th: [] for th in thresholds}
         for seg in segments:
             audio, sr = sf.read(seg.wav, dtype="float32")
@@ -132,11 +136,16 @@ def run(models: dict[str, Path], wakeword: WakewordConfig, minutes: float = 16.0
                 print(f"    ⚠️  {seg.wav.name} : {sr} Hz ≠ {wakeword.sample_rate} — ignoré")
                 continue
             probas, peaks, _ = detector.window_probas(audio)
+            seg_forms = [corpus_mod.surface_form(s, wakeword.name)
+                         for s in (seg.surfaces or [wakeword.name] * len(seg.occurrences))]
             for th in thresholds:
                 sc = score(detector.triggers_from(probas, peaks, th),
                            seg.occurrences, seg.uncertain)
                 for k in agg[th]:
                     agg[th][k] += sc[k]
+                for form, h in zip(seg_forms, sc["hits"]):
+                    n, d = forms[th].get(form, (0, 0))
+                    forms[th][form] = (n + 1, d + int(h))
                 if collect_events:
                     events[th] += [{**e, "segment": seg.wav.name, "video": seg.video_id}
                                    for e in sc["events"] if e["kind"] != "TP"]
@@ -146,14 +155,21 @@ def run(models: dict[str, Path], wakeword: WakewordConfig, minutes: float = 16.0
             a = agg[th]
             recall = a["detected"] / a["n_occ"] if a["n_occ"] else float("nan")
             fa_h = a["false_alarms"] / (total_s / 3600)
+            by_form = {form: {"n_occ": n, "detected": d,
+                              "recall": d / n if n else float("nan")}
+                       for form, (n, d) in sorted(forms[th].items())}
             results[name][f"th{th}"] = {
                 "recall_stream": recall, "frr_stream": 1 - recall,
                 "false_alarms": a["false_alarms"], "fa_per_hour": fa_h,
                 "uncertain": a["uncertain"], "n_occ": a["n_occ"], "detected": a["detected"],
+                "recall_by_form": by_form,
                 "events": events[th] if collect_events else [],
             }
+            detail = " · ".join(f"{form} {v['detected']}/{v['n_occ']}"
+                                for form, v in by_form.items())
             print(f"    seuil {th} : rappel {recall:6.1%} ({a['detected']}/{a['n_occ']}) · "
-                  f"FA {a['false_alarms']} → {fa_h:.1f}/h · incertains {a['uncertain']}")
+                  f"FA {a['false_alarms']} → {fa_h:.1f}/h · incertains {a['uncertain']}"
+                  f"{'  [' + detail + ']' if detail else ''}")
 
     return {
         "date": datetime.now().isoformat(timespec="seconds"),

@@ -55,6 +55,7 @@ class Segment:
     end: int
     vtt: Path | None = None
     occurrences: list[float] = None      # temps LOCAUX (s) des occurrences (DB)
+    surfaces: list[str] = None           # forme de surface de chaque occurrence
     uncertain: list[float] = None        # temps LOCAUX (s) des zones VTT
 
     @property
@@ -62,22 +63,52 @@ class Segment:
         return float(self.end - self.start)
 
 
-def db_occurrences(word: str, db: Path | None = None) -> dict[str, list[float]]:
-    """video_id → temps absolus (référentiel du nom de fichier) du mot-clé."""
+def db_occurrences(word: str, db: Path | None = None) -> dict[str, list[tuple[float, str]]]:
+    """video_id → [(temps absolu, forme de surface)] du mot-clé.
+
+    La forme (« éloquence », « l'éloquence », « d'éloquence »…) permet au banc
+    de reporter le rappel par forme — 85 % des occurrences réelles sont élidées
+    (audit du 2026-08-13), il faut savoir si le modèle est plus faible sur
+    l'une d'elles."""
     db = db or CORPUS / "discovery.db"
     if not db.exists():
         return {}
     con = sqlite3.connect(f"file:{db}?mode=ro", uri=True)
     out = defaultdict(list)
     try:
-        rows = con.execute(
-            "SELECT video_id, t_start FROM clips WHERE word LIKE ?", (f"%{word}%",))
-        for vid, t in rows:
+        try:
+            rows = list(con.execute(
+                "SELECT video_id, t_start, surface FROM clips WHERE word LIKE ?",
+                (f"%{word}%",)))
+        except sqlite3.OperationalError:         # base sans colonne `surface`
+            rows = [(vid, t, word) for vid, t in con.execute(
+                "SELECT video_id, t_start FROM clips WHERE word LIKE ?", (f"%{word}%",))]
+        for vid, t, surface in rows:
             m = re.search(f"({VIDEO_ID})$", vid)     # certains video_id sont des URLs
-            out[m.group(1) if m else vid].append(float(t))
+            out[m.group(1) if m else vid].append((float(t), surface or word))
     finally:
         con.close()
     return {k: sorted(v) for k, v in out.items()}
+
+
+def surface_form(surface: str, word: str) -> str:
+    """Regroupe une surface en forme comparable : « nu », « l' », « d' », « autre »
+    (accents et apostrophes typographiques neutralisés)."""
+    import unicodedata
+
+    def fold(s: str) -> str:
+        s = s.replace("’", "'")                  # avant le pliage ASCII, qui la perdrait
+        s = unicodedata.normalize("NFD", s).encode("ascii", "ignore").decode()
+        return s.lower().strip()
+
+    s, w = fold(surface), fold(word)
+    if s == w:
+        return "nu"
+    if s.startswith("l'"):
+        return "l'"
+    if s.startswith("d'"):
+        return "d'"
+    return "autre"
 
 
 def vtt_occurrences(vtt: Path, stem: str) -> list[float]:
@@ -138,7 +169,10 @@ def list_segments(word: str, corpus: Path | None = None,
             continue                      # pas de vérité terrain → inutilisable
         seg = Segment(wav=wav, video_id=vid, start=s0, end=s1, vtt=vtt)
         dur = seg.duration
-        seg.occurrences = [t - s0 for t in db_occ.get(vid, []) if 0.5 <= t - s0 <= dur - 0.5]
+        local = [(t - s0, surf) for t, surf in db_occ.get(vid, [])
+                 if 0.5 <= t - s0 <= dur - 0.5]
+        seg.occurrences = [t for t, _ in local]
+        seg.surfaces = [surf for _, surf in local]
         if vtt is not None:
             if vid not in vtt_cache:
                 vtt_cache[vid] = vtt_occurrences(vtt, stem)
