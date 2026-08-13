@@ -1,0 +1,19 @@
+# Le COUPLE re-découpe + parole continue (leçon de v10, 2026-08-13) : la
+# re-découpe seule fait exploser les FA (782/h) — les positifs re-découpés
+# étant les seuls exemples de parole continue naturelle, le modèle apprend
+# « flux naturel = positif ». Il lui faut le contrepoids : des fenêtres de
+# parole continue en NÉGATIF (dose modérée, leçon de v04).
+extends: tts500_recut
+name: tts500_recut_sn300
+
+sources:
+  - name: speech_neg_300
+    type: speech_negatives
+    label: 0
+    splits: [train]
+    params:
+      budget: [300, 0, 0]
+      stride_s: 1.0
+      guard_s: 2.0
+      min_peak: 0.02
+      max_per_video: 60
