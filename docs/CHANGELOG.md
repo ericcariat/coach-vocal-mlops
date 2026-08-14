@@ -23,7 +23,23 @@ lien `current/`. Ne jamais écrire un chemin de run en dur ailleurs.
 
 ## Runs
 
-### oww_frab30np_s46 — 2026-08-14 — PROMU CHAMPION (première tête openWakeWord)
+### oww_frab30np4b_s46 — 2026-08-14 — PROMU CHAMPION (il attend la fin du mot)
+- **Le défaut du prédécesseur, entendu au micro puis chiffré** : il déclenchait
+  dès ~85 % du mot (préfixes tronqués : 17 % à 80 %, 38 % à 90 %) — « éloquen »
+  suffisait, et « éloquente » passait (probas mesurées 0.98-0.9999).
+- **Correctifs** (série H3/H4, doses balayées) : négatifs-préfixes 60/75/85 %
+  du mot à poids ×8 (à ×20 le mot entier s'écrasait — c'est un curseur, comme
+  les fragments du CNN), et pool adversarial porté à 145 clips (23
+  enregistrements micro « éloquente/éloquen », 10 FP + 13 TN).
+- **Banc** (52,7 min / 27 occ, archive `eloquence_20260814_211029.json`),
+  seuil 0.8 : **81.5 % · 2.3 FA/h**. Préfixes 80/90 % : **0 %**. Cousins : 0 %.
+  Par clips : accuracy 94.0 %, F1 0.8049, FAR 0.34 %.
+- **Le prix accepté** : 22/27 occurrences YouTube contre 25/27 — décision
+  explicite « la voix cible d'abord, le rappel corpus peut reculer ».
+- **Test micro (le juge)** : « éloquence » détecté, « éloquen » et
+  « éloquente » muets.
+
+### oww_frab30np_s46 — 2026-08-14 — PROMU puis retiré le jour même (première tête openWakeWord)
 - **Quoi** : tête 64x3 sur l'extracteur speech_embedding de Google (gelé,
   front-end openWakeWord — dérogation au front-end unique, ADR-008). Recette :
   positifs réels à contexte réel (fond MUSAN pour les clips micro), 12 000

@@ -55,7 +55,9 @@
         0.9
       ],
       "per_combo": 50,
-      "pool_name": "tts_positives"
+      "pool_name": "tts_positives",
+      "align": "center",
+      "jitter_s": 0.2
     }
   },
   "dataset": {
@@ -299,7 +301,16 @@
       "time_shift_ms": 100,
       "speed_min": 0.85,
       "speed_max": 1.15,
-      "enabled": true
+      "enabled": true,
+      "rir_prob": 0.0,
+      "rir_dir": "data/external/rir_mit/16k",
+      "noise_prob": 0.0,
+      "noise_snr_db": [
+        5.0,
+        20.0
+      ],
+      "noise_dir": "data/external/musan/noise",
+      "bank_size": 256
     },
     "quality_gate": {
       "enabled": false,
@@ -313,6 +324,17 @@
       "doubt_snr_db_below": 6.0,
       "doubt_tail_energy_above": 0.5,
       "frame_ms": 100,
+      "tail_check_pools": [
+        "positif",
+        "proche",
+        "guided",
+        "moi"
+      ],
+      "lenient_pools": [
+        "musan",
+        "noise",
+        "music"
+      ],
       "doubt_policy": "exclude",
       "skip_pools": [
         "silence",
@@ -344,6 +366,7 @@
       42
     ],
     "selection_metric": "val_loss",
+    "selection_min_val_recall": 0.9,
     "use_gpu": false
   }
 }

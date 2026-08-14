@@ -128,11 +128,21 @@
         "duration": 13
       }
     },
+    "train/guided_hard_neg": {
+      "n_files": 23,
+      "n_checked": 23,
+      "peak_median": 0.33111572265625,
+      "peak_p10": 0.2510498046875,
+      "duration_median": 2.76,
+      "problems": {
+        "duration": 23
+      }
+    },
     "train/guided_positif": {
-      "n_files": 20,
-      "n_checked": 20,
-      "peak_median": 0.1211395263671875,
-      "peak_p10": 0.090716552734375,
+      "n_files": 31,
+      "n_checked": 31,
+      "peak_median": 0.14544677734375,
+      "peak_p10": 0.091278076171875,
       "duration_median": 1.0,
       "problems": {}
     },
@@ -147,12 +157,12 @@
     "train/musan_noise": {
       "n_files": 1200,
       "n_checked": 300,
-      "peak_median": 0.0258636474609375,
-      "peak_p10": 0.00341796875,
+      "peak_median": 0.0374908447265625,
+      "peak_p10": 0.0038391113281250003,
       "duration_median": 1.0,
       "problems": {
-        "silent": 15,
-        "clipped": 9
+        "silent": 13,
+        "clipped": 8
       }
     },
     "train/proches": {
@@ -178,11 +188,11 @@
     "train/yt_positif": {
       "n_files": 1506,
       "n_checked": 300,
-      "peak_median": 0.3641204833984375,
-      "peak_p10": 0.10331726074218751,
+      "peak_median": 0.3510284423828125,
+      "peak_p10": 0.113397216796875,
       "duration_median": 1.0,
       "problems": {
-        "clipped": 6
+        "clipped": 4
       }
     },
     "val/cv_fr": {
@@ -192,8 +202,8 @@
       "peak_p10": 0.118121337890625,
       "duration_median": 1.0,
       "problems": {
-        "clipped": 3,
-        "silent": 6
+        "silent": 6,
+        "clipped": 3
       }
     },
     "val/fragments_moi": {
@@ -221,8 +231,8 @@
       "peak_p10": 0.09985961914062501,
       "duration_median": 1.0,
       "problems": {
-        "clipped": 2,
-        "duration": 4
+        "duration": 4,
+        "clipped": 2
       }
     },
     "val/moi_positif": {
@@ -275,8 +285,9 @@
   },
   "issues": [
     "test/musan_noise : 16 clip(s) « silent »",
-    "test/proches : 1 clip(s) « clipped »"
+    "test/proches : 1 clip(s) « clipped »",
+    "train/guided_hard_neg : 23 clip(s) « duration »"
   ],
-  "fingerprint": "8ecbf4603ae3e769",
+  "fingerprint": "3950cdfe228ddd07",
   "ok": false
 }

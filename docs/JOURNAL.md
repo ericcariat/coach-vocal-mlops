@@ -40,6 +40,16 @@ légère hausse (4.6-6.8). Sur-correction classique → **H4** : balayage de dos
 « éloquente/éloquen » du soir au micro, 10 FP à proba 0.98-0.9999 confirmant
 la fuite en réel, 13 TN). Même critère que H3.
 
+**Verdict H4 et PROMOTION (archive `eloquence_20260814_211029`).** Dose ×3 :
+préfixes corrigés (0-2 %) mais FA/h ×5 au banc (18.2, surtout sur les
+réunions SUMM-RE). Dose **×8** : préfixes 0 %, cousins 0 %, banc 81.5 % ·
+2.3 FA/h — et surtout **le test micro tranche** : « éloquence » détecté,
+« éloquen » et « éloquente » muets, là où le proxy par clips (9 % @0.8)
+annonçait un effondrement. Leçon : le proxy « clips padés » diverge du micro
+dans les deux sens, seul le test en conditions réelles départage.
+**`oww_frab30np4b_s46` promu champion** — recul YouTube (22/27 vs 25/27)
+accepté au titre de la priorité « voix cible d'abord ».
+
 ## 2026-08-14 — Contrôle complet après la publication et la promotion
 
 Après le grand ménage (réécriture git, textes, promotion), revue de TOUTE la

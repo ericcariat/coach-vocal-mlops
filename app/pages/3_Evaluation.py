@@ -24,6 +24,14 @@ if not runs:
 
 # ── Le champion d'abord : ses chiffres officiels (banc) en tête de page ──────
 champ_name = registry.champion_run(WAKEWORD)
+champ_labels = {champ_name} if champ_name else set()
+try:
+    _alias = json.loads((paths.run_dir(WAKEWORD, champ_name) / "metrics.json")
+                        .read_text()).get("bench_model")
+    if _alias:
+        champ_labels.add(_alias)
+except Exception:
+    pass
 if champ_name:
     try:
         cm = json.loads((paths.run_dir(WAKEWORD, champ_name) / "metrics.json").read_text())
@@ -152,18 +160,7 @@ if compositions:
     pts = pd.DataFrame(list(compositions[sig]["points"].values()))
 
     tous_modeles = sorted(pts["Modèle"].unique())
-    champion = registry.champion_run(WAKEWORD)
-    # Au banc, le champion peut apparaître sous son nom de fichier de tête
-    # (ex. eloquence_frab30np_64x3_seed46.onnx pour le run oww_frab30np_s46) :
-    # le run déclare cet alias dans metrics.json → `bench_model`.
-    champ_labels = {champion}
-    try:
-        mfile = paths.run_dir(WAKEWORD, champion) / "metrics.json"
-        alias = json.loads(mfile.read_text()).get("bench_model")
-        if alias:
-            champ_labels.add(alias)
-    except Exception:
-        pass
+    # champ_labels (nom de run + alias de banc) est calculé en tête de page.
     # défaut : le champion + les modèles maison récents (pas les 15 d'un coup)
     defaut = [m for m in tous_modeles if m in champ_labels or m.startswith(("v1",))][-6:]
     for c in champ_labels:
@@ -260,7 +257,8 @@ cousins_file = paths.REPORTS / "oww_cousins.json"
 if cousins_file.exists():
     store = json.loads(cousins_file.read_text())
     modeles = list(store)
-    defaut_mv = [m for m in modeles if "frab30np_s46" in m or m == "model"][-1:] or modeles[-1:]
+    # défaut : le champion (sous son nom de run ou son alias de banc)
+    defaut_mv = [m for m in modeles if m in champ_labels][-1:] or modeles[-1:]
     sel_mv = st.multiselect("Têtes mesurées", modeles, default=defaut_mv or modeles[:1])
     lignes = []
     for m in sel_mv:
