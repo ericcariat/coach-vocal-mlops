@@ -194,9 +194,10 @@ def bench_cmd(wakeword: str = "eloquence",
 
     word = load_wakeword(wakeword)
     runs = runs or [registry.champion_run(wakeword) or "v03"]
-    # Un argument .onnx = tête openWakeWord (adaptateur P3) ; sinon un run à nous.
+    # Un argument .onnx = tête openWakeWord ; sinon un run du registre, dont le
+    # modèle peut être model.keras OU model.onnx (champion oWW, ADR-008).
     models = {(Path(r).stem if r.endswith(".onnx") else r):
-              (Path(r) if r.endswith(".onnx") else paths.run_dir(wakeword, r) / "model.keras")
+              (Path(r) if r.endswith(".onnx") else registry.model_path(wakeword, r))
               for r in runs}
     missing = [r for r, p in models.items() if not p.exists()]
     if missing:

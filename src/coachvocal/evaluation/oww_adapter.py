@@ -132,6 +132,11 @@ class OwwDetector:
             self._cooldown_until = self._t + self.live.cooldown_s
         return {"proba": proba, "peak": peak, "triggered": triggered, "t": self._t}
 
+    def run_offline(self, audio, threshold: float | None = None) -> list[float]:
+        """Même contrat que WakeWordDetector.run_offline (utilisé par l'API)."""
+        probas, peaks, _ = self.window_probas(audio)
+        return self.triggers_from(probas, peaks, threshold)
+
     def triggers_from(self, probas, peaks, threshold: float | None = None) -> list[float]:
         """La MÊME règle que WakeWordDetector, à la cadence oWW (80 ms)."""
         th = self.threshold if threshold is None else threshold

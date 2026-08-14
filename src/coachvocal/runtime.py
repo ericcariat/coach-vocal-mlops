@@ -21,7 +21,14 @@ def configure(use_gpu: bool = False, seed: int | None = None) -> None:
     import tensorflow as tf
 
     if not use_gpu:
-        tf.config.set_visible_devices([], "GPU")
+        try:
+            tf.config.set_visible_devices([], "GPU")
+        except RuntimeError:
+            # TF déjà initialisé (autre appel plus tôt dans le processus) : la
+            # liste ne peut plus changer. Acceptable UNIQUEMENT si aucun GPU
+            # n'est déjà visible — sinon on refuse de continuer (ADR-002).
+            if tf.config.get_visible_devices("GPU"):
+                raise
     if seed is not None:
         os.environ["PYTHONHASHSEED"] = str(seed)
         random.seed(seed)

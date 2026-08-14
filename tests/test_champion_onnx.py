@@ -35,4 +35,27 @@ def test_load_detector_champion_onnx():
     probas, peaks, _starts = det.window_probas(audio)
     assert len(probas) > 0 and float(np.max(probas)) < 0.8   # silence → pas de mot
     assert det.triggers_from(probas, peaks, 0.8) == []
+    assert det.run_offline(audio, 0.8) == []                  # contrat de l'API
     assert det.hop > 0                                        # requis par push()/Demo
+
+
+@pytest.mark.skipif(not frontends_available(),
+                    reason="front-ends openWakeWord absents (data/external/oww_models)")
+def test_api_sert_le_champion_onnx():
+    # /predict et /detect doivent servir le champion quel que soit son format —
+    # c'est ce chemin qui avait cassé à la promotion (run_offline manquant).
+    import io
+
+    import soundfile as sf
+    from fastapi.testclient import TestClient
+
+    from coachvocal.serving.api import api
+
+    client = TestClient(api)
+    buf = io.BytesIO()
+    sf.write(buf, np.zeros(32000, np.float32), 16000, format="WAV")
+    r = client.post("/predict", files={"file": ("t.wav", buf.getvalue(), "audio/wav")})
+    assert r.status_code == 200 and r.json()["detected"] is False
+    buf.seek(0)
+    r = client.post("/detect", files={"file": ("t.wav", buf.getvalue(), "audio/wav")})
+    assert r.status_code == 200 and r.json()["triggers"] == []
