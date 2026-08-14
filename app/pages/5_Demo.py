@@ -9,7 +9,7 @@ import streamlit as st
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "src"))
 
-from coachvocal import paths, registry, runtime  # noqa: E402
+from coachvocal import registry, runtime  # noqa: E402
 from coachvocal.config import load_wakeword  # noqa: E402
 
 st.set_page_config(page_title="Démo", page_icon="🎤", layout="wide")
@@ -38,7 +38,7 @@ def _load_selected_detector():
         from coachvocal.evaluation.oww_adapter import OwwDetector
         return OwwDetector(OWW_COMPARE / run[len("oww : "):], word, threshold)
     from coachvocal.inference.detector import load_detector
-    return load_detector(paths.run_dir(WAKEWORD, run) / "model.keras", word, threshold)
+    return load_detector(registry.model_path(WAKEWORD, run), word, threshold)
 
 uploaded = st.file_uploader("Fichier audio (WAV mono)", type=["wav"])
 if uploaded:

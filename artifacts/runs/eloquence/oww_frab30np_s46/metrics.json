@@ -1,0 +1,47 @@
+{
+  "date": "2026-08-14",
+  "experiment": "oww_frab30np",
+  "selected_seed": 46,
+  "model_file": "model.onnx",
+  "frontend": "openWakeWord (mel 32 + embeddings Google gelés, ADR-008)",
+  "training": "scripts/train_oww_head.py --context --noise-pad --french-neg 12000 --adv-weight 30",
+  "bench_archive": "eloquence_20260814_033459.json",
+  "bench": {
+    "th0.8": {
+      "recall_stream": 0.9259259259259259,
+      "fa_per_hour": 3.4134007585335016,
+      "detected": 25,
+      "n_occ": 27
+    },
+    "th0.9": {
+      "recall_stream": 0.9259259259259259,
+      "fa_per_hour": 3.4134007585335016,
+      "detected": 25,
+      "n_occ": 27
+    },
+    "th0.95": {
+      "recall_stream": 0.8888888888888888,
+      "fa_per_hour": 2.275600505689001,
+      "detected": 24,
+      "n_occ": 27
+    },
+    "th0.98": {
+      "recall_stream": 0.8148148148148148,
+      "fa_per_hour": 2.275600505689001,
+      "detected": 22,
+      "n_occ": 27
+    },
+    "th0.99": {
+      "recall_stream": 0.7777777777777778,
+      "fa_per_hour": 1.1378002528445006,
+      "detected": 21,
+      "n_occ": 27
+    }
+  },
+  "cousins": {
+    "moi_@0.8": 0.0,
+    "baseline_round5_@0.95": 0.16,
+    "preuve": "artifacts/reports/oww_cousins.png"
+  },
+  "test": {}
+}

@@ -40,16 +40,25 @@ def champion_run(wakeword: str) -> str | None:
     return champion.get("run") if champion else None
 
 
+def _model_file(run_dir: Path) -> Path:
+    """Le modèle d'un run : `model.keras` (CNN maison) ou `model.onnx`
+    (tête openWakeWord, ADR-008). Le premier trouvé gagne."""
+    for name in ("model.keras", "model.onnx"):
+        if (run_dir / name).exists():
+            return run_dir / name
+    return run_dir / "model.keras"          # chemin « attendu » pour l'erreur
+
+
 def model_path(wakeword: str, run_id: str | None = None) -> Path:
     """Chemin du modèle à charger. Sans `run_id` : le champion courant."""
     if run_id:
-        return paths.run_dir(wakeword, run_id) / "model.keras"
+        return _model_file(paths.run_dir(wakeword, run_id))
     link = current_link(wakeword)
     if link.exists():
-        return link / "model.keras"
+        return _model_file(link)
     reg = load(wakeword)
     if reg.get("champion"):
-        return paths.run_dir(wakeword, reg["champion"]["run"]) / "model.keras"
+        return _model_file(paths.run_dir(wakeword, reg["champion"]["run"]))
     raise FileNotFoundError(
         f"aucun champion pour « {wakeword} » — promouvoir un run : "
         f"coachvocal registry promote <run_id> --reason ...")
@@ -59,8 +68,8 @@ def promote(wakeword: str, run_id: str, reason: str, evidence: dict | None = Non
     """Promeut un run. `reason` doit contenir des CHIFFRES : c'est la trace qui
     permettra six mois plus tard de savoir sur quoi la décision reposait."""
     run = paths.run_dir(wakeword, run_id)
-    if not (run / "model.keras").exists():
-        raise FileNotFoundError(f"{run / 'model.keras'} introuvable")
+    if not _model_file(run).exists():
+        raise FileNotFoundError(f"aucun model.keras ni model.onnx dans {run}")
 
     reg = load(wakeword)
     entry = {"run": run_id, "promoted": date.today().isoformat(), "reason": reason,

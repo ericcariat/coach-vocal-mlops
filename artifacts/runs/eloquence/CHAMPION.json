@@ -1,11 +1,18 @@
 {
   "champion": {
-    "run": "v17_stack",
-    "promoted": "2026-08-13",
-    "reason": "Banc 53.1 min : 48.1 % · 6.8 FA/h au seuil 0.8 (v11 : 63.0 · 29.4) — FA ÷4.3, priorité silence assumée ; voix de l'auteur 10/10 en guidé ; 0.65 en réserve (55.6 · 9.1) si les ratés gênent",
+    "run": "oww_frab30np_s46",
+    "promoted": "2026-08-14",
+    "reason": "Banc 52,7 min / 27 occ (archive 20260814_033459), seuil live 0.8 : rappel 92.6 % (25/27) · 3.4 FA/h contre 48.1 % · 6.8 pour le CNN v17. Mots proches 0 % (baseline 16 %). Test micro validé au seuil 0.8. Front-end openWakeWord (ADR-008).",
     "evidence": {}
   },
   "history": [
+    {
+      "run": "v17_stack",
+      "promoted": "2026-08-13",
+      "reason": "Banc 53.1 min : 48.1 % · 6.8 FA/h au seuil 0.8 (v11 : 63.0 · 29.4) — FA ÷4.3, priorité silence assumée ; voix de l'auteur 10/10 en guidé ; 0.65 en réserve (55.6 · 9.1) si les ratés gênent",
+      "evidence": {},
+      "retired": "2026-08-14"
+    },
     {
       "run": "v11_speech_300",
       "promoted": "2026-08-13",

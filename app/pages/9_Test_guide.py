@@ -52,7 +52,7 @@ session_log = paths.word_dir(WAKEWORD) / "guided_clips" / "ui_sessions.json"
 def _detector(run_name: str, th: float):
     runtime.configure(use_gpu=False)          # ADR-002
     from coachvocal.inference.detector import load_detector
-    return load_detector(paths.run_dir(WAKEWORD, run_name) / "model.keras", word, th)
+    return load_detector(registry.model_path(WAKEWORD, run_name), word, th)
 
 
 st.markdown(f"**Consigne :** clique le micro, prononce "

@@ -104,7 +104,18 @@ class WakeWordDetector:
 
 
 def load_detector(model_path: Path, wakeword: WakewordConfig,
-                  threshold: float | None = None) -> WakeWordDetector:
+                  threshold: float | None = None):
+    """Charge le détecteur du champion, quel que soit son front-end.
+
+    Depuis la promotion de la tête openWakeWord (ADR-008), un champion peut
+    être un `.keras` (notre CNN, front-end log-mel maison) ou un `.onnx`
+    (tête sur extracteur Google gelé, front-end openWakeWord). Les deux
+    exposent la même interface : `window_probas`, `triggers_from`, `push`.
+    """
+    if str(model_path).endswith(".onnx"):
+        from ..evaluation.oww_adapter import OwwDetector
+        return OwwDetector(Path(model_path), wakeword, threshold)
+
     import tensorflow as tf
 
     from ..models import activations  # noqa: F401 — enregistre relu_max avant load_model (ADR-002)

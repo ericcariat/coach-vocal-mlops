@@ -23,6 +23,31 @@ lien `current/`. Ne jamais écrire un chemin de run en dur ailleurs.
 
 ## Runs
 
+### oww_frab30np_s46 — 2026-08-14 — PROMU CHAMPION (première tête openWakeWord)
+- **Quoi** : tête 64x3 sur l'extracteur speech_embedding de Google (gelé,
+  front-end openWakeWord — dérogation au front-end unique, ADR-008). Recette :
+  positifs réels à contexte réel (fond MUSAN pour les clips micro), 12 000
+  fenêtres de parole française en négatif (poids ×20), 122 négatifs
+  adversariaux ×30. Sans océan ACAV. Seed 46 (4 seeds sur 5 concordants).
+- **Banc** (52,7 min / 27 occ, archive `eloquence_20260814_033459.json`),
+  seuil live **0.8** : **92.6 % (25/27) · 3.4 FA/h** — contre 48.1 % · 6.8
+  pour le CNN v17 retiré. À 0.95 : 89 % · 2.3 ; à 0.99 : 78 % · 1.1.
+- **Mots proches** : 0 % de déclenchement dès 0.8 (16 % avant le poids
+  adversarial) — `artifacts/reports/oww_cousins.png`.
+- **Test micro** : validé au seuil 0.8.
+- **Intégration** : un champion peut désormais être un `model.onnx` —
+  `registry.model_path` résout keras/onnx, `load_detector` sert l'adaptateur
+  openWakeWord (même interface), live/API/Démo/Test guidé inchangés.
+- Le CNN v17 reste dans l'historique (`CHAMPION.json`) et sur le banc comme
+  point de comparaison.
+
+### v19 → v24 — 2026-08-14 — la série fragments/géométrie (aucune promotion)
+- Six recettes, chacune une variable, critères pré-déclarés : v19 (fragments
+  du mot, équivalence), v20 (recut + ré-ancrage : rappel 85 % @0.5 mais FA ×7),
+  v21 (fragments propres seuls : pire), v22 (réplique v17 : pipeline sain),
+  v23 (sans fragments : les fragments sont un garde-fou), v24 (plafond 70 % :
+  mieux, pas assez). Verdicts détaillés au JOURNAL (« 14 août »).
+
 ### v10_recut / v10b (1ᵉ version) — 2026-08-13 — ❌ un bug de découpe, pas la géométrie
 - **Symptôme** : rappel « 100 % » mais 782-810 FA/h — le modèle tirait sur tout.
 - **Premier diagnostic (faux)** : « la géométrie seule casse tout ». La
