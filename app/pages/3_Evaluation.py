@@ -84,10 +84,22 @@ if compositions:
 
     tous_modeles = sorted(pts["Modèle"].unique())
     champion = registry.champion_run(WAKEWORD)
+    # Au banc, le champion peut apparaître sous son nom de fichier de tête
+    # (ex. eloquence_frab30np_64x3_seed46.onnx pour le run oww_frab30np_s46) :
+    # le run déclare cet alias dans metrics.json → `bench_model`.
+    champ_labels = {champion}
+    try:
+        mfile = paths.run_dir(WAKEWORD, champion) / "metrics.json"
+        alias = json.loads(mfile.read_text()).get("bench_model")
+        if alias:
+            champ_labels.add(alias)
+    except Exception:
+        pass
     # défaut : le champion + les modèles maison récents (pas les 15 d'un coup)
-    defaut = [m for m in tous_modeles if m == champion or m.startswith(("v1",))][-6:]
-    if champion in tous_modeles and champion not in defaut:
-        defaut.append(champion)
+    defaut = [m for m in tous_modeles if m in champ_labels or m.startswith(("v1",))][-6:]
+    for c in champ_labels:
+        if c in tous_modeles and c not in defaut:
+            defaut.append(c)
     sel = st.multiselect("Modèles affichés", tous_modeles, default=defaut or tous_modeles[:5])
     aff = pts[pts["Modèle"].isin(sel)]
 

@@ -43,5 +43,6 @@
     "baseline_round5_@0.95": 0.16,
     "preuve": "artifacts/reports/oww_cousins.png"
   },
-  "test": {}
+  "test": {},
+  "bench_model": "eloquence_frab30np_64x3_seed46"
 }
