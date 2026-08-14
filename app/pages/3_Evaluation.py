@@ -199,6 +199,35 @@ for(const m in parMod){const s=document.createElement("span");
 else:
     st.info("Aucune archive de banc — lancer `make bench MINUTES=60`.")
 
+# ── Ma voix : le critère prioritaire ─────────────────────────────────────────
+st.subheader("Ma voix")
+st.caption("Taux de déclenchement par famille de clips de la voix de référence "
+           "(banc des cousins, `scripts/eval_oww_cousins.py`). Le mot entier "
+           "doit rester HAUT ; cousins, préfixes tronqués et hard negatives "
+           "doivent rester BAS — c'est ce qui se surveille en priorité, avant "
+           "le rappel YouTube/réunions.")
+cousins_file = paths.REPORTS / "oww_cousins.json"
+if cousins_file.exists():
+    store = json.loads(cousins_file.read_text())
+    modeles = list(store)
+    defaut_mv = [m for m in modeles if "frab30np_s46" in m or m == "model"][-1:] or modeles[-1:]
+    sel_mv = st.multiselect("Têtes mesurées", modeles, default=defaut_mv or modeles[:1])
+    lignes = []
+    for m in sel_mv:
+        for grp, g in store[m]["groupes"].items():
+            lignes.append({"Tête": m, "Famille": grp, "n": g["n"],
+                           "Attendu": g["attendu"],
+                           **{f"@{t}": f"{v:.0%}" for t, v in g["taux"].items()}})
+    if lignes:
+        st.dataframe(pd.DataFrame(lignes), width="stretch", hide_index=True)
+    png = paths.REPORTS / "oww_cousins.png"
+    if png.exists():
+        with st.expander("Distributions des probabilités (dernier passage)"):
+            st.image(str(png))
+else:
+    st.info("Aucune mesure enregistrée — lancer "
+            "`uv run python scripts/eval_oww_cousins.py <tête.onnx>`.")
+
 # ── Détail d'un run ───────────────────────────────────────────────────────────
 run = st.selectbox("Détail du run", [r["run"] for r in runs])
 run_dir = paths.run_dir(WAKEWORD, run)

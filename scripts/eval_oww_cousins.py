@@ -79,30 +79,45 @@ def main():
 
     import matplotlib
     matplotlib.use("Agg")
+    # Les taux sont PERSISTÉS (JSON, fusion par tête) : la page Évaluation
+    # affiche la section « Ma voix » depuis ce fichier.
+    import datetime
+    import json
+
     import matplotlib.pyplot as plt
+    json_out = ROOT / "artifacts/reports/oww_cousins.json"
+    store = json.loads(json_out.read_text()) if json_out.exists() else {}
 
     fig, axes = plt.subplots(len(heads), 1, figsize=(9, 3.2 * len(heads)),
                              squeeze=False)
     for hi, head_path in enumerate(heads):
+        # Une tête du registre s'appelle model.onnx : on prend le nom du run.
+        label = head_path.stem if head_path.stem != "model" else head_path.parent.name
         sess = ort.InferenceSession(str(head_path),
                                     providers=["CPUExecutionProvider"])
-        print(f"\n=== {head_path.name} ===")
+        print(f"\n=== {label} ===")
         ax = axes[hi][0]
+        entry = {"date": datetime.date.today().isoformat(), "groupes": {}}
         for gi, (nom, X, attendu_haut) in enumerate(feats):
             p = np.concatenate([sess.run(None, {"input": X[k:k + 1].astype(np.float32)})[0].ravel()
                                 for k in range(len(X))])
             taux = " · ".join(f"@{t}: {(p > t).mean():.0%}" for t in THRESHOLDS)
             print(f"  {nom} ({len(p)}) — {taux}")
+            entry["groupes"][nom] = {
+                "n": int(len(p)), "attendu": "haut" if attendu_haut else "bas",
+                "taux": {str(t): round(float((p > t).mean()), 4) for t in THRESHOLDS}}
             ax.hist(p, bins=40, range=(0, 1), alpha=0.55, label=f"{nom} (n={len(p)})")
-            _ = attendu_haut, gi
+            _ = gi
+        store[label] = entry
         ax.set_yscale("log")
-        ax.set_title(head_path.name)
+        ax.set_title(label)
         ax.set_xlabel("probabilité de la tête")
         ax.legend(fontsize=7)
     fig.tight_layout()
     out = ROOT / "artifacts/reports/oww_cousins.png"
     fig.savefig(out, dpi=120)
-    print(f"\n💾  {out}")
+    json_out.write_text(json.dumps(store, indent=1, ensure_ascii=False))
+    print(f"\n💾  {out}\n💾  {json_out}")
 
 
 if __name__ == "__main__":
