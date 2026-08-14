@@ -1,0 +1,5 @@
+{
+  "name": "v27_prefrapides",
+  "description": "Tête : souffle + vitesse CNN (0.85-1.15) + négatifs-préfixes multi-vitesses (x1.0/1.05/1.15, poids x3). Rappel record (96.3 % au banc, voix 98 % @0.8, lent 94 %, rapide 68 %) mais FA/h 41 — candidat NON promouvable, base de v28.",
+  "live_threshold": 0.8
+}
