@@ -22,6 +22,25 @@ if not runs:
     st.info("Aucun run. Lancer un entraînement depuis la page précédente.")
     st.stop()
 
+# ── Le champion d'abord : ses chiffres officiels (banc) en tête de page ──────
+champ_name = registry.champion_run(WAKEWORD)
+if champ_name:
+    try:
+        cm = json.loads((paths.run_dir(WAKEWORD, champ_name) / "metrics.json").read_text())
+        if cm.get("bench"):
+            th_live = f"th{cm.get('live_threshold', 0.8)}"
+            r = cm["bench"].get(th_live) or next(iter(cm["bench"].values()))
+            st.success(f"**Champion : `{champ_name}`** — banc streaming au seuil live "
+                       f"{th_live[2:]} : **{r['recall_stream']:.1%}** de rappel "
+                       f"({r['detected']}/{r['n_occ']}) · **{r['fa_per_hour']:.1f} FA/h** · "
+                       f"mots proches {cm.get('cousins', {}).get('moi_@0.8', 0):.0%}")
+        else:
+            t = cm.get("test", {})
+            st.success(f"**Champion : `{champ_name}`** — F1 {t.get('f1_pos', 0):.4f} · "
+                       f"FRR {t.get('frr', 0):.2%} · FAR {t.get('far', 0):.2%}")
+    except Exception:
+        pass
+
 st.subheader("Comparatif — toutes les métriques")
 df = pd.DataFrame([{
     "Run": r["run"] + (" ⭐" if r["is_champion"] else ""),
@@ -185,12 +204,28 @@ run = st.selectbox("Détail du run", [r["run"] for r in runs])
 run_dir = paths.run_dir(WAKEWORD, run)
 metrics = json.loads((run_dir / "metrics.json").read_text())
 
-c = st.columns(4)
 test = metrics.get("test", {})
-c[0].metric("F1", f"{test.get('f1_pos', 0):.4f}")
-c[1].metric("FRR", f"{test.get('frr', 0):.2%}")
-c[2].metric("FAR", f"{test.get('far', 0):.2%}")
-c[3].metric("Seed élue", metrics.get("selected_seed", "—"))
+if test:
+    c = st.columns(4)
+    c[0].metric("F1", f"{test.get('f1_pos', 0):.4f}")
+    c[1].metric("FRR", f"{test.get('frr', 0):.2%}")
+    c[2].metric("FAR", f"{test.get('far', 0):.2%}")
+    c[3].metric("Seed élue", metrics.get("selected_seed", "—"))
+elif metrics.get("bench"):
+    # Tête openWakeWord (ADR-008) : pas de test par clips — ses métriques sont
+    # celles du banc streaming, la mesure qui décide de toute façon.
+    b = metrics["bench"]
+    th_live = str(metrics.get("live_threshold", 0.8))
+    cols = st.columns(len(b) + 1)
+    for i, (th, r) in enumerate(sorted(b.items())):
+        seuil = th.replace("th", "")
+        cols[i].metric(f"Banc @ {seuil}" + (" (live)" if seuil == th_live else ""),
+                       f"{r['recall_stream']:.1%}",
+                       f"{r['fa_per_hour']:.1f} FA/h", delta_color="off")
+    cols[-1].metric("Seed élue", metrics.get("selected_seed", "—"))
+    st.caption(f"Front-end : {metrics.get('frontend', '—')} · mots proches : "
+               f"{metrics.get('cousins', {}).get('moi_@0.8', '—'):.0%} de déclenchement "
+               f"@0.8 · archive `{metrics.get('bench_archive', '—')}`")
 
 if metrics.get("candidates"):
     st.subheader("Candidats (protocole anti-variance)")
