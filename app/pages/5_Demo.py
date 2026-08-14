@@ -13,7 +13,7 @@ from coachvocal import paths, registry, runtime  # noqa: E402
 from coachvocal.config import load_wakeword  # noqa: E402
 
 st.set_page_config(page_title="Démo", page_icon="🎤", layout="wide")
-st.title("🎤 Démo")
+st.title("Démo")
 
 WAKEWORD = "eloquence"
 word = load_wakeword(WAKEWORD)
@@ -88,7 +88,7 @@ if uploaded:
 
 # ── Écoute en direct au micro ─────────────────────────────────────────────────
 st.divider()
-st.subheader("🎙 Écoute en direct")
+st.subheader("Écoute en direct")
 st.caption("Le micro de CETTE machine (Streamlit tourne en local). Même modèle, "
            "même seuil et même machine à états que le banc et `live listen`.")
 

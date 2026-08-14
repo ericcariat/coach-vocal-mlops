@@ -16,7 +16,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "src"))
 from coachvocal import paths, registry  # noqa: E402
 
 st.set_page_config(page_title="Banc streaming", page_icon="🎬", layout="wide")
-st.title("🎬 Banc streaming")
+st.title("Banc streaming")
 
 WAKEWORD = "eloquence"
 

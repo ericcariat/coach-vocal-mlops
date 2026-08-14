@@ -25,7 +25,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "src"))
 from coachvocal import paths  # noqa: E402
 
 st.set_page_config(page_title="Comparaison", page_icon="⚖️", layout="wide")
-st.title("⚖️ Comparaison avec d'autres systèmes")
+st.title("Comparaison avec d'autres systèmes")
 
 comp_dir = paths.REPORTS / "comparisons"
 files = sorted(comp_dir.glob("*.json"), reverse=True) if comp_dir.exists() else []

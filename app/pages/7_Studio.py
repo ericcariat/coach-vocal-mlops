@@ -28,7 +28,7 @@ from coachvocal.config import QualityGateConfig, load_wakeword  # noqa: E402
 from coachvocal.data.gate import judge_clip, measure_clip  # noqa: E402
 
 st.set_page_config(page_title="Studio", page_icon="🎙️", layout="wide")
-st.title("🎙️ Studio d'enregistrement")
+st.title("Studio d'enregistrement")
 
 WAKEWORD = "eloquence"
 word = load_wakeword(WAKEWORD)

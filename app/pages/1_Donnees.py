@@ -16,7 +16,7 @@ from coachvocal.config import list_experiments, load_experiment  # noqa: E402
 from coachvocal.data import sources as src_registry  # noqa: E402
 
 st.set_page_config(page_title="Données", page_icon="📊", layout="wide")
-st.title("📊 Données")
+st.title("Données")
 
 experiment = st.selectbox("Expérience", list_experiments())
 cfg = load_experiment(experiment)

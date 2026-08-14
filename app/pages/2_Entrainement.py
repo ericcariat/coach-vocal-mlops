@@ -18,7 +18,7 @@ sys.path.insert(0, str(ROOT / "src"))
 from coachvocal.config import list_experiments, load_experiment  # noqa: E402
 
 st.set_page_config(page_title="Entraînement", page_icon="🚀", layout="wide")
-st.title("🚀 Entraînement")
+st.title("Entraînement")
 
 experiment = st.selectbox("Expérience", list_experiments())
 cfg = load_experiment(experiment)

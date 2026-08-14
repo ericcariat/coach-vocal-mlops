@@ -21,7 +21,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "src"))
 from coachvocal.data.gate import HUMAN_NAME, REPORT_NAME, gate_dir  # noqa: E402
 
 st.set_page_config(page_title="Qualité", page_icon="🚪", layout="wide")
-st.title("🚪 Porte qualité")
+st.title("Porte qualité")
 
 WAKEWORD = "eloquence"
 report_path = gate_dir(WAKEWORD) / REPORT_NAME
@@ -71,7 +71,7 @@ st.markdown("""
 """)
 
 # ── File des douteux ──────────────────────────────────────────────────────────
-st.subheader("👂 Douteux — à trancher")
+st.subheader("Douteux — à trancher")
 doubtful = {p: cl for p, cl in report["clips"].items() if cl["verdict"] == "douteux"}
 if not doubtful:
     st.success("Aucun douteux — la machine a tout tranché.")

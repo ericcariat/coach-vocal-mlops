@@ -22,7 +22,7 @@ st.set_page_config(page_title="Coach vocal — wake word", page_icon="🎙", lay
 WAKEWORD = st.sidebar.selectbox("Mot-clé", ["eloquence"])
 st.sidebar.caption("Pages : Données · Entraînement · Évaluation · Banc streaming · Démo")
 
-st.title("🎙 Coach vocal — détection de wake word")
+st.title("Coach vocal — détection de wake word")
 st.caption("Première brique d'un coach vocal : micro → CNN binaire → déclenchement.")
 
 # ── Champion ──────────────────────────────────────────────────────────────────

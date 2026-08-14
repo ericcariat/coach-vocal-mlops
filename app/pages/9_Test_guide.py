@@ -28,7 +28,7 @@ from coachvocal.config import QualityGateConfig, load_wakeword  # noqa: E402
 from coachvocal.data.gate import judge_clip, measure_clip  # noqa: E402
 
 st.set_page_config(page_title="Test guidé", page_icon="🎯", layout="wide")
-st.title("🎯 Test guidé — ta voix, essai par essai")
+st.title("Test guidé — ta voix, essai par essai")
 
 WAKEWORD = "eloquence"
 word = load_wakeword(WAKEWORD)
