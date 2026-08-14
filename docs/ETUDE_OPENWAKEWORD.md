@@ -1,7 +1,7 @@
 # Étude comparative — OpenWakeWord et le wake word « éloquence »
 
 **Projet :** Eloquence — détection du mot d'activation « éloquence »  
-**Contexte :** synthèse, bloc 05 Deep Learning  
+**Contexte :** étude de l'état de l'art open source  
 **Date de l'étude :** 13 août 2026  
 **Dépôt étudié :** [dscripka/openWakeWord](https://github.com/dscripka/openWakeWord)  
 **Révision observée :** branche `main`, consultation du code et de la documentation disponibles à la date de l'étude
@@ -18,7 +18,7 @@ Cette étude examine la manière dont OpenWakeWord :
 - limite les faux positifs ;
 - peut être comparé au détecteur « éloquence » développé pour le projet Eloquence.
 
-L'objectif n'est pas de remplacer automatiquement le modèle Eloquence par OpenWakeWord. Il s'agit d'en faire un benchmark de transfert d'apprentissage, d'identifier les idées réutilisables et de construire une comparaison défendable devant le jury synthèse.
+L'objectif n'est pas de remplacer automatiquement le modèle Eloquence par OpenWakeWord. Il s'agit d'en faire un benchmark de transfert d'apprentissage, d'identifier les idées réutilisables et de construire une comparaison défendable.
 
 ## 2. Résumé exécutif
 
@@ -217,7 +217,7 @@ Cette dernière idée est importante pour Eloquence : un checkpoint ayant la mei
 
 Le notebook contient une incohérence mineure à garder en tête : son texte évoque 5 000 positifs et négatifs dans une section, alors que certaines cellules de la recette observée configurent 1 000 échantillons d'entraînement et 1 000 de validation. Cela confirme qu'il faut noter les paramètres réellement exécutés, et pas seulement recopier les commentaires du notebook.
 
-Pour la synthèse, chaque run devrait donc conserver :
+Pour la traçabilité, chaque run devrait donc conserver :
 
 - la révision Git d'OpenWakeWord ;
 - les versions des dépendances ;
@@ -275,7 +275,7 @@ OpenWakeWord cite comme objectifs généraux moins de 5 % de faux rejets et moin
 
 Les faux positifs des modèles officiels sont notamment évalués sur environ 5,5 heures de l'Amazon Dinner Party Corpus, qui contient parole lointaine, musique et bruit. Les positifs sont évalués avec des prises réalistes ou des fichiers propres mélangés à du bruit et à des réponses impulsionnelles.
 
-Le projet publie aussi des comparaisons avec Porcupine, tout en avertissant que le faible nombre d'échantillons et les différences de préparation imposent une lecture prudente. Cette prudence est à conserver dans le rapport synthèse : une comparaison n'a de valeur que si les modèles reçoivent le même flux et si les événements sont comptés avec les mêmes règles.
+Le projet publie aussi des comparaisons avec Porcupine, tout en avertissant que le faible nombre d'échantillons et les différences de préparation imposent une lecture prudente. Cette prudence est à conserver dans le rapport final : une comparaison n'a de valeur que si les modèles reçoivent le même flux et si les événements sont comptés avec les mêmes règles.
 
 ## 9. Comparaison avec le projet Eloquence
 
@@ -301,7 +301,7 @@ OpenWakeWord : frontend gelé → DNN/RNN natif
 ViolaWake : frontend OpenWakeWord gelé → TemporalCNN
 ```
 
-Cette présentation est particulièrement intéressante pour la synthèse, car elle montre trois choix d'architecture, de volume de données et de transfert d'apprentissage.
+Cette présentation est particulièrement intéressante, car elle montre trois choix d'architecture, de volume de données et de transfert d'apprentissage.
 
 ## 10. Limites particulières pour le français « éloquence »
 
@@ -406,7 +406,7 @@ Cette ablation indique au jury quelle amélioration vient du réseau et laquelle
 
 Noter pour chaque run le temps par phase, le matériel, la mémoire, la taille du modèle, le temps d'inférence et la latence. La comparaison « meilleure qualité » doit être accompagnée de son coût de calcul et de préparation des données.
 
-## 13. Intérêt pour le dossier synthèse
+## 13. Intérêt pour le projet
 
 OpenWakeWord permet de présenter plusieurs compétences attendues dans un projet Deep Learning :
 
@@ -439,7 +439,7 @@ Cette distinction est importante : utiliser le code pour entraîner un modèle p
 - la licence du modèle produit ;
 - les obligations d'attribution ou de partage à l'identique.
 
-L'utilisation dans un prototype de synthèse ne supprime pas cette analyse pour le produit futur.
+L'utilisation dans un prototype ne supprime pas cette analyse pour le produit futur.
 
 ## 15. Conclusion
 
@@ -447,7 +447,7 @@ OpenWakeWord apporte une réponse robuste au manque de données spécifiques gr�
 
 Pour « éloquence », ses principaux risques sont la qualité du TTS français, les négatifs adversariaux anglais du pipeline officiel et l'incertitude du transfert des embeddings vers le français. Ses principaux avantages sont la compacité, le streaming toutes les 80 ms, l'export portable et le transfert d'apprentissage.
 
-La recommandation est donc de conserver le modèle Eloquence actuel comme référence, d'entraîner OpenWakeWord comme benchmark indépendant et d'évaluer les deux sur le même banc. Le résultat le plus intéressant pour la synthèse ne sera pas seulement le nom du gagnant, mais l'explication mesurée des compromis entre données réelles ciblées, synthèse vocale, préentraînement, faux positifs, latence et coût d'entraînement.
+La recommandation est donc de conserver le modèle Eloquence actuel comme référence, d'entraîner OpenWakeWord comme benchmark indépendant et d'évaluer les deux sur le même banc. Le résultat le plus intéressant ne sera pas seulement le nom du gagnant, mais l'explication mesurée des compromis entre données réelles ciblées, synthèse vocale, préentraînement, faux positifs, latence et coût d'entraînement.
 
 ## 16. Références principales
 

@@ -181,7 +181,7 @@ pour savoir si le modèle est plus faible sur une forme.
 - [ ] **Bootstrap d'un nouveau mot-clé** (vision « usine à mots ») : mot tapé
   → génération TTS (voix Piper FR multiples, VoxCPM2 à évaluer pour la
   variété) → campagne studio → scraping YouTube ciblé (scraper en
-  sous-processus, ADR-006) → recette standard. Après synthèse, sauf
+  sous-processus, ADR-006) → recette standard. À terme, sauf
   besoin jury.
 
 - [ ] **Calage fin-de-fenêtre là où on contrôle la découpe** (décidé le
@@ -203,7 +203,7 @@ pour savoir si le modèle est plus faible sur une forme.
 - [ ] **Brancher openWakeWord et/ou LiveKit Conv-Attention** comme concurrents
   sur notre banc (leur benchmark : FA/h ÷ 40 vs tête DNN — hypothèse à
   reproduire chez nous, pas à croire sur parole). Environnements séparés
-  (motif ADR-006). Intérêt synthèse : comparaison à l'état de l'art.
+  (motif ADR-006). Intérêt : comparaison à l'état de l'art.
 - [ ] Focal loss sur notre CNN (ablation BCE vs focal) — idée LiveKit peu
   coûteuse à tester dans notre pipeline.
 - [ ] Si cible embarquée confirmée un jour : branche microWakeWord (ESP32-S3),

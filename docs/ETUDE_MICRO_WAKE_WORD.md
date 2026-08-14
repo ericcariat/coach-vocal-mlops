@@ -1,7 +1,7 @@
 # Étude comparative — microWakeWord et le wake word « éloquence » sur système embarqué
 
 **Projet :** Eloquence — détection embarquée du mot d'activation « éloquence »  
-**Contexte :** synthèse, bloc 05 Deep Learning  
+**Contexte :** étude préparatoire au portage embarqué  
 **Date de l'étude :** 13 août 2026  
 **Dépôt étudié :** [OHF-Voice/micro-wake-word](https://github.com/OHF-Voice/micro-wake-word)  
 **Révision observée :** `4665173` du 6 juillet 2026  
@@ -519,7 +519,7 @@ Pour une future version commerciale d'Eloquence, il faudra donc auditer séparé
 
 La licence permissive du code n'efface pas les restrictions des données.
 
-## 17. Intérêt pour la synthèse synthèse
+## 17. Intérêt pour le projet
 
 microWakeWord apporte une dimension très forte au dossier : le passage d'un prototype Deep Learning à une contrainte TinyML réelle.
 
