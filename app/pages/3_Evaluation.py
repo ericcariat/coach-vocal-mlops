@@ -86,16 +86,20 @@ for r in runs:
     except Exception:
         r["bench_model"] = None
 
-df = pd.DataFrame([{
-    "Run": r["run"] + (" ⭐" if r["is_champion"] else ""),
-    "Date": (r["date"] or "")[:10], "Seed": r["seed"],
-    "Accuracy": r["accuracy"], "F1": r["f1"], "FRR ↓": r["frr"], "FAR ↓": r["far"],
-    "Banc @0.8": _bench_cols(r)[0], "FA/h @0.8 ↓": _bench_cols(r)[1],
-    "Empreinte data": r["dataset_fingerprint"],
-} for r in runs])
+lignes_runs = []
+for r in runs:
+    rec, fa = _bench_cols(r)
+    lignes_runs.append({
+        "Run": r["run"] + (" ⭐" if r["is_champion"] else ""),
+        "Date": (r["date"] or "")[:10], "Seed": r["seed"],
+        "Accuracy": r["accuracy"], "F1": r["f1"], "FRR ↓": r["frr"], "FAR ↓": r["far"],
+        "Banc @0.8": f"{rec:.1%}" if rec is not None else "—",
+        "FA/h @0.8 ↓": f"{fa:.1f}" if fa is not None else "—",
+        "Empreinte data": r["dataset_fingerprint"],
+    })
+df = pd.DataFrame(lignes_runs)
 st.dataframe(df.style.format({"Accuracy": "{:.2%}", "F1": "{:.4f}", "FRR ↓": "{:.2%}",
-                              "FAR ↓": "{:.2%}", "Banc @0.8": "{:.1%}",
-                              "FA/h @0.8 ↓": "{:.1f}"}, na_rep="—"),
+                              "FAR ↓": "{:.2%}"}, na_rep="—"),
              width="stretch", hide_index=True)
 
 st.caption("**FRR** (*False Rejection Rate*) : le mot est prononcé, rien ne se passe. "
