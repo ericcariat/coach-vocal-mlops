@@ -6,6 +6,23 @@ vaut plus qu'un résultat lisse — elle dit comment on a appris à ne plus se t
 
 ---
 
+## 2026-08-14 — v24 : les fragments longs confirment la tendance, sans rejoindre le champion
+
+Fragments propres à plafond **70 %** du mot (fracs 30/45/70, pool
+`fragments_word70`, f70 mesurés : 460 ms de voix en médiane, max 620 ms —
+jamais un mot entier). Banc (52,7 min / 27 occ, champion co-mesuré constant) :
+**59.3 % · 28.4 FA/h** @0.8 — critère échoué (FA ≫ 8.2), champion inchangé.
+
+La lecture secondaire pré-déclarée est, elle, validée : FA/h **décroît avec la
+longueur des fragments** — 38.7 (plafond 45 %) → 28.4 (70 %) → 6.8 (pool bogué
+historique, fragments jusqu'à ~100 %). Et le rappel monte (+11 pts vs champion).
+Le « garde-fou » se comporte comme un curseur : plus les fragments frôlent le
+mot complet, plus le modèle exige un mot entier et net. Le prolongement naturel
+(~85-100 %) EST le masquage temporel qu'l'auteur a écarté (v19b) — la série
+s'arrête donc ici : le pool historique reste dans la recette du champion, ses
+propriétés sont maintenant comprises et documentées. Série complète :
+v19 → v24, archives du 2026-08-14, courbe FA/h = f(plafond) reproductible.
+
 ## 2026-08-14 — Contrôle + ablation : le pipeline est sain, les fragments sont un garde-fou
 
 Après deux runs dégradés d'affilée (v20, v21), doute légitime de l'auteur : « on n'a
