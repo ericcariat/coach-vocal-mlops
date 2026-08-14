@@ -1,0 +1,81 @@
+{
+  "test": {
+    "threshold": 0.5,
+    "accuracy": 0.9699812382739212,
+    "precision_pos": 0.9214659685863874,
+    "recall_pos": 0.9119170984455959,
+    "f1_pos": 0.9166666666666666,
+    "frr": 0.08808290155440412,
+    "far": 0.01718213058419249,
+    "tp": 176,
+    "fp": 15,
+    "fn": 17,
+    "tn": 858,
+    "n": 1066,
+    "n_pos": 193,
+    "roc_auc": 0.9631548647092688
+  },
+  "test_protocole": "mini-flux (souffle + clip + souffle), machine à états réelle — le clip entre progressivement",
+  "pools_test": {
+    "yt_positif": {
+      "n": 188,
+      "fire_rate": 0.9095744680851063,
+      "expected": "haut",
+      "ok": true
+    },
+    "moi_positif": {
+      "n": 5,
+      "fire_rate": 1.0,
+      "expected": "haut",
+      "ok": true
+    },
+    "proches": {
+      "n": 4,
+      "fire_rate": 0.25,
+      "expected": "bas",
+      "ok": false
+    },
+    "gsc": {
+      "n": 250,
+      "fire_rate": 0.008,
+      "expected": "bas",
+      "ok": true
+    },
+    "cv_fr": {
+      "n": 195,
+      "fire_rate": 0.015384615384615385,
+      "expected": "bas",
+      "ok": true
+    },
+    "cv_en": {
+      "n": 98,
+      "fire_rate": 0.02040816326530612,
+      "expected": "bas",
+      "ok": true
+    },
+    "musan_noise": {
+      "n": 150,
+      "fire_rate": 0.0,
+      "expected": "bas",
+      "ok": true
+    },
+    "silence": {
+      "n": 20,
+      "fire_rate": 0.0,
+      "expected": "bas",
+      "ok": true
+    },
+    "fragments_moi": {
+      "n": 30,
+      "fire_rate": 0.23333333333333334,
+      "expected": "bas",
+      "ok": false
+    },
+    "fragments_yt": {
+      "n": 126,
+      "fire_rate": 0.0,
+      "expected": "bas",
+      "ok": true
+    }
+  }
+}

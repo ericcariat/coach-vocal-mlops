@@ -285,7 +285,7 @@
    }
   }
  },
- "eloquence_v25_souffle_seed46": {
+ "v25_souffle_seed46": {
   "date": "2026-08-14",
   "protocole": "mini-flux + machine à états",
   "groupes": {
@@ -357,7 +357,7 @@
    }
   }
  },
- "eloquence_v26_vitesse_seed46": {
+ "v26_vitesse_seed46": {
   "date": "2026-08-14",
   "protocole": "mini-flux + machine à états",
   "groupes": {
@@ -429,7 +429,7 @@
    }
   }
  },
- "eloquence_v27_prefrapides_64x3_seed46": {
+ "v27_prefrapides_seed46": {
   "date": "2026-08-15",
   "protocole": "mini-flux + machine à états",
   "groupes": {
@@ -497,6 +497,78 @@
      "0.9": 0.3191,
      "0.95": 0.2553,
      "0.99": 0.1064
+    }
+   }
+  }
+ },
+ "v28_resserre_seed46": {
+  "date": "2026-08-15",
+  "protocole": "mini-flux + machine à états",
+  "groupes": {
+   "positifs moi_ (attendu : HAUT, vus)": {
+    "n": 47,
+    "attendu": "haut",
+    "taux": {
+     "0.5": 1.0,
+     "0.8": 0.9149,
+     "0.9": 0.7872,
+     "0.95": 0.7447,
+     "0.99": 0.5532
+    }
+   },
+   "cousins moi_ (attendu : BAS, vus si adv-weight)": {
+    "n": 45,
+    "attendu": "bas",
+    "taux": {
+     "0.5": 0.2667,
+     "0.8": 0.2444,
+     "0.9": 0.2,
+     "0.95": 0.1778,
+     "0.99": 0.1556
+    }
+   },
+   "cousins TTS (attendu : BAS, jamais vus)": {
+    "n": 150,
+    "attendu": "bas",
+    "taux": {
+     "0.5": 0.1067,
+     "0.8": 0.0667,
+     "0.9": 0.06,
+     "0.95": 0.06,
+     "0.99": 0.0333
+    }
+   },
+   "hard negatives banc (attendu : BAS, vus)": {
+    "n": 54,
+    "attendu": "bas",
+    "taux": {
+     "0.5": 0.0741,
+     "0.8": 0.037,
+     "0.9": 0.0185,
+     "0.95": 0.0185,
+     "0.99": 0.0
+    }
+   },
+   "préfixes 80% du mot (attendu : BAS)": {
+    "n": 47,
+    "attendu": "bas",
+    "taux": {
+     "0.5": 0.766,
+     "0.8": 0.5319,
+     "0.9": 0.4681,
+     "0.95": 0.3617,
+     "0.99": 0.1489
+    }
+   },
+   "préfixes 90% du mot (attendu : BAS)": {
+    "n": 47,
+    "attendu": "bas",
+    "taux": {
+     "0.5": 0.9362,
+     "0.8": 0.8085,
+     "0.9": 0.6596,
+     "0.95": 0.4681,
+     "0.99": 0.3617
     }
    }
   }
