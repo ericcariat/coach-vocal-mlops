@@ -28,7 +28,9 @@ champion = registry.champion_run(WAKEWORD)
 OWW_COMPARE = Path(__file__).resolve().parents[2] / "open_wake_word_compare"
 oww_heads = sorted(OWW_COMPARE.glob("*.onnx")) if OWW_COMPARE.exists() else []
 options = runs + [f"oww : {p.name}" for p in oww_heads]
-run = st.selectbox("Modèle", options, index=runs.index(champion) if champion in runs else 0)
+run = st.selectbox("Modèle", options,
+                   index=runs.index(champion) if champion in runs else 0,
+                   format_func=lambda o: f"{o} ⭐" if o == champion else o)
 threshold = st.slider("Seuil de décision", 0.01, 0.99, word.live.threshold, 0.01)
 
 

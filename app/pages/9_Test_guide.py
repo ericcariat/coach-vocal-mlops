@@ -36,7 +36,8 @@ runs = [r["run"] for r in registry.list_runs(WAKEWORD)]
 champion = registry.champion_run(WAKEWORD)
 
 c1, c2, c3 = st.columns([2, 1, 2])
-run = c1.selectbox("Modèle", runs, index=runs.index(champion) if champion in runs else 0)
+run = c1.selectbox("Modèle", runs, index=runs.index(champion) if champion in runs else 0,
+                   format_func=lambda o: f"{o} ⭐" if o == champion else o)
 threshold = c2.slider("Seuil", 0.1, 0.95, word.live.threshold, 0.05)
 attendu = c3.radio("Cet essai est…", ["✅ le mot (« éloquence »)",
                                       "❌ un piège (« éloquente », « élégance »…)"],
