@@ -1,17 +1,13 @@
-# Corpus français de conversation continue pour Eloquence
+# Corpus français de conversation continue
 
 Courte sélection de sources permettant de constituer un banc négatif en français, avec de la parole continue en réunion, en conversation ou dans un environnement quotidien.
 
 | Source | Description et intérêt | Accès |
 |---|---|---|
-| **SUMM-RE — choix recommandé** | Environ 95 h de réunions spontanées en français, avec 3 à 4 participants. Une session regroupe généralement trois discussions de 20 min, ce qui permet de constituer facilement une heure continue de type « bureau ». Licence CC BY-SA 4.0. | [Dataset Hugging Face](https://huggingface.co/datasets/linagora/SUMM-RE) · [Article scientifique](https://aclanthology.org/2024.jeptalnrecital-taln.35/) |
+| **SUMM-RE** | Environ 95 h de réunions spontanées en français, avec 3 à 4 participants. Une session regroupe généralement trois discussions de 20 min, ce qui permet de constituer facilement une heure continue de type « bureau ». Licence CC BY-SA 4.0. | [Dataset Hugging Face](https://huggingface.co/datasets/linagora/SUMM-RE) · [Article scientifique](https://aclanthology.org/2024.jeptalnrecital-taln.35/) |
 | **CID — Corpus of Interactional Data** | Huit conversations spontanées d'une heure entre deux francophones. Très bon corpus de parole continue, mais enregistré proprement en salle anéchoïque : il peut être complété avec du bruit de café ou de bureau. | [Présentation ATALA](https://www.atala.org/node/810) · [Informations d'accès](https://sppas.org/bigi/Doc/2015-SPPAS-Tutorial-HongKong/SPPAS-tutorial_02_introduction.html) |
 | **ESLO** | Grand corpus de français parlé contenant des conversations pendant des repas, des réunions, des interactions commerciales et des situations quotidiennes. C'est la source la plus proche du contexte « repas/café », mais sa sélection est moins directe. | [Présentation ESLO](https://segcor.cnrs.fr/lll-eslo/) · [ESLO-FLEU sur Hugging Face](https://huggingface.co/datasets/FrancophonIA/ESLO-FLEU) |
 | **TCOF** | Corpus téléchargeable d'interactions entre adultes : conversations, entretiens et réunions, avec des durées allant de quelques minutes à 45 min ou davantage. Intéressant pour diversifier les conditions et les locuteurs. | [Corpus TCOF](https://ct3.ortolang.fr/data/tcof/) · [Page ORTOLANG](https://hdl.handle.net/11403/tcof/v2) |
 | **Libre à vous !** | Émission française de débat disponible en MP3/OGG, souvent pendant 1 h 30, avec plusieurs intervenants et des transcriptions. Utile comme parole française continue légalement réutilisable, mais le son est celui d'un podcast traité, pas d'un véritable café. | [Archives et téléchargements](https://www.april.org/les-podcasts-libre-a-vous-pour-accompagner-votre-ete-4) · [Exemple et licences](https://www.april.org/libre-a-vous-diffusee-mardi-28-septembre-2021) |
 
-## Recommandation
-
-Commencer par une session présentielle complète de **SUMM-RE** pour obtenir environ une heure de réunion française. Ajouter ensuite **CID**, **ESLO** ou **TCOF** pour couvrir la conversation familière et les environnements plus naturels.
-
-Avant de considérer un fichier comme négatif, vérifier dans la transcription et dans l'audio qu'il ne contient pas « éloquence », « l'éloquence » ou « d'éloquence ». Conserver également la source, la licence, la date de téléchargement et l'identifiant précis de chaque enregistrement.
+Avant de considérer un fichier comme négatif, vérifier dans la transcription et dans l'audio qu'il ne contient pas le mot-clé visé (ni ses formes élidées). Conserver également la source, la licence, la date de téléchargement et l'identifiant précis de chaque enregistrement.

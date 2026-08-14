@@ -1,27 +1,85 @@
 # Journal des explorations
 
-Le `CHANGELOG` raconte les runs officiels. Ce journal raconte le reste : les
-essais, les diagnostics, et surtout **les impasses**. Une conclusion rétractée
-vaut plus qu'un résultat lisse — elle dit comment on a appris à ne plus se tromper.
+Le `CHANGELOG` raconte les runs officiels. Ce journal raconte les
+essais, les diagnostics, les impasses.
 
----
-
-## 2026-08-14 — La soirée du 14 août, racontée simplement
-
-Le résumé de toute la soirée, en mots simples. Les entrées détaillées suivent
-plus bas ; les preuves sont dans `artifacts/reports/` et le code dans git
+Les preuves sont dans `artifacts/reports/` et le code dans git
 (`git log --oneline`, commits du 14 août).
 
-**1. On a réparé les « fragments » — deux fois.**
+---
+## 2026-08-14 — 14 août - part 2
+
+**1. On adapte le réseau dans le même style que OpenWakeWord**
+
+L'objectif étant d'atteindre +- 1 FA/h (recommendé 0.5 FA/h (porcupine doc))
+Donc l'idée c'est de garder les premières couches d'un réseau qui provient de Google/OpenWakeWord. 
+voir étude:  
+[Training Keyword Spotters with Limited and Synthesized Speech Data](https://arxiv.org/pdf/2002.01322)
+
+C'est un réseau qui est (déjà bien entraîné!) entraîné par 200 millions de clips Youtube. (Finalement l'idée 
+de "scrapping" est peut être pas si mauvaise ;-)).
+On va juste réentraîner la tête pour qu'elles reconnaissent le mot éloquence.
+
+**2. H1 (eloquence_frab30_...) Plus de poids pour les mots proches**
+Les mots ressemblant à « éloquence », comme « éloquente », provoquaient trop de fausses détections. 
+Fixé via plus de poids pendant l’entraînement.
+Entraînement de la tête sur nos données réelles uniquement (pas d'océan ACAV) : positifs à contexte réel + 12 000 fenêtres de parole française en négatif (poids ×20) + les 122 pièges connus en poids ×30 (exports/oww_training_b/negatifs_adversariaux/ : 45 mots proches, 54 fausses alertes du banc, 23 essais micro).
+Commande : `scripts/train_oww_head.py --context --french-neg 12000 --adv-weight 30`
+
+Résultat du modèle `frab30`, seed 42 :
+
+- **85 %** de détection ;
+- **1,1 fausse alerte par heure** ;
+- **0 %** de déclenchement sur les mots proches, contre **16 % avant**.
+
+La mesure est réalisée avec :
+- `scripts/eval_oww_cousins.py`
+- `artifacts/reports/oww_cousins.png`
+
+**3. H2 (eloquence_frab30np_...)  Ajout de bruit de fond**
+Les enregistrements ont ensuite été mélangés avec du vrai bruit de fond (à la place d'un silence parfait!)
+Résultat du modèle `frab30np`, seed 46 :
+
+- **89 %** de détection ;
+- **2,3 fausses alertes par heure** ;
+- **0 %** de déclenchement sur les mots proches.
+
+### 4. Comparaison avec le modèle actuel
+
+Pour rappel, le modèle officiel actuel, `CNN v17`, atteint :
+
+- **48 %** de détection ;
+- **6,8 fausses alertes par heure**.
+
+**Les nouveaux modèles openWakeWord font donc nettement mieux pendant les tests.**
+
+confirmé aussi aux tests micro !
+
+Note : Dans les noms : 
+- `fr` = négatifs français ×20, 
+- `ab30` = adversariaux ×30,
+- `np` = noise pad (bruit de fond), 
+- `seed4x` = seed du random, 
+- `64x3` = la taille de la tête.
+
+## 2026-08-14 — 14 août
+
+**1. Les « fragments » réparés deux fois.**
 Les fragments sont des bouts du mot (« élo… », « …quence ») qu'on montre au
-modèle en lui disant « ça, ce n'est PAS le mot ». Problème découvert à
-l'oreille par l'auteur : certains contenaient presque tout le mot. Première
-réparation ratée (la mesure confondait le souffle du micro avec le mot),
+modèle. Problème découvert : certains contenaient presque tout le mot. 
+L'intuition m dit que prendre un mot quasi complet dans les négatifs va 
+perturber le modèle. 
+
+Première réparation ratée (la mesure confondait le souffle du micro avec le mot),
+Première réparation ratée : pour trouver le mot, on cherchait du silence parfait, qui n'exite pas car il y 
+le souffle du micro. Fixé : le mot est repéré par son énergie, comparée au clip lui-même 
+(la voix est ~100 fois plus forte que le souffle)
+
 deuxième réussie : le mot est maintenant repéré par son énergie, et un
 contrôle automatique vérifie chaque fragment (`scripts/check_fragments.py`,
 image de preuve `artifacts/reports/fragments_word_controle.png`).
 
-**2. On a testé six recettes d'entraînement (v19 à v24). Aucune n'a battu le champion.**
+**2. Plusieures recettes d'entraînement (v19 à v24). Aucune n'a battu le champion.**
 Chaque « v » est une recette : un fichier dans `configs/experiment/` qui dit ce
 qui change, et un dossier dans `artifacts/runs/eloquence/` avec les résultats.
 - **v19** : fragments réparés (première version) → pareil que le champion.
@@ -29,93 +87,16 @@ qui change, et un dossier dans `artifacts/runs/eloquence/` avec les résultats.
   avant le mot → beaucoup plus de mots attrapés, mais beaucoup trop de fausses
   alertes. Leçon : si les exemples positifs contiennent de la parole qui coule,
   la parole qui coule finit par ressembler au mot.
-- **v21** : fragments bien réparés, seuls → surprise, c'est PIRE.
+- **v21** : fragments bien réparés, mais surprise, c'est PIRE. (il n'y a plus 
+que des "élo" et des "quences")
 - **v22** : on refait le champion à l'identique, pour vérifier que rien n'est
-  cassé → tout va bien, la machine est saine.
-- **v23** : on enlève carrément les fragments → pire aussi. Donc les fragments
-  servent vraiment.
+  cassé → tout va bien.
+- **v23** : on enlève carrément les fragments → pire aussi. Donc ils sont utiles ;-)
 - **v24** : fragments réparés mais plus longs (jusqu'à 70 % du mot) → mieux,
   mais pas assez.
-Moralité inattendue : les vieux fragments « bogués » (presque le mot entier)
-apprenaient au modèle une règle précieuse — « tant que le mot n'est pas fini,
-tais-toi ». Le champion v17 les garde. La série est close.
-
-**3. Le vrai gain de la soirée : la greffe openWakeWord (le goal de l'auteur).**
-Idée : garder les « oreilles » toutes faites de Google (un gros réseau déjà
-entraîné, qu'on ne touche pas) et n'entraîner que la petite « tête » qui
-reconnaît « éloquence ». Fichiers : les têtes sont les `.onnx` dans
-`open_wake_word_compare/`, le script est `scripts/train_oww_head.py`.
-Deux améliorations ce soir :
-- **H1** (`eloquence_frab30_...`) : on a donné 30 fois plus d'importance aux
-  122 pièges connus (les mots-cousins de la voix de l'auteur comme « éloquente »,
-  et les fausses alertes déjà jugées au banc). Résultat : 85 % des mots
-  attrapés avec ~1 fausse alerte par heure — et les cousins ne déclenchent
-  plus JAMAIS (avant : 16 %). Un nouvel outil mesure ça :
-  `scripts/eval_oww_cousins.py` (image `artifacts/reports/oww_cousins.png`).
-- **H2** (`eloquence_frab30np_...`) : pareil, mais les enregistrements de l'auteur
-  sont mélangés à du vrai bruit de fond au lieu d'un silence parfait — parce
-  qu'au micro, le silence parfait n'existe pas. Résultat : 89 % · 2.3 fausses
-  alertes/heure, toujours 0 % de cousins, et 4 graines sur 5 d'accord entre
-  elles (signe que ce n'est pas un coup de chance).
-Dans les noms : `fr` = négatifs français ×20, `ab30` = adversariaux ×30,
-`np` = noise pad (bruit de fond), `seed4x` = la graine (le tirage au sort de
-l'entraînement), `64x3` = la taille de la tête.
-
-**Où on en est.** Le champion officiel reste le CNN v17 (48 % · 6.8 FA/h).
-Les deux meilleures têtes (`frab30np` graines 46 et 44, seuil 0.95) font
-BEAUCOUP mieux au banc — il manque une seule chose pour les introniser :
-le test au micro de l'auteur (page Démo, sélectionner la tête « oww : … »,
-seuil 0.95). Ensuite : décision ensemble, ADR-008, intégration.
-
-## 2026-08-14 — Goal openWakeWord, H1 : l'arme contre les cousins (critère AVANT le run)
-
-Objectif fixé par l'auteur : tête sur extracteur Google gelé, d'abord NOS
-enregistrements réels, l'océan seulement si nécessaire, viser mieux que le
-champion et ~1 FA/h. Constat préalable : les fichiers océan ACAV (11/125/2000 h)
-ne sont plus sur le disque — et le round 5 avait montré que 3,3 h de français
-pesaient plus que 125 h d'océan : H1 se joue donc SANS océan.
-
-Baseline mesurée avant (nouveau `scripts/eval_oww_cousins.py`, tête round 5
-seed 42) : les **cousins moi_ déclenchent à 16 % @0.95** (7 % @0.99), contre
-2-5 % pour les autres négatifs — la faiblesse vue au micro est maintenant un
-chiffre. Levier ajouté : `--adv-weight` (les 122 adversariaux — 45 cousins
-moi_, 54 hard negatives du banc, 23 guidés — pesaient 1 parmi ~6 900).
-
-**H1** : contexte réel + 12 000 fenêtres françaises ×20 + adversariaux ×30,
-3 seeds. Critère écrit avant le banc :
-  - succès : à UN seuil, rappel ≥ 60 % ET FA/h ≤ 6.8 (battre le champion sur
-    les deux axes) ; idéal : rappel ≥ 70 % à FA/h ≤ 1.5 ;
-  - cousins : taux de déclenchement des cousins moi_ ≤ 5 % au seuil retenu
-    (baseline 16 %), sans perdre plus de 5 pts sur les positifs moi_ ;
-  - la promotion resterait suspendue au test guidé au micro de l'auteur (ADR-008 à
-    écrire — hors périmètre docs autorisé, à valider avec lui).
-
-**Verdict H1 (banc 52,7 min / 27 occ, archive `eloquence_20260814_032603`) :
-critère DÉPASSÉ.** Seed 42 : **85.2 % · 1.1 FA/h @0.95** (78 % · 0.0 @0.99) —
-l'idéal (≥ 70 % · ≤ 1.5) est atteint, sans océan. Cousins moi_ : **0 %** dès
-0.8 (baseline 16 %), hard negatives 0 %, cousins TTS jamais vus 1 %. Dispersion
-seeds réelle (rappel 70-85 % @0.8) : l'élection devra être protocolée.
-
-**Verdict H2 (fond MUSAN sous les positifs de repli, 5 seeds, archive
-`eloquence_20260814_033459`) : la réserve est levée, la dispersion resserrée.**
-Quatre seeds sur cinq tiennent le quadrant : seed 46 à **89 % · 2.3 @0.95**
-(78 % · 1.1 @0.99), seed 44 à **89 % · 3.4 @0.95** (74 % · 1.1 @0.98), cousins
-moi_ à **0 % partout** pour les deux ; et la robustesse au silence remonte
-(moi_ padés silence : 57-66 % @0.95 contre 40 % en H1). Seul le seed 45 est
-écarté d'office : rappel 96 % mais cousins 7-15 % — le profil « attrape-tout ».
-L'océan ACAV n'a jamais été nécessaire. Candidats désignés pour le test micro
-de l'auteur (le juge de l'intronisation) : **frab30np seed 46 et seed 44**, point de
-fonctionnement suggéré 0.95, avec frab30 seed 42 (H1) en témoin. Sélection
-assumée EXPLORATOIRE (bancs regardés) : l'intronisation exigera le protocole
-complet — ADR-008, élection déclarée, intégration registre/serving.
-
-**Réserve d'origine (H1)** : sur les clips moi_ padés de SILENCE, le
-seed 42 ne déclenche qu'à 40 % @0.95 — l'entraînement à contexte réel rend le
-silence « anormal ». Le micro a toujours un fond de pièce, mais c'est le même
-mécanisme que la balançoire du round 2 : à vérifier au micro, et contré par
-**H2** (lancé dans la foulée, critère identique) : les positifs moi_/guided de
-repli sont padés d'un fond MUSAN réel (SNR 12-25 dB, déterministe) au lieu de
-zéros — 5 seeds pour un choix de candidat plus honnête.
+En résumé : les vieux fragments (presque le mot entier) apprenaient probablement au modèle
+à éciuter en entier. 
+On garde le champion v17. et on arrête cette exploration.
 
 ## 2026-08-14 — v24 : les fragments longs confirment la tendance, sans rejoindre le champion
 
@@ -129,14 +110,14 @@ longueur des fragments** — 38.7 (plafond 45 %) → 28.4 (70 %) → 6.8 (pool b
 historique, fragments jusqu'à ~100 %). Et le rappel monte (+11 pts vs champion).
 Le « garde-fou » se comporte comme un curseur : plus les fragments frôlent le
 mot complet, plus le modèle exige un mot entier et net. Le prolongement naturel
-(~85-100 %) EST le masquage temporel qu'l'auteur a écarté (v19b) — la série
+(~85-100 %) EST le masquage temporel, écarté par décision (v19b) — la série
 s'arrête donc ici : le pool historique reste dans la recette du champion, ses
 propriétés sont maintenant comprises et documentées. Série complète :
 v19 → v24, archives du 2026-08-14, courbe FA/h = f(plafond) reproductible.
 
 ## 2026-08-14 — Contrôle + ablation : le pipeline est sain, les fragments sont un garde-fou
 
-Après deux runs dégradés d'affilée (v20, v21), doute légitime de l'auteur : « on n'a
+Après deux runs dégradés d'affilée (v20, v21), doute légitime : « on n'a
 pas un autre problème ? ». Deux diagnostics, critères écrits avant, banc commun
 (52,7 min / 27 occ, seuil 0.8, champion co-mesuré à 48.1 % · 6.8 constant) :
 
@@ -161,7 +142,7 @@ plafond remonté vers ~70 %, ex-v24). Preuves : archive
 
 ## 2026-08-14 — v20 : la découpe propre aide le rappel, le contexte réel ruine les FA
 
-Constat mesuré d'abord (intuition de l'auteur) : 1830/1882 clips `yt_` ont le mot
+Constat mesuré d'abord (une intuition confirmée) : 1830/1882 clips `yt_` ont le mot
 collé au **début** du clip et 32/47 clips `moi_` l'ont collé à la **fin** — le
 `time_shift` ±100 ms de l'augmentation tronquait donc régulièrement le « é » ou
 la fin du mot pendant l'entraînement du champion. Correctif v20 (une variable
@@ -189,12 +170,12 @@ ré-ancrage sur zéros pour `yt_` aussi, sans contexte réel. Preuves : archive
 ## 2026-08-14 — Fragments : la mesure du mot doit être relative au pic
 
 La première correction des fragments (fractions du mot, seuil absolu `1e-5`)
-a été invalidée à l'oreille par l'auteur : sur ses enregistrements, le **souffle du
+a été invalidée à l'écoute : sur les enregistrements micro, le **souffle du
 micro** (RMS ~0.001) dépasse ce seuil dès l'échantillon 0 — la « durée du mot »
 mesurée valait toute la seconde, et un `f45` embarquait 68 % du mot (« loquence »).
 Correctif : RMS par trames de 20 ms, mot = zone au-dessus de 10 % du pic, découpe
 ancrée sur les bornes du mot. Contrôle indépendant (`scripts/check_fragments.py`,
-idée de l'auteur à la place d'un repassage WhisperX) : 1 538 fragments, médiane 31 %
+choix retenu à la place d'un repassage WhisperX) : 1 538 fragments, médiane 31 %
 du mot, max 48 %, zéro dépassement — preuve :
 `artifacts/reports/fragments_word_controle.png`. Leçon : un seuil d'énergie
 absolu est une constante en dur déguisée ; seul un seuil **relatif au signal**

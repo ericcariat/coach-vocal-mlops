@@ -64,7 +64,7 @@ lien `current/`. Ne jamais écrire un chemin de run en dur ailleurs.
 - **PAS de promotion ce soir, volontairement** : run exploratoire (script,
   1 seed, critère non pré-déclaré, modèle hors registre). Pour introniser :
   ADR-008 (second front-end — dérogation à la règle du front-end unique),
-  protocole multi-seeds + élection fa_ambient, test voix de l'auteur, intégration
+  protocole multi-seeds + élection fa_ambient, test au micro, intégration
   registre/serving. La démo, elle, sait déjà le faire tourner (sélecteur oww).
 
 ### Piste B, round 3 (ocean_ctx) — 2026-08-13 — l'hypothèse du contexte CONFIRMÉE
@@ -112,19 +112,19 @@ lien `current/`. Ne jamais écrire un chemin de run en dur ailleurs.
   (format [16×96] directement compatible avec notre script). Prochain geste.
 
 ### v17_stack — 2026-08-13 — ⭐ PROMU (seuil live 0.8, priorité silence)
-- **Décision de l'auteur** : priorité aux FA/h. Au banc courant (53,1 min, 27 occ.,
+- **Décision** : priorité aux FA/h. Au banc courant (53,1 min, 27 occ.,
   2 nus difficiles inclus) : **48.1 % · 6.8 FA/h** au seuil 0.8 — contre
   63.0 % · 29.4 pour v11 : **FA ÷ 4.3**, au prix du rappel banc assumé.
 - Mesure décisive du balayage : **0.7 est un point DOMINÉ** (9.1 FA/h comme
   0.65 mais −3.7 pts) — seuls 0.65 (55.6 · 9.1) et 0.8 (48.1 · 6.8) sont des
   choix rationnels ; 0.65 reste la réserve « rappel » (une ligne de config).
-- Contexte personnel : v17 fait **10/10 (proba 1.00)** sur la voix de l'auteur au
+- Contexte : v17 fait **10/10 (proba 1.00)** sur la voix de référence au
   mot nu en test guidé — le rappel banc mesure des voix YouTube/réunion, pas
   l'usage micro réel.
 - Seuil live : déjà 0.80 dans la config du mot — aucun changement nécessaire.
 
 ### v18_guided — 2026-08-13 — ❌ la boucle personnelle dégrade le banc
-- **But** : v17 + les 33 essais guidés de l'auteur (10 TP mot nu ×10, 15 FP
+- **But** : v17 + les 33 essais guidés au micro (10 TP mot nu ×10, 15 FP
   « éloquente/élégance » + 8 TN ×5). Critère : ≥ v17 − 2 pts et FA/h ≤ v17.
 - **Banc (0.55)** : 51.9 % · 39.8 FA/h contre 63.0 % · 18.2 pour v17 — ❌ sur
   les deux axes.
@@ -135,7 +135,7 @@ lien `current/`. Ne jamais écrire un chemin de run en dur ailleurs.
   peuvent diverger.** La voie propre pour la seconde : boost modeste (×2-3),
   ou un banc personnel dédié, ou une adaptation finale légère — pas un ×10.
   Side-note : la session guidée elle-même a mesuré v17 à 10/10 sur la voix
-  de l'auteur (mot nu, proba 1.00) — le besoin personnel est déjà couvert par v17.
+  au micro (mot nu, proba 1.00) — le besoin est déjà couvert par v17.
 
 ### v17_stack — 2026-08-13 — la courbe domine, le point de fonctionnement bouge
 - **Recette** : cumul rappel-d'abord — RIR/multi-SNR (+ rappel), dose 300
@@ -149,7 +149,7 @@ lien `current/`. Ne jamais écrire un chemin de run en dur ailleurs.
   FA ÷ 3.3). Et « d'éloquence » : **8/10** (record, effet RIR).
 - **Honnêteté méthodologique** : promouvoir v17 implique de changer AUSSI le
   seuil de fonctionnement live (0.8 → 0.55 ou 0.65), un paramètre produit —
-  le critère écrit ne l'avait pas prévu. Décision laissée à l'auteur : point
+  le critère écrit ne l'avait pas prévu. Décision en suspens : point
   « rappel » (0.55) ou point « silence » (0.65). Pas de promotion automatique.
 
 ### Banc recomposé + v15b/v16 — 2026-08-13 — le champion tient, la frontière est claire
@@ -186,8 +186,8 @@ lien `current/`. Ne jamais écrire un chemin de run en dur ailleurs.
   voie sans coût de rappel. Champion inchangé (v11_speech_300).
 
 ### Comparatif openWakeWord — 2026-08-13 — le banc tranche : 5× moins de rappel
-- **Protocole** : 5 têtes oWW « éloquence » (64x3, 115 k steps, entraînées par
-  l'auteur sur le pipeline openWakeWord, ~100 % synthétique) passées sur NOTRE banc
+- **Protocole** : 5 têtes oWW « éloquence » (64x3, 115 k steps, entraînées
+  sur le pipeline officiel openWakeWord, ~100 % synthétique) passées sur NOTRE banc
   étendu via l'adaptateur ONNX (leur front-end mel+embeddings, NOTRE machine à
   états), seuils 0.05 → 0.8.
 - **Résultats (seuil 0.5 ; les 5 modèles se valent)** : rappel **16-24 %** ·

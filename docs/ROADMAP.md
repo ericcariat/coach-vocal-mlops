@@ -99,7 +99,7 @@ pour savoir si le modèle est plus faible sur une forme.
 
   | Source | Description et intérêt | Accès |
   |---|---|---|
-  | **SUMM-RE — choix recommandé** | ~95 h de réunions spontanées en français, 3-4 participants. Une session ≈ trois discussions de 20 min → une heure continue de type « bureau » facilement. Licence CC BY-SA 4.0. | [Hugging Face](https://huggingface.co/datasets/linagora/SUMM-RE) · [Article](https://aclanthology.org/2024.jeptalnrecital-taln.35/) |
+  | **SUMM-RE** | ~95 h de réunions spontanées en français, 3-4 participants. Une session ≈ trois discussions de 20 min → une heure continue de type « bureau » facilement. Licence CC BY-SA 4.0. | [Hugging Face](https://huggingface.co/datasets/linagora/SUMM-RE) · [Article](https://aclanthology.org/2024.jeptalnrecital-taln.35/) |
   | **CID — Corpus of Interactional Data** | Huit conversations spontanées d'1 h entre deux francophones. Excellente parole continue, mais salle anéchoïque : à compléter avec du bruit de café/bureau. | [ATALA](https://www.atala.org/node/810) · [Accès](https://sppas.org/bigi/Doc/2015-SPPAS-Tutorial-HongKong/SPPAS-tutorial_02_introduction.html) |
   | **ESLO** | Grand corpus de français parlé : repas, réunions, commerces, quotidien. Le plus proche du contexte « repas/café », sélection moins directe. | [Présentation](https://segcor.cnrs.fr/lll-eslo/) · [ESLO-FLEU HF](https://huggingface.co/datasets/FrancophonIA/ESLO-FLEU) |
   | **TCOF** | Interactions entre adultes téléchargeables : conversations, entretiens, réunions, de quelques minutes à 45 min+. Diversifie conditions et locuteurs. | [Corpus](https://ct3.ortolang.fr/data/tcof/) · [ORTOLANG](https://hdl.handle.net/11403/tcof/v2) |
@@ -172,7 +172,7 @@ pour savoir si le modèle est plus faible sur une forme.
 ### P2 — Outillage de collecte (l'idée « studio guidé »)
 
 - [~] **Page Streamlit « Studio d'enregistrement »** — codée (page 7 + source
-  studio) ; test micro par l'auteur en attente sur le modèle de la
+  studio) ; test micro en attente sur le modèle de la
   console ViolaWake : campagne scriptée (10× normal, fort, joyeux, rapide,
   lent, 50 cm / 1 m / 2,5 m), contrôles qualité immédiats (RMS, saturation,
   SNR, réécoute, re-prise), découpe automatique, une session = un groupe de
