@@ -7,6 +7,22 @@ Les preuves sont dans `artifacts/reports/` et le code dans git
 (`git log --oneline`, commits du 14 août).
 
 ---
+## 2026-08-14 — Contrôle complet après la publication et la promotion
+
+Après le grand ménage (réécriture git, textes, promotion), revue de TOUTE la
+chaîne avec le champion ONNX. Quatre trous trouvés et bouchés : le banc par
+défaut cherchait `model.keras` en dur ; l'API `/detect` appelait `run_offline`,
+absent de l'adaptateur ; `runtime.configure` plantait si TensorFlow était déjà
+initialisé ; et les tests qui importent TensorFlow tournaient depuis toujours
+avec le GPU Metal visible (contraire à l'ADR-002) — `tests/conftest.py` force
+désormais le CPU pour toute la suite.
+
+Validation finale : 72 tests verts, `make smoke` complet, chemin micro et API
+vérifiés sur le champion, et une version ré-entraînée à l'identique
+(`frab30np2`, archive `eloquence_20260814_201059`) qui reproduit le champion
+**au chiffre près** (93 % · 3.4 @0.8 ; 89 % · 2.3 @0.95 ; cousins 0 %) — la
+chaîne d'entraînement des têtes est déterministe sur features en cache.
+
 ## 2026-08-14 — 14 août - part 2
 
 **1. On adapte le réseau dans le même style que OpenWakeWord**
