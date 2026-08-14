@@ -6,6 +6,67 @@ vaut plus qu'un résultat lisse — elle dit comment on a appris à ne plus se t
 
 ---
 
+## 2026-08-14 — La soirée du 14 août, racontée simplement
+
+Le résumé de toute la soirée, en mots simples. Les entrées détaillées suivent
+plus bas ; les preuves sont dans `artifacts/reports/` et le code dans git
+(`git log --oneline`, commits du 14 août).
+
+**1. On a réparé les « fragments » — deux fois.**
+Les fragments sont des bouts du mot (« élo… », « …quence ») qu'on montre au
+modèle en lui disant « ça, ce n'est PAS le mot ». Problème découvert à
+l'oreille par l'auteur : certains contenaient presque tout le mot. Première
+réparation ratée (la mesure confondait le souffle du micro avec le mot),
+deuxième réussie : le mot est maintenant repéré par son énergie, et un
+contrôle automatique vérifie chaque fragment (`scripts/check_fragments.py`,
+image de preuve `artifacts/reports/fragments_word_controle.png`).
+
+**2. On a testé six recettes d'entraînement (v19 à v24). Aucune n'a battu le champion.**
+Chaque « v » est une recette : un fichier dans `configs/experiment/` qui dit ce
+qui change, et un dossier dans `artifacts/runs/eloquence/` avec les résultats.
+- **v19** : fragments réparés (première version) → pareil que le champion.
+- **v20** : le mot n'est plus jamais coupé au bord + du vrai son de la vidéo
+  avant le mot → beaucoup plus de mots attrapés, mais beaucoup trop de fausses
+  alertes. Leçon : si les exemples positifs contiennent de la parole qui coule,
+  la parole qui coule finit par ressembler au mot.
+- **v21** : fragments bien réparés, seuls → surprise, c'est PIRE.
+- **v22** : on refait le champion à l'identique, pour vérifier que rien n'est
+  cassé → tout va bien, la machine est saine.
+- **v23** : on enlève carrément les fragments → pire aussi. Donc les fragments
+  servent vraiment.
+- **v24** : fragments réparés mais plus longs (jusqu'à 70 % du mot) → mieux,
+  mais pas assez.
+Moralité inattendue : les vieux fragments « bogués » (presque le mot entier)
+apprenaient au modèle une règle précieuse — « tant que le mot n'est pas fini,
+tais-toi ». Le champion v17 les garde. La série est close.
+
+**3. Le vrai gain de la soirée : la greffe openWakeWord (le goal de l'auteur).**
+Idée : garder les « oreilles » toutes faites de Google (un gros réseau déjà
+entraîné, qu'on ne touche pas) et n'entraîner que la petite « tête » qui
+reconnaît « éloquence ». Fichiers : les têtes sont les `.onnx` dans
+`open_wake_word_compare/`, le script est `scripts/train_oww_head.py`.
+Deux améliorations ce soir :
+- **H1** (`eloquence_frab30_...`) : on a donné 30 fois plus d'importance aux
+  122 pièges connus (les mots-cousins de la voix de l'auteur comme « éloquente »,
+  et les fausses alertes déjà jugées au banc). Résultat : 85 % des mots
+  attrapés avec ~1 fausse alerte par heure — et les cousins ne déclenchent
+  plus JAMAIS (avant : 16 %). Un nouvel outil mesure ça :
+  `scripts/eval_oww_cousins.py` (image `artifacts/reports/oww_cousins.png`).
+- **H2** (`eloquence_frab30np_...`) : pareil, mais les enregistrements de l'auteur
+  sont mélangés à du vrai bruit de fond au lieu d'un silence parfait — parce
+  qu'au micro, le silence parfait n'existe pas. Résultat : 89 % · 2.3 fausses
+  alertes/heure, toujours 0 % de cousins, et 4 graines sur 5 d'accord entre
+  elles (signe que ce n'est pas un coup de chance).
+Dans les noms : `fr` = négatifs français ×20, `ab30` = adversariaux ×30,
+`np` = noise pad (bruit de fond), `seed4x` = la graine (le tirage au sort de
+l'entraînement), `64x3` = la taille de la tête.
+
+**Où on en est.** Le champion officiel reste le CNN v17 (48 % · 6.8 FA/h).
+Les deux meilleures têtes (`frab30np` graines 46 et 44, seuil 0.95) font
+BEAUCOUP mieux au banc — il manque une seule chose pour les introniser :
+le test au micro de l'auteur (page Démo, sélectionner la tête « oww : … »,
+seuil 0.95). Ensuite : décision ensemble, ADR-008, intégration.
+
 ## 2026-08-14 — Goal openWakeWord, H1 : l'arme contre les cousins (critère AVANT le run)
 
 Objectif fixé par l'auteur : tête sur extracteur Google gelé, d'abord NOS
