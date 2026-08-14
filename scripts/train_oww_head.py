@@ -38,17 +38,19 @@ EXPORT_DIR = ROOT / "open_wake_word_compare"
 CACHE = ROOT / "artifacts" / "cache" / "eloquence" / "oww_features"
 
 
-def collect_files() -> tuple[list[Path], list[Path]]:
-    """Positifs réels + négatifs de nos recettes (train uniquement)."""
+def collect_files() -> tuple[list[Path], list[Path], list[Path]]:
+    """Positifs réels, négatifs ADVERSARIAUX (cousins moi_, hard negatives du
+    banc, essais guidés — le point faible mesuré du round 5, noyés à poids 1
+    parmi ~6 900 négatifs), et le reste des négatifs de recette."""
     import csv
 
     pos = sorted((ROOT / "exports/oww_training_b/positifs_reels").glob("*.wav"))
-    neg = sorted((ROOT / "exports/oww_training_b/negatifs_adversariaux").glob("*.wav"))
-    neg += sorted((ROOT / "exports/oww_training_b/negatifs_parole_continue_fr").glob("*.wav"))
+    adv = sorted((ROOT / "exports/oww_training_b/negatifs_adversariaux").glob("*.wav"))
+    neg = sorted((ROOT / "exports/oww_training_b/negatifs_parole_continue_fr").glob("*.wav"))
     # + les négatifs génériques du TRAIN de la recette champion (bruit, GSC,
     # CV, silence, fragments) — notre océan à nous, même s'il est petit
     manifest = ROOT / "artifacts/runs/eloquence/v17_stack/manifest.csv"
-    seen = {f.name for f in neg}
+    seen = {f.name for f in neg} | {f.name for f in adv}
     with open(manifest, newline="") as f:
         for row in csv.DictReader(f):
             p = Path(row["file"])
@@ -56,7 +58,7 @@ def collect_files() -> tuple[list[Path], list[Path]]:
                     and p.name not in seen and p.exists()):
                 neg.append(p)
                 seen.add(p.name)
-    return pos, neg
+    return pos, adv, neg
 
 
 def embed_files(files: list[Path], mel_sess, emb_sess, tag: str) -> np.ndarray:
@@ -284,6 +286,9 @@ def main():
                     help="positifs à contexte réel (fenêtres 2 s du corpus)")
     ap.add_argument("--french-neg", type=int, default=0,
                     help="nb de fenêtres négatives françaises (poids ×20)")
+    ap.add_argument("--adv-weight", type=float, default=1.0,
+                    help="poids des 122 négatifs adversariaux (cousins moi_, "
+                         "hard negatives du banc, guidés) — le point faible du round 5")
     args = ap.parse_args()
 
     import onnxruntime as ort
@@ -292,15 +297,19 @@ def main():
     emb = ort.InferenceSession(str(OWW_DIR / "embedding_model.onnx"),
                                providers=["CPUExecutionProvider"])
 
-    pos_files, neg_files = collect_files()
-    print(f"📦  {len(pos_files)} positifs réels · {len(neg_files)} négatifs (recette)")
+    pos_files, adv_files, neg_files = collect_files()
+    print(f"📦  {len(pos_files)} positifs réels · {len(adv_files)} adversariaux "
+          f"(poids ×{args.adv_weight:g}) · {len(neg_files)} négatifs (recette)")
     if args.context:
         X_pos = embed_arrays(collect_context_positives(), mel, emb, "pos_ctx")
     else:
         X_pos = embed_files(pos_files, mel, emb, "pos")
-    X_neg = embed_files(neg_files, mel, emb, "neg")
-    parts_X, parts_y = [X_pos, X_neg], [np.ones(len(X_pos)), np.zeros(len(X_neg))]
-    parts_w = [np.ones(len(X_pos)), np.ones(len(X_neg))]
+    X_adv = embed_files(adv_files, mel, emb, "adv")
+    X_neg = embed_files(neg_files, mel, emb, "negrest")
+    parts_X = [X_pos, X_adv, X_neg]
+    parts_y = [np.ones(len(X_pos)), np.zeros(len(X_adv)), np.zeros(len(X_neg))]
+    parts_w = [np.ones(len(X_pos)), np.full(len(X_adv), args.adv_weight),
+               np.ones(len(X_neg))]
     if args.french_neg:
         X_fr = embed_arrays(collect_french_negatives(args.french_neg), mel, emb,
                             "frneg")

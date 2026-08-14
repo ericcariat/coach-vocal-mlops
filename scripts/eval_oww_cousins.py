@@ -1,0 +1,91 @@
+"""Banc des cousins — le point faible mesurable des têtes openWakeWord.
+
+Le banc streaming n'a presque pas de cousins phonétiques (« éloquente »,
+« élégance »…) : la faiblesse du round 5 ne s'y voyait pas, elle se voyait au
+micro. Ici on mesure la SÉPARATION de la tête sur des clips ciblés :
+
+  - positifs moi_    : doivent déclencher (haut)         [vus à l'entraînement]
+  - cousins moi_     : ne doivent PAS déclencher (bas)   [vus si --adv-weight]
+  - cousins TTS      : ne doivent pas déclencher          [jamais vus]
+  - hard negatives   : ne doivent pas déclencher          [vus]
+
+Les groupes « vus à l'entraînement » mesurent la mémorisation utile, pas la
+généralisation — c'est écrit dans la sortie. Le juge final reste le test guidé
+au micro de l'auteur. Sortie : tableau par seuil + PNG des distributions.
+
+    uv run python scripts/eval_oww_cousins.py open_wake_word_compare/<tête>.onnx …
+"""
+
+from __future__ import annotations
+
+import sys
+from pathlib import Path
+
+import numpy as np
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "src"))
+sys.path.insert(0, str(ROOT / "scripts"))
+
+from train_oww_head import embed_files  # noqa: E402
+
+from coachvocal.evaluation.oww_adapter import OWW_DIR  # noqa: E402
+
+THRESHOLDS = [0.5, 0.8, 0.9, 0.95, 0.99]
+
+GROUPES = [
+    ("positifs moi_ (attendu : HAUT, vus)",
+     sorted((ROOT / "data/wakewords/eloquence/clean/positives").glob("moi_*.wav")), True),
+    ("cousins moi_ (attendu : BAS, vus si adv-weight)",
+     sorted((ROOT / "data/wakewords/eloquence/clean/negatives_proches").glob("moi_*.wav")), False),
+    ("cousins TTS (attendu : BAS, jamais vus)",
+     sorted((ROOT / "data/wakewords/eloquence/generated/tts_neg_proches").glob("*.wav"))[:150], False),
+    ("hard negatives banc (attendu : BAS, vus)",
+     sorted((ROOT / "exports/oww_training_b/negatifs_adversariaux").glob("hn_*.wav")), False),
+]
+
+
+def main():
+    heads = [Path(a) for a in sys.argv[1:]]
+    if not heads:
+        sys.exit("usage : eval_oww_cousins.py <tête.onnx> [...]")
+
+    import onnxruntime as ort
+    mel = ort.InferenceSession(str(OWW_DIR / "melspectrogram.onnx"),
+                               providers=["CPUExecutionProvider"])
+    emb = ort.InferenceSession(str(OWW_DIR / "embedding_model.onnx"),
+                               providers=["CPUExecutionProvider"])
+
+    feats = [(nom, embed_files(files, mel, emb, f"cousins_{i}"), attendu_haut)
+             for i, (nom, files, attendu_haut) in enumerate(GROUPES) if files]
+
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+
+    fig, axes = plt.subplots(len(heads), 1, figsize=(9, 3.2 * len(heads)),
+                             squeeze=False)
+    for hi, head_path in enumerate(heads):
+        sess = ort.InferenceSession(str(head_path),
+                                    providers=["CPUExecutionProvider"])
+        print(f"\n=== {head_path.name} ===")
+        ax = axes[hi][0]
+        for gi, (nom, X, attendu_haut) in enumerate(feats):
+            p = np.concatenate([sess.run(None, {"input": X[k:k + 1].astype(np.float32)})[0].ravel()
+                                for k in range(len(X))])
+            taux = " · ".join(f"@{t}: {(p > t).mean():.0%}" for t in THRESHOLDS)
+            print(f"  {nom} ({len(p)}) — {taux}")
+            ax.hist(p, bins=40, range=(0, 1), alpha=0.55, label=f"{nom} (n={len(p)})")
+            _ = attendu_haut, gi
+        ax.set_yscale("log")
+        ax.set_title(head_path.name)
+        ax.set_xlabel("probabilité de la tête")
+        ax.legend(fontsize=7)
+    fig.tight_layout()
+    out = ROOT / "artifacts/reports/oww_cousins.png"
+    fig.savefig(out, dpi=120)
+    print(f"\n💾  {out}")
+
+
+if __name__ == "__main__":
+    main()

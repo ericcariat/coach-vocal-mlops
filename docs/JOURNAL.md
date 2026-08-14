@@ -6,6 +6,29 @@ vaut plus qu'un résultat lisse — elle dit comment on a appris à ne plus se t
 
 ---
 
+## 2026-08-14 — Goal openWakeWord, H1 : l'arme contre les cousins (critère AVANT le run)
+
+Objectif fixé par l'auteur : tête sur extracteur Google gelé, d'abord NOS
+enregistrements réels, l'océan seulement si nécessaire, viser mieux que le
+champion et ~1 FA/h. Constat préalable : les fichiers océan ACAV (11/125/2000 h)
+ne sont plus sur le disque — et le round 5 avait montré que 3,3 h de français
+pesaient plus que 125 h d'océan : H1 se joue donc SANS océan.
+
+Baseline mesurée avant (nouveau `scripts/eval_oww_cousins.py`, tête round 5
+seed 42) : les **cousins moi_ déclenchent à 16 % @0.95** (7 % @0.99), contre
+2-5 % pour les autres négatifs — la faiblesse vue au micro est maintenant un
+chiffre. Levier ajouté : `--adv-weight` (les 122 adversariaux — 45 cousins
+moi_, 54 hard negatives du banc, 23 guidés — pesaient 1 parmi ~6 900).
+
+**H1** : contexte réel + 12 000 fenêtres françaises ×20 + adversariaux ×30,
+3 seeds. Critère écrit avant le banc :
+  - succès : à UN seuil, rappel ≥ 60 % ET FA/h ≤ 6.8 (battre le champion sur
+    les deux axes) ; idéal : rappel ≥ 70 % à FA/h ≤ 1.5 ;
+  - cousins : taux de déclenchement des cousins moi_ ≤ 5 % au seuil retenu
+    (baseline 16 %), sans perdre plus de 5 pts sur les positifs moi_ ;
+  - la promotion resterait suspendue au test guidé au micro de l'auteur (ADR-008 à
+    écrire — hors périmètre docs autorisé, à valider avec lui).
+
 ## 2026-08-14 — v24 : les fragments longs confirment la tendance, sans rejoindre le champion
 
 Fragments propres à plafond **70 %** du mot (fracs 30/45/70, pool
