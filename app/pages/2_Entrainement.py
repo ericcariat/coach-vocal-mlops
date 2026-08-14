@@ -37,9 +37,8 @@ threshold = c6.slider("Seuil d'évaluation", 0.1, 0.9, cfg.training.threshold, 0
 
 with st.expander("À quoi sert chaque réglage", expanded=False):
     st.markdown("""
-- **Epochs / patience** — l'arrêt anticipé restaure les poids du meilleur epoch de
-  validation. Il coupe ici entre l'epoch 8 et 20 selon le tirage : c'est l'une des
-  sources de variance entre deux runs pourtant identiques.
+- **Epochs / patience** — l'entraînement s'arrête lorsqu'il n'y a plus
+  d'amélioration et conserve la meilleure version du modèle.
 - **Batch size** — au-delà de 128 sur CPU, chaque epoch s'allonge sans gain de qualité.
 - **Learning rate** — 1e-3 (Adam) est le point stable ; à 1e-2 la loss diverge.
 - **Nombre de candidats** — parade à la non-reproductibilité CPU (±0.03-0.06 de F1

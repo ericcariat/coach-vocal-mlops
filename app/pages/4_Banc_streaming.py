@@ -94,11 +94,6 @@ for model, per_th in bench["results"].items():
 st.dataframe(pd.DataFrame(rows).style.format({"Rappel": "{:.1%}", "FA / heure": "{:.1f}"}),
              width="stretch", hide_index=True)
 
-st.info("""**Lire les FA/heure honnêtement** : le corpus est thématique (des vidéos
-où l'on *parle* d'éloquence), c'est un pire cas volontaire et non une moyenne de
-la vie courante. Les événements « incertains » — vérité terrain douteuse — sont
-exclus du décompte plutôt que comptés à charge.""")
-
 # ── Audit des erreurs ─────────────────────────────────────────────────────────
 st.subheader("Erreurs à écouter")
 model = st.selectbox("Modèle", list(bench["results"]))

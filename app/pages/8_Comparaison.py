@@ -37,10 +37,8 @@ if not files:
 
 st.markdown("""
 **Méthode.** Les systèmes externes tournent avec **leur** front-end acoustique
-(c'est leur droit d'en avoir un) mais passent par **notre** banc, **notre**
-machine à états et **nos** règles de comptage — sinon on compare des
-thermomètres, pas des détecteurs. Le rappel par forme (nu / l' / d') fait
-partie du verdict.
+mais passent par **notre** banc, **notre** machine à états et **nos** règles.
+Le rappel par forme (nu / l' / d') fait partie du verdict.
 """)
 
 for f in files:

@@ -34,18 +34,14 @@ st.dataframe(df.style.format({"Accuracy": "{:.2%}", "F1": "{:.4f}", "FRR ↓": "
              width="stretch", hide_index=True)
 
 st.caption("**FRR** (*False Rejection Rate*) : le mot est prononcé, rien ne se passe. "
-           "**FAR** (*False Acceptance Rate*) : un négatif déclenche. Deux runs de "
-           "même *empreinte data* ont vu exactement les mêmes fichiers : un écart de "
-           "métriques sans écart d'empreinte est de la variance.")
+           "**FAR** (*False Acceptance Rate*) : un négatif déclenche.")
 
 st.error("⚠️ Ces chiffres décrivent des clips d'1 s pré-découpés. Ils ont déjà **mal "
          "classé** les modèles — la décision de promotion se prend au **banc streaming**.")
 
 # ── Rappel vs FA/h au banc : toutes les versions sur un même graphique ────────
 st.subheader("Rappel vs FA/h au banc — toutes les versions comparables")
-st.caption("Un point = un modèle à un seuil. En haut à gauche = l'idéal. Seuls les "
-           "bancs de MÊME composition sont fusionnés (règle du projet : jamais de "
-           "comparaison entre bancs différents).")
+st.caption("Un point = un modèle à un seuil. En haut à gauche = l'idéal.")
 
 bench_dir = paths.report_dir("stream_bench")
 archives = sorted(p for p in bench_dir.glob(f"{WAKEWORD}_2*.json")

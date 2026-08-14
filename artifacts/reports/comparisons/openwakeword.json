@@ -2,7 +2,6 @@
  "titre": "openWakeWord (têtes 64x3, entraînement ~100 % synthétique Piper) vs champion",
  "date": "2026-08-13",
  "protocole": "Banc étendu 54,9 min (18 segments YouTube + 3 réunions SUMM-RE), 25 occurrences réelles. Têtes ONNX oWW exécutées avec LEUR front-end (mel 32 bandes + embeddings Google, un score/80 ms) et NOTRE machine à états (pic d'énergie, 3 fenêtres consécutives, cooldown 1,5 s). Adaptateur : src/coachvocal/evaluation/oww_adapter.py — reproduire : coachvocal bench --run <tête>.onnx --minutes 60",
- "reserve": "Notre règle des 3 fenêtres à leur cadence 80 ms = 240 ms de persistance (375 ms chez nous) : peut coûter un peu de rappel, pas un facteur 3-5 (vérifié par le balayage à 0.05).",
  "colonnes": [
   "Modèle",
   "Seuil",

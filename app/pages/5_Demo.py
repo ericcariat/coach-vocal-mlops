@@ -30,10 +30,6 @@ oww_heads = sorted(OWW_COMPARE.glob("*.onnx")) if OWW_COMPARE.exists() else []
 options = runs + [f"oww : {p.name}" for p in oww_heads]
 run = st.selectbox("Modèle", options, index=runs.index(champion) if champion in runs else 0)
 threshold = st.slider("Seuil de décision", 0.01, 0.99, word.live.threshold, 0.01)
-if run.startswith("oww : ") and threshold > 0.35:
-    st.info("💡 Les têtes openWakeWord sont calibrées BAS : au banc, leur rappel "
-            "plafonne déjà à 0.5 et s'améliore vers 0.05-0.3. Baisse le seuil "
-            "pour leur laisser une chance.")
 
 
 def _load_selected_detector():
