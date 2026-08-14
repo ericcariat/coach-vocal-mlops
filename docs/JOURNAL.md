@@ -7,6 +7,28 @@ Les preuves sont dans `artifacts/reports/` et le code dans git
 (`git log --oneline`, commits du 14 août).
 
 ---
+## 2026-08-14 — Le champion tire avant la fin du mot : diagnostic et H3 (critère AVANT le run)
+
+Constat au micro : la tête déclenche sur « éloquen » (sans la fin), et
+« éloquente » passe. Diagnostic chiffré (préfixes du mot collés au bord droit,
+47 clips de la voix de référence) : **0 % de déclenchement jusqu'à 70 % du
+mot, 17 % à 80 %, 38 % à 90 %** — la tête tire dès que ~85 % du mot est là,
+et avec la persistance live (3 × 80 ms) le déclenchement précède la fin.
+Cause : les positifs contiennent toujours le mot ENTIER, et rien n'enseigne
+la frontière 80-95 % — le rôle des fragments du CNN (cf. v23), noyés à poids 1
+dans l'entraînement de la tête. Nos pools s'arrêtent d'ailleurs à 70 % —
+précisément là où la fuite est nulle.
+
+**H3** (`frab30np3`) : recette du champion + négatifs-préfixes 60/75/85 % du
+mot (mesure par énergie, positifs d'entraînement seulement, plafond 85 % pour
+ne pas contredire le mot entier), poids ×20. Le banc des cousins mesure
+désormais les préfixes 80 % et 90 % en permanence. Critère écrit avant :
+  - préfixes 80 % ET 90 % : ≤ 5 % de déclenchement @0.8 (contre 17 %/38 %) ;
+  - mot entier (clips) : ≥ 65 % @0.8 (niveau actuel ~68 %) ;
+  - banc : rappel ≥ 85 % @0.8 avec FA/h ≤ 4.5 (champion co-mesuré 92.6 · 3.4) ;
+  - verdict final : le test micro (« éloquence » détecté, « éloquen » et
+    « éloquente » muets).
+
 ## 2026-08-14 — Contrôle complet après la publication et la promotion
 
 Après le grand ménage (réécriture git, textes, promotion), revue de TOUTE la

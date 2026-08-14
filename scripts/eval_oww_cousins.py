@@ -27,7 +27,9 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 sys.path.insert(0, str(ROOT / "scripts"))
 
-from train_oww_head import embed_files  # noqa: E402
+import numpy as _np  # noqa: E402
+import soundfile as _sf  # noqa: E402
+from train_oww_head import PAD_S, SR, embed_arrays, embed_files  # noqa: E402
 
 from coachvocal.evaluation.oww_adapter import OWW_DIR  # noqa: E402
 
@@ -58,6 +60,22 @@ def main():
 
     feats = [(nom, embed_files(files, mel, emb, f"cousins_{i}"), attendu_haut)
              for i, (nom, files, attendu_haut) in enumerate(GROUPES) if files]
+
+    # Préfixes tronqués du mot (fuite mesurée le 2026-08-14 : la tête tirait
+    # dès 80-90 % du mot — « éloquen » déclenchait, « éloquente » passait).
+    from coachvocal.data.sources.fragments import word_span
+    pad_n = int(PAD_S * SR)
+    for frac in (0.8, 0.9):
+        arrs = []
+        for f in sorted((ROOT / "data/wakewords/eloquence/clean/positives").glob("moi_*.wav")):
+            a, sr = _sf.read(f, dtype="float32")
+            if sr != SR:
+                continue
+            w0, w1 = word_span(a, SR)
+            k = int(frac * (w1 - w0))
+            arrs.append(_np.pad(a[w0:w0 + k], (pad_n - k, 0)).astype(_np.float32))
+        feats.append((f"préfixes {frac:.0%} du mot (attendu : BAS)",
+                      embed_arrays(arrs, mel, emb, f"prefix{int(frac * 100)}"), False))
 
     import matplotlib
     matplotlib.use("Agg")

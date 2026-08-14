@@ -233,6 +233,37 @@ def collect_context_positives(noise_pad: bool = False) -> list[np.ndarray]:
     return out
 
 
+def collect_prefix_negatives(fracs=(0.60, 0.75, 0.85)) -> list[np.ndarray]:
+    """Préfixes du mot (fin ABSENTE), collés au bord droit de la fenêtre —
+    le rôle des fragments du CNN, transposé à la convention de la tête.
+
+    Motif mesuré (2026-08-14, clips moi_) : la tête déclenche dès 80-90 % du
+    mot (8/47 à 80 %, 18/47 à 90 %) — au micro elle tire sur « éloquen » et
+    « éloquente » passe. Nos pools de fragments s'arrêtent à 70 %, or à 70 %
+    la fuite est nulle : la zone à enseigner est 75-90 %. Plafond 85 % — plus
+    haut contredirait les positifs (le mot entier doit rester positif).
+    Sources : les positifs d'ENTRAÎNEMENT uniquement (pas de fuite val/test)."""
+    import soundfile as sf
+
+    from coachvocal.data.sources.fragments import word_span
+
+    pad_n = int(PAD_S * SR)
+    out: list[np.ndarray] = []
+    for f in sorted((ROOT / "exports/oww_training_b/positifs_reels").glob("*.wav")):
+        audio, sr = sf.read(f, dtype="float32")
+        if sr != SR:
+            continue
+        if audio.ndim > 1:
+            audio = audio.mean(axis=1)
+        w0, w1 = word_span(audio, SR)
+        for frac in fracs:
+            k = int(frac * (w1 - w0))
+            prefix = audio[w0:w0 + k]
+            out.append(np.pad(prefix, (pad_n - len(prefix), 0)).astype(np.float32))
+    print(f"    négatifs-préfixes : {len(out)} fenêtres (fracs {list(fracs)})")
+    return out
+
+
 def embed_arrays(arrays, mel_sess, emb_sess, tag: str) -> np.ndarray:
     """Comme embed_files mais depuis des tampons audio déjà chargés."""
     CACHE.mkdir(parents=True, exist_ok=True)
@@ -323,6 +354,9 @@ def main():
                          "padés d'un fond MUSAN réel au lieu de silence")
     ap.add_argument("--french-neg", type=int, default=0,
                     help="nb de fenêtres négatives françaises (poids ×20)")
+    ap.add_argument("--prefix-neg-weight", type=float, default=0.0,
+                    help="poids des négatifs-préfixes (60/75/85 % du mot, fin "
+                         "absente) — enseigne « attends la fin du mot » ; 0 = off")
     ap.add_argument("--adv-weight", type=float, default=1.0,
                     help="poids des 122 négatifs adversariaux (cousins moi_, "
                          "hard negatives du banc, guidés) — le point faible du round 5")
@@ -354,6 +388,11 @@ def main():
         parts_X.append(X_fr)
         parts_y.append(np.zeros(len(X_fr)))
         parts_w.append(np.full(len(X_fr), 20.0))   # contrepoids face à l'océan
+    if args.prefix_neg_weight:
+        X_pre = embed_arrays(collect_prefix_negatives(), mel, emb, "prefixneg")
+        parts_X.append(X_pre)
+        parts_y.append(np.zeros(len(X_pre)))
+        parts_w.append(np.full(len(X_pre), args.prefix_neg_weight))
     if args.acav:
         X_acav = acav_windows(args.acav, args.acav_stride)
         print(f"    + océan ACAV : {X_acav.shape} "
