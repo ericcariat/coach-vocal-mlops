@@ -35,38 +35,38 @@
   },
   "test": {
     "threshold": 0.5,
-    "accuracy": 0.9399624765478424,
-    "precision_pos": 0.9777777777777777,
-    "recall_pos": 0.6839378238341969,
-    "f1_pos": 0.8048780487804879,
-    "frr": 0.3160621761658031,
-    "far": 0.0034364261168384758,
-    "tp": 132,
-    "fp": 3,
-    "fn": 61,
-    "tn": 870,
+    "accuracy": 0.9652908067542214,
+    "precision_pos": 0.9698795180722891,
+    "recall_pos": 0.8341968911917098,
+    "f1_pos": 0.8969359331476323,
+    "frr": 0.1658031088082902,
+    "far": 0.00572737686139746,
+    "tp": 161,
+    "fp": 5,
+    "fn": 32,
+    "tn": 868,
     "n": 1066,
     "n_pos": 193,
-    "roc_auc": 0.9882959718438593
+    "roc_auc": 0.9363192849384827
   },
   "pools_test": {
     "yt_positif": {
       "n": 188,
-      "fire_rate": 0.7021276595744681,
+      "fire_rate": 0.8297872340425532,
       "expected": "haut",
       "ok": false
     },
     "moi_positif": {
       "n": 5,
-      "fire_rate": 0.0,
+      "fire_rate": 1.0,
       "expected": "haut",
-      "ok": false
+      "ok": true
     },
     "proches": {
       "n": 4,
-      "fire_rate": 0.0,
+      "fire_rate": 0.25,
       "expected": "bas",
-      "ok": true
+      "ok": false
     },
     "gsc": {
       "n": 250,
@@ -76,7 +76,7 @@
     },
     "cv_fr": {
       "n": 195,
-      "fire_rate": 0.0,
+      "fire_rate": 0.005128205128205128,
       "expected": "bas",
       "ok": true
     },
@@ -110,5 +110,6 @@
       "expected": "bas",
       "ok": true
     }
-  }
+  },
+  "test_protocole": "mini-flux (souffle + clip + souffle), machine à états réelle — le clip entre progressivement"
 }

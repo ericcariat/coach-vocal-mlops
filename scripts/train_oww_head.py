@@ -38,6 +38,29 @@ EXPORT_DIR = ROOT / "open_wake_word_compare"
 CACHE = ROOT / "artifacts" / "cache" / "eloquence" / "oww_features"
 
 
+def pad_souffle(audio: np.ndarray, pad_n: int, seed_key: str,
+                amp: float = 0.001) -> np.ndarray:
+    """Complète un clip à `pad_n` échantillons avec un SOUFFLE léger de micro,
+    jamais du silence numérique parfait (règle du 2026-08-14 : un vrai micro
+    n'en produit jamais, et l'extracteur gelé traite le zéro absolu comme un
+    signal anormal — mesuré : les mêmes clips passent de 9 % à 34-38 % de
+    déclenchement @0.8 selon le fond). Le souffle couvre TOUTE la fenêtre
+    (les clips eux-mêmes peuvent contenir des zéros internes). Déterministe."""
+    import zlib
+
+    rng = np.random.default_rng(zlib.crc32(str(seed_key).encode()))
+    a = audio[-pad_n:] if len(audio) >= pad_n else np.concatenate(
+        [np.zeros(pad_n - len(audio), np.float32), audio.astype(np.float32)])
+    return (a + amp * rng.standard_normal(pad_n).astype(np.float32)).astype(np.float32)
+
+
+def vitesse(a: np.ndarray, f: float) -> np.ndarray:
+    """Changement de vitesse par rééchantillonnage linéaire (f>1 = plus
+    rapide). Le mot reste ENTIER : on change sa durée, pas son contenu."""
+    idx = np.linspace(0, len(a) - 1, int(len(a) / f))
+    return np.interp(idx, np.arange(len(a)), a).astype(np.float32)
+
+
 def collect_files() -> tuple[list[Path], list[Path], list[Path]]:
     """Positifs réels, négatifs ADVERSARIAUX (cousins moi_, hard negatives du
     banc, essais guidés — le point faible mesuré du round 5, noyés à poids 1
@@ -67,7 +90,9 @@ def embed_files(files: list[Path], mel_sess, emb_sess, tag: str) -> np.ndarray:
     import soundfile as sf
 
     CACHE.mkdir(parents=True, exist_ok=True)
-    cache_file = CACHE / f"{tag}_{len(files)}.npy"
+    # suffixe `s1` : depuis le 2026-08-14, complétion au SOUFFLE léger (plus
+    # jamais de silence numérique) — nouveau cache, l'ancien reste intact.
+    cache_file = CACHE / f"{tag}_s1_{len(files)}.npy"
     if cache_file.exists():
         return np.load(cache_file)
 
@@ -98,8 +123,7 @@ def embed_files(files: list[Path], mel_sess, emb_sess, tag: str) -> np.ndarray:
             continue
         if audio.ndim > 1:
             audio = audio.mean(axis=1)
-        audio = audio[-pad_n:] if len(audio) >= pad_n else np.pad(
-            audio, (pad_n - len(audio), 0))          # mot à la FIN
+        audio = pad_souffle(audio, pad_n, f.name)    # mot à la FIN, fond souffle
         batch_audio.append(audio.astype(np.float32))
         batch_idx.append(i)
         if len(batch_audio) >= 64:
@@ -233,7 +257,8 @@ def collect_context_positives(noise_pad: bool = False) -> list[np.ndarray]:
     return out
 
 
-def collect_prefix_negatives(fracs=(0.60, 0.75, 0.85)) -> list[np.ndarray]:
+def collect_prefix_negatives(fracs=(0.60, 0.75, 0.85),
+                             speeds=(1.0,)) -> list[np.ndarray]:
     """Préfixes du mot (fin ABSENTE), collés au bord droit de la fenêtre —
     le rôle des fragments du CNN, transposé à la convention de la tête.
 
@@ -255,12 +280,14 @@ def collect_prefix_negatives(fracs=(0.60, 0.75, 0.85)) -> list[np.ndarray]:
             continue
         if audio.ndim > 1:
             audio = audio.mean(axis=1)
-        w0, w1 = word_span(audio, SR)
-        for frac in fracs:
-            k = int(frac * (w1 - w0))
-            prefix = audio[w0:w0 + k]
-            out.append(np.pad(prefix, (pad_n - len(prefix), 0)).astype(np.float32))
-    print(f"    négatifs-préfixes : {len(out)} fenêtres (fracs {list(fracs)})")
+        for sp in speeds:
+            aa = vitesse(audio, sp) if sp != 1.0 else audio
+            w0, w1 = word_span(aa, SR)
+            for frac in fracs:
+                k = int(frac * (w1 - w0))
+                out.append(pad_souffle(aa[w0:w0 + k], pad_n, f"{f.name}|{frac}|{sp}"))
+    print(f"    négatifs-préfixes : {len(out)} fenêtres (fracs {list(fracs)}, "
+          f"vitesses {list(speeds)}, fond souffle)")
     return out
 
 
@@ -349,6 +376,10 @@ def main():
     ap.add_argument("--tag", type=str, default="nosdonnees")
     ap.add_argument("--context", action="store_true",
                     help="positifs à contexte réel (fenêtres 2 s du corpus)")
+    ap.add_argument("--augment-pos", action="store_true",
+                    help="variantes de vitesse des positifs — les MÊMES facteurs "
+                         "que l'augmentation du CNN (0.85-1.15, la leçon v01 : "
+                         "le modèle avait appris un débit, pas un mot)")
     ap.add_argument("--noise-pad", action="store_true",
                     help="les positifs sans segment source (moi/guided) sont "
                          "padés d'un fond MUSAN réel au lieu de silence")
@@ -357,6 +388,10 @@ def main():
     ap.add_argument("--prefix-neg-weight", type=float, default=0.0,
                     help="poids des négatifs-préfixes (60/75/85 % du mot, fin "
                          "absente) — enseigne « attends la fin du mot » ; 0 = off")
+    ap.add_argument("--prefix-fast", action="store_true",
+                    help="préfixes découpés AUSSI dans des variantes accélérées "
+                         "(×1.05/×1.15) : la durée cesse d'être un indice, seule "
+                         "la fin manquante sépare préfixe et mot rapide (v27)")
     ap.add_argument("--adv-weight", type=float, default=1.0,
                     help="poids des 122 négatifs adversariaux (cousins moi_, "
                          "hard negatives du banc, guidés) — le point faible du round 5")
@@ -372,8 +407,19 @@ def main():
     print(f"📦  {len(pos_files)} positifs réels · {len(adv_files)} adversariaux "
           f"(poids ×{args.adv_weight:g}) · {len(neg_files)} négatifs (recette)")
     if args.context:
-        X_pos = embed_arrays(collect_context_positives(args.noise_pad), mel, emb,
-                             "pos_ctx_noise" if args.noise_pad else "pos_ctx")
+        arrs = collect_context_positives(args.noise_pad)
+        tag_pos = "pos_ctx_noise" if args.noise_pad else "pos_ctx"
+        if args.augment_pos:
+            # Vitesse : rééchantillonnage linéaire de TOUTE la fenêtre (le mot
+            # reste au bord droit), même principe que l'augmentation du CNN.
+            pad_n = int(PAD_S * SR)
+            aug = [pad_souffle(vitesse(a, f), pad_n, f"aug|{i}|{f}")
+                   for i, a in enumerate(arrs) for f in (0.85, 0.95, 1.05, 1.15)]
+            print(f"    augmentation vitesse : +{len(aug)} variantes "
+                  "(×0.85/0.95/1.05/1.15 — mêmes facteurs que le CNN)")
+            arrs = arrs + aug
+            tag_pos += "_augcnn"
+        X_pos = embed_arrays(arrs, mel, emb, tag_pos)
     else:
         X_pos = embed_files(pos_files, mel, emb, "pos")
     X_adv = embed_files(adv_files, mel, emb, "adv")
@@ -389,7 +435,9 @@ def main():
         parts_y.append(np.zeros(len(X_fr)))
         parts_w.append(np.full(len(X_fr), 20.0))   # contrepoids face à l'océan
     if args.prefix_neg_weight:
-        X_pre = embed_arrays(collect_prefix_negatives(), mel, emb, "prefixneg")
+        speeds = (1.0, 1.05, 1.15) if args.prefix_fast else (1.0,)
+        X_pre = embed_arrays(collect_prefix_negatives(speeds=speeds), mel, emb,
+                             "prefixneg_s2" if args.prefix_fast else "prefixneg_s1")
         parts_X.append(X_pre)
         parts_y.append(np.zeros(len(X_pre)))
         parts_w.append(np.full(len(X_pre), args.prefix_neg_weight))

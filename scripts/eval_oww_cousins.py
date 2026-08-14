@@ -1,117 +1,132 @@
-"""Banc des cousins — le point faible mesurable des têtes openWakeWord.
+"""Banc des cousins — la voix de référence, mesurée en conditions réelles.
 
-Le banc streaming n'a presque pas de cousins phonétiques (« éloquente »,
-« élégance »…) : la faiblesse du round 5 ne s'y voyait pas, elle se voyait au
-micro. Ici on mesure la SÉPARATION de la tête sur des clips ciblés :
+Chaque clip devient un mini-flux (souffle léger, le clip, souffle léger) que
+parcourt le VRAI détecteur : fenêtres glissantes, portail d'énergie, 3
+fenêtres consécutives, cooldown — le même code que le live et le banc. On
+compte les DÉCLENCHEMENTS, pas les pics isolés (examen finalisé 2026-08-14).
 
-  - positifs moi_    : doivent déclencher (haut)         [vus à l'entraînement]
-  - cousins moi_     : ne doivent PAS déclencher (bas)   [vus si --adv-weight]
-  - cousins TTS      : ne doivent pas déclencher          [jamais vus]
-  - hard negatives   : ne doivent pas déclencher          [vus]
+Familles mesurées :
+  - positifs moi_   : le mot entier — doit sonner        [vus à l'entraînement]
+  - cousins moi_    : « éloquente », « élégance »… — muets [vus si adv-weight]
+  - cousins TTS     : jamais vus — muets
+  - hard negatives  : fausses alarmes du banc — muets     [vus]
+  - préfixes 80/90 %: le mot coupé avant la fin — muets
 
-Les groupes « vus à l'entraînement » mesurent la mémorisation utile, pas la
-généralisation — c'est écrit dans la sortie. Le juge final reste le test guidé
-au micro de l'auteur. Sortie : tableau par seuil + PNG des distributions.
+Fonctionne pour les deux chaînes (ONNX ou keras). Sortie : taux par seuil,
+JSON fusionné pour la page Évaluation (section Ma voix), PNG des probas max.
 
-    uv run python scripts/eval_oww_cousins.py open_wake_word_compare/<tête>.onnx …
+    uv run python scripts/eval_oww_cousins.py <modèle.onnx|model.keras> [...]
 """
 
 from __future__ import annotations
 
+import datetime
+import json
 import sys
+import zlib
 from pathlib import Path
 
 import numpy as np
+import soundfile as sf
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
-sys.path.insert(0, str(ROOT / "scripts"))
 
-import numpy as _np  # noqa: E402
-import soundfile as _sf  # noqa: E402
-from train_oww_head import PAD_S, SR, embed_arrays, embed_files  # noqa: E402
+from coachvocal import runtime  # noqa: E402
+from coachvocal.config import load_wakeword  # noqa: E402
+from coachvocal.data.sources.fragments import word_span  # noqa: E402
+from coachvocal.inference.detector import load_detector  # noqa: E402
 
-from coachvocal.evaluation.oww_adapter import OWW_DIR  # noqa: E402
-
+SR = 16000
 THRESHOLDS = [0.5, 0.8, 0.9, 0.95, 0.99]
+LEAD_S, TAIL_S = 1.6, 0.6
+AMP = 0.001                        # souffle léger — jamais de silence numérique
 
-GROUPES = [
-    ("positifs moi_ (attendu : HAUT, vus)",
-     sorted((ROOT / "data/wakewords/eloquence/clean/positives").glob("moi_*.wav")), True),
-    ("cousins moi_ (attendu : BAS, vus si adv-weight)",
-     sorted((ROOT / "data/wakewords/eloquence/clean/negatives_proches").glob("moi_*.wav")), False),
-    ("cousins TTS (attendu : BAS, jamais vus)",
-     sorted((ROOT / "data/wakewords/eloquence/generated/tts_neg_proches").glob("*.wav"))[:150], False),
-    ("hard negatives banc (attendu : BAS, vus)",
-     sorted((ROOT / "exports/oww_training_b/negatifs_adversariaux").glob("hn_*.wav")), False),
-]
+
+def souffle(n: int, key: str) -> np.ndarray:
+    rng = np.random.default_rng(zlib.crc32(key.encode()))
+    return AMP * rng.standard_normal(n).astype(np.float32)
+
+
+def charge(f: Path) -> np.ndarray | None:
+    a, sr = sf.read(f, dtype="float32")
+    if sr != SR:
+        return None
+    return a.mean(axis=1).astype(np.float32) if a.ndim > 1 else a.astype(np.float32)
+
+
+def groupes() -> list[tuple[str, list[np.ndarray], bool]]:
+    out = []
+    pos = [charge(f) for f in sorted(
+        (ROOT / "data/wakewords/eloquence/clean/positives").glob("moi_*.wav"))]
+    pos = [a for a in pos if a is not None]
+    out.append(("positifs moi_ (attendu : HAUT, vus)", pos, True))
+    for nom, pattern, base in [
+        ("cousins moi_ (attendu : BAS, vus si adv-weight)", "moi_*.wav",
+         ROOT / "data/wakewords/eloquence/clean/negatives_proches"),
+        ("cousins TTS (attendu : BAS, jamais vus)", "*.wav",
+         ROOT / "data/wakewords/eloquence/generated/tts_neg_proches"),
+        ("hard negatives banc (attendu : BAS, vus)", "hn_*.wav",
+         ROOT / "exports/oww_training_b/negatifs_adversariaux"),
+    ]:
+        arrs = [charge(f) for f in sorted(base.glob(pattern))[:150]]
+        out.append((nom, [a for a in arrs if a is not None], False))
+    for frac in (0.8, 0.9):
+        arrs = []
+        for a in pos:
+            w0, w1 = word_span(a, SR)
+            arrs.append(a[w0:w0 + int(frac * (w1 - w0))])
+        out.append((f"préfixes {frac:.0%} du mot (attendu : BAS)", arrs, False))
+    return out
 
 
 def main():
     heads = [Path(a) for a in sys.argv[1:]]
     if not heads:
-        sys.exit("usage : eval_oww_cousins.py <tête.onnx> [...]")
+        sys.exit("usage : eval_oww_cousins.py <modèle.onnx|model.keras> [...]")
 
-    import onnxruntime as ort
-    mel = ort.InferenceSession(str(OWW_DIR / "melspectrogram.onnx"),
-                               providers=["CPUExecutionProvider"])
-    emb = ort.InferenceSession(str(OWW_DIR / "embedding_model.onnx"),
-                               providers=["CPUExecutionProvider"])
+    runtime.configure(use_gpu=False)              # ADR-002
+    word = load_wakeword("eloquence")
+    familles = groupes()
 
-    feats = [(nom, embed_files(files, mel, emb, f"cousins_{i}"), attendu_haut)
-             for i, (nom, files, attendu_haut) in enumerate(GROUPES) if files]
-
-    # Préfixes tronqués du mot (fuite mesurée le 2026-08-14 : la tête tirait
-    # dès 80-90 % du mot — « éloquen » déclenchait, « éloquente » passait).
-    from coachvocal.data.sources.fragments import word_span
-    pad_n = int(PAD_S * SR)
-    for frac in (0.8, 0.9):
-        arrs = []
-        for f in sorted((ROOT / "data/wakewords/eloquence/clean/positives").glob("moi_*.wav")):
-            a, sr = _sf.read(f, dtype="float32")
-            if sr != SR:
-                continue
-            w0, w1 = word_span(a, SR)
-            k = int(frac * (w1 - w0))
-            arrs.append(_np.pad(a[w0:w0 + k], (pad_n - k, 0)).astype(_np.float32))
-        feats.append((f"préfixes {frac:.0%} du mot (attendu : BAS)",
-                      embed_arrays(arrs, mel, emb, f"prefix{int(frac * 100)}"), False))
+    json_out = ROOT / "artifacts/reports/oww_cousins.json"
+    store = json.loads(json_out.read_text()) if json_out.exists() else {}
 
     import matplotlib
     matplotlib.use("Agg")
-    # Les taux sont PERSISTÉS (JSON, fusion par tête) : la page Évaluation
-    # affiche la section « Ma voix » depuis ce fichier.
-    import datetime
-    import json
-
     import matplotlib.pyplot as plt
-    json_out = ROOT / "artifacts/reports/oww_cousins.json"
-    store = json.loads(json_out.read_text()) if json_out.exists() else {}
 
     fig, axes = plt.subplots(len(heads), 1, figsize=(9, 3.2 * len(heads)),
                              squeeze=False)
     for hi, head_path in enumerate(heads):
-        # Une tête du registre s'appelle model.onnx : on prend le nom du run.
         label = head_path.stem if head_path.stem != "model" else head_path.parent.name
-        sess = ort.InferenceSession(str(head_path),
-                                    providers=["CPUExecutionProvider"])
-        print(f"\n=== {label} ===")
+        det = load_detector(head_path, word)
+        print(f"\n=== {label} (machine à états réelle) ===")
         ax = axes[hi][0]
-        entry = {"date": datetime.date.today().isoformat(), "groupes": {}}
-        for gi, (nom, X, attendu_haut) in enumerate(feats):
-            p = np.concatenate([sess.run(None, {"input": X[k:k + 1].astype(np.float32)})[0].ravel()
-                                for k in range(len(X))])
-            taux = " · ".join(f"@{t}: {(p > t).mean():.0%}" for t in THRESHOLDS)
-            print(f"  {nom} ({len(p)}) — {taux}")
+        entry = {"date": datetime.date.today().isoformat(),
+                 "protocole": "mini-flux + machine à états", "groupes": {}}
+        for nom, arrs, attendu_haut in familles:
+            fires = {th: 0 for th in THRESHOLDS}
+            pmax = []
+            for k, a in enumerate(arrs):
+                stream = np.concatenate([souffle(int(LEAD_S * SR), f"{nom}|{k}|in"),
+                                         a, souffle(int(TAIL_S * SR), f"{nom}|{k}|out")])
+                probas, peaks, _ = det.window_probas(stream)
+                pmax.append(float(probas.max()) if len(probas) else 0.0)
+                for th in THRESHOLDS:
+                    if det.triggers_from(probas, peaks, th):
+                        fires[th] += 1
+            n = len(arrs)
+            taux = " · ".join(f"@{th}: {fires[th] / n:.0%}" for th in THRESHOLDS)
+            print(f"  {nom} ({n}) — {taux}")
             entry["groupes"][nom] = {
-                "n": int(len(p)), "attendu": "haut" if attendu_haut else "bas",
-                "taux": {str(t): round(float((p > t).mean()), 4) for t in THRESHOLDS}}
-            ax.hist(p, bins=40, range=(0, 1), alpha=0.55, label=f"{nom} (n={len(p)})")
-            _ = gi
+                "n": n, "attendu": "haut" if attendu_haut else "bas",
+                "taux": {str(th): round(fires[th] / n, 4) for th in THRESHOLDS}}
+            ax.hist(pmax, bins=40, range=(0, 1), alpha=0.55, label=f"{nom} (n={n})")
         store[label] = entry
         ax.set_yscale("log")
         ax.set_title(label)
-        ax.set_xlabel("probabilité de la tête")
+        ax.set_xlabel("probabilité max sur le mini-flux")
         ax.legend(fontsize=7)
     fig.tight_layout()
     out = ROOT / "artifacts/reports/oww_cousins.png"
