@@ -29,6 +29,17 @@ désormais les préfixes 80 % et 90 % en permanence. Critère écrit avant :
   - verdict final : le test micro (« éloquence » détecté, « éloquen » et
     « éloquente » muets).
 
+**Verdict H3 (archive `eloquence_20260814_205246`) : la fuite est bouchée,
+mais la dose ×20 écrase le mot.** Préfixes 80/90 % : **0 %** sur les deux
+seeds (contre 17/38 % chez le champion) — le mécanisme fonctionne. Mais le
+mot entier s'effondre sur clips (6-9 % @0.8 contre 70 % : clause « ≥ 65 % »
+échouée) : ~5 900 préfixes ×20 pèsent trois fois plus que tous les positifs.
+Le banc reste haut (89 % @0.8 — ses positifs ont du vrai contexte), FA/h en
+légère hausse (4.6-6.8). Sur-correction classique → **H4** : balayage de dose
+(préfixes ×3 et ×8), plus les **145 adversariaux** (23 enregistrements
+« éloquente/éloquen » du soir au micro, 10 FP à proba 0.98-0.9999 confirmant
+la fuite en réel, 13 TN). Même critère que H3.
+
 ## 2026-08-14 — Contrôle complet après la publication et la promotion
 
 Après le grand ménage (réécriture git, textes, promotion), revue de TOUTE la
