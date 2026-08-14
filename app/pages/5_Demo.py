@@ -27,18 +27,23 @@ champion = registry.champion_run(WAKEWORD)
 # l'adaptateur du banc — leur front-end, notre machine à états.
 OWW_COMPARE = Path(__file__).resolve().parents[2] / "open_wake_word_compare"
 oww_heads = sorted(OWW_COMPARE.glob("*.onnx")) if OWW_COMPARE.exists() else []
-options = runs + [f"oww : {p.name}" for p in oww_heads]
+# Candidats hors registre : « v28_resserre_seed46 (oww) » — la version d'abord,
+# pour que la liste se classe naturellement avec les runs du registre. Un
+# candidat déjà intégré comme run n'apparaît qu'une fois (sous son run).
+oww_par_label = {f"{p.stem} (oww)": p for p in oww_heads
+                 if not any(p.stem.startswith(r) for r in runs)}
+options = sorted(runs + list(oww_par_label))
 run = st.selectbox("Modèle", options,
-                   index=runs.index(champion) if champion in runs else 0,
+                   index=options.index(champion) if champion in options else 0,
                    format_func=lambda o: f"{o} ⭐" if o == champion else o)
 threshold = st.slider("Seuil de décision", 0.01, 0.99, word.live.threshold, 0.01)
 
 
 def _load_selected_detector():
     runtime.configure(use_gpu=False)         # Metal fausse les probas (ADR-002)
-    if run.startswith("oww : "):
+    if run in oww_par_label:
         from coachvocal.evaluation.oww_adapter import OwwDetector
-        return OwwDetector(OWW_COMPARE / run[len("oww : "):], word, threshold)
+        return OwwDetector(oww_par_label[run], word, threshold)
     from coachvocal.inference.detector import load_detector
     return load_detector(registry.model_path(WAKEWORD, run), word, threshold)
 
