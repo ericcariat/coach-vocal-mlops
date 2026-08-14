@@ -6,6 +6,72 @@ vaut plus qu'un résultat lisse — elle dit comment on a appris à ne plus se t
 
 ---
 
+## 2026-08-14 — Contrôle + ablation : le pipeline est sain, les fragments sont un garde-fou
+
+Après deux runs dégradés d'affilée (v20, v21), doute légitime de l'auteur : « on n'a
+pas un autre problème ? ». Deux diagnostics, critères écrits avant, banc commun
+(52,7 min / 27 occ, seuil 0.8, champion co-mesuré à 48.1 % · 6.8 constant) :
+
+- **v22_replica17** (v17 strictement à l'identique, ré-entraîné) :
+  **55.6 % · 10.2 FA/h** — dans la zone attendue [43-55 %, ≤ 12]. Le pipeline
+  reproduit un modèle de la classe du champion : les verdicts v20/v21 sont des
+  effets réels, pas une panne d'instrument. Au passage : la réplique fait +7 pts
+  de rappel et +3.4 FA/h que le champion — la dispersion du protocole reste
+  large (ADR-003), le champion v17 est aussi un tirage heureux.
+- **v23_sans_fragments** (v17 sans aucune source fragments) :
+  **40.7 % · 17.1 FA/h** — dégradé sur les deux axes, seuil d'alerte pré-déclaré
+  (> 15 FA/h) franchi. **Les fragments comptent** : même bogués, ils tenaient
+  les FA et le rappel.
+
+Lecture d'ensemble avec v21 (fragments nettoyés à 45 % max : 40.7 % · 38.7) :
+retirer les quasi-mots fait pire que retirer tous les fragments — le signal
+utile n'était pas « voici des bouts de mot » mais « **tant que le mot n'est pas
+complet, tais-toi** », porté par les fragments longs. Prochaine marche logique :
+fragments **longs mais jamais complets** (mesure propre par énergie conservée,
+plafond remonté vers ~70 %, ex-v24). Preuves : archive
+`eloquence_20260814_024226.json`, runs `v22_replica17` et `v23_sans_fragments`.
+
+## 2026-08-14 — v20 : la découpe propre aide le rappel, le contexte réel ruine les FA
+
+Constat mesuré d'abord (intuition de l'auteur) : 1830/1882 clips `yt_` ont le mot
+collé au **début** du clip et 32/47 clips `moi_` l'ont collé à la **fin** — le
+`time_shift` ±100 ms de l'augmentation tronquait donc régulièrement le « é » ou
+la fin du mot pendant l'entraînement du champion. Correctif v20 (une variable
+vs v19) : positifs `yt_` re-découpés par `word_clips_recut` (mot entier garanti,
+jitter 0-200 ms dans la découpe, **contexte réel** de la vidéo avant le mot),
+positifs `moi_` ré-ancrés sans troncature (`re_anchor`), `time_shift_ms: 0`.
+
+Verdict au banc (52,7 min / 27 occ), critère pré-déclaré **échoué** :
+
+| Modèle | @0.5 | @0.8 |
+|---|---|---|
+| v17_stack (champion) | 63.0 % · 21.6 FA/h | 48.1 % · 6.8 FA/h |
+| v20_recut_anchor | **85.2 %** · 248 FA/h | 44.4 % · **48.9 FA/h** |
+
+Lecture : le rappel brut explose (+22 pts à 0.5 — l'hypothèse « la troncature
+coûtait du rappel » est confirmée), mais les fausses alarmes aussi. Cause
+probable : v20 changeait DEUX choses à la fois pour `yt_` — (a) mot jamais
+tronqué + jitter, (b) du **vrai flux de parole** avant le mot au lieu de zéros.
+Avec (b), « de la parole continue » ressemble désormais aux positifs : le modèle
+déclenche sur le flux. L'élection `fa_ambient` l'avait déjà signalé (13.94/h
+élu, contre ~7 chez v17). Piste suivante identifiée : un v21 qui isole (a) —
+ré-ancrage sur zéros pour `yt_` aussi, sans contexte réel. Preuves : archive
+`eloquence_20260814_010424.json`, run `v20_recut_anchor`.
+
+## 2026-08-14 — Fragments : la mesure du mot doit être relative au pic
+
+La première correction des fragments (fractions du mot, seuil absolu `1e-5`)
+a été invalidée à l'oreille par l'auteur : sur ses enregistrements, le **souffle du
+micro** (RMS ~0.001) dépasse ce seuil dès l'échantillon 0 — la « durée du mot »
+mesurée valait toute la seconde, et un `f45` embarquait 68 % du mot (« loquence »).
+Correctif : RMS par trames de 20 ms, mot = zone au-dessus de 10 % du pic, découpe
+ancrée sur les bornes du mot. Contrôle indépendant (`scripts/check_fragments.py`,
+idée de l'auteur à la place d'un repassage WhisperX) : 1 538 fragments, médiane 31 %
+du mot, max 48 %, zéro dépassement — preuve :
+`artifacts/reports/fragments_word_controle.png`. Leçon : un seuil d'énergie
+absolu est une constante en dur déguisée ; seul un seuil **relatif au signal**
+survit au passage du TTS au vrai micro.
+
 ## 2026-08-12 — Re-contrôle Metal : ADR-002 reconfirmé, avec chiffres
 
 `tensorflow-metal` 1.2.0 aurait pu avoir corrigé la corruption des gradients

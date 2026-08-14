@@ -1,0 +1,17 @@
+# Fragments longs mais JAMAIS complets — la synthèse des diagnostics du
+# 2026-08-14 (JOURNAL) : v21 (propres, plafond 45 %) explose en FA, v23 (sans
+# fragments) se dégrade partout → le signal utile des fragments historiques
+# était « tant que le mot n'est pas complet, tais-toi », porté par les LONGS.
+# Ici : mesure propre par énergie conservée (validée à l'oreille), plafond
+# remonté à 70 % du mot, une fraction longue ajoutée. Nouveau cache
+# (pool fragments_word70 — piège du cache documenté).
+extends: v17_stack
+name: v24_fragments_longs
+
+sources:
+  - name: fragments_yt
+    params: {pool: fragments_word70, prefix: "yt_", frac_of: word,
+             max_word_frac: 0.70, prefix_fracs: [0.30, 0.45, 0.70], subset: 3}
+  - name: fragments_moi
+    params: {pool: fragments_word70, prefix: "moi_", frac_of: word,
+             max_word_frac: 0.70, prefix_fracs: [0.30, 0.45, 0.70], subset: 3}

@@ -1,0 +1,29 @@
+# v23 — ABLATION des fragments, une seule variable vs v17_stack.
+# Lecture prévue, écrite AVANT le run (banc courant, seuil 0.8, réf. 48.1 · 6.8) :
+#   • si FA/h explose (> 15) → les fragments (même bogués) sont un garde-fou
+#     anti-FA indispensable ; le travail devient « des fragments longs mais
+#     jamais complets » (mesure propre, plafond remonté) ;
+#   • si résultat ≈ champion (rappel ≥ 45 %, FA/h ≤ 10) → les fragments ne
+#     servaient à rien d'essentiel et la piste fragments est close ;
+#   • ce run ne peut PAS être promu : c'est un diagnostic.
+# Vérification : coachvocal bench --run v17_stack --run v23_sans_fragments
+name: v23_sans_fragments
+description: >
+  Diagnostic : recette v17 sans aucune source de fragments — mesure leur
+  contribution réelle (rappel et FA/h) au banc.
+
+wakeword: eloquence
+dataset: v23_sans_fragments
+model: cnn_baseline
+
+training:
+  epochs: 30
+  batch_size: 64
+  learning_rate: 0.001
+  early_stopping_patience: 5
+  class_weight: true
+  threshold: 0.5
+  seeds: [42, 43, 44, 45, 46]
+  selection_metric: fa_ambient
+  selection_min_val_recall: 0.90
+  use_gpu: false

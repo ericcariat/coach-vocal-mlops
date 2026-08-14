@@ -1,0 +1,31 @@
+# v19a — le correctif fragments, une seule variable vs v17.
+# Hypothèse : retirer les quasi-mots étiquetés négatifs LIBÈRE du rappel (le
+# réseau n'a plus d'exemples contradictoires) sans coûter en FA — et devrait
+# réduire la dispersion entre seeds (la théorie de l'auteur : les contradictions
+# nourrissent la variance).
+#
+# Critère de succès, écrit AVANT le run (banc courant, seuil 0.8, champion
+# co-mesuré dans le même run de banc) :
+#   • rappel ≥ v17 + 2 pts (48.1 → ≥ 50 %) ET FA/h ≤ v17 × 1.2 (6.8 → ≤ 8.2) ;
+#   • lecture secondaire : dispersion des fa_ambient entre seeds vs v17.
+# Vérification : coachvocal bench --run v17_stack --run v19_fragments --minutes 60 --thresholds 0.55,0.65,0.8
+name: v19_fragments
+description: >
+  Recette v17 avec fragments corrigés (fractions du MOT, plafond 45 % — plus
+  de quasi-mots dans les négatifs).
+
+wakeword: eloquence
+dataset: v19_fragments
+model: cnn_baseline
+
+training:
+  epochs: 30
+  batch_size: 64
+  learning_rate: 0.001
+  early_stopping_patience: 5
+  class_weight: true
+  threshold: 0.5
+  seeds: [42, 43, 44, 45, 46]
+  selection_metric: fa_ambient
+  selection_min_val_recall: 0.90
+  use_gpu: false

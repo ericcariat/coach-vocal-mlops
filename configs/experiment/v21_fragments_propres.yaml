@@ -1,0 +1,38 @@
+# v21 — la même recette que v19 (v17 + fragments du MOT), mais avec le pool
+# ENFIN propre : la première génération (seuil absolu 1e-5) était invalidée par
+# le souffle micro — des f45 portaient 68 % du mot (JOURNAL 2026-08-14). Le
+# verdict « équivalence » de v19 a donc été mesuré sur des fragments encore en
+# partie pourris. Ici : mesure par énergie relative, validée à l'oreille par
+# l'auteur et par le contrôle indépendant (médiane 31 %, max 48 %, zéro dépassement).
+#
+# Une seule variable vs v17 : les fragments propres. Rien de v20 (pas de recut,
+# pas de re_anchor, time_shift ±100 ms conservé).
+#
+# Critère de succès, écrit AVANT le run (banc courant, seuil 0.8, champion
+# co-mesuré) :
+#   • non-régression : rappel ≥ 48 % ET FA/h ≤ 8.2 (v17 × 1.2) ;
+#   • gain déclaré : rappel ≥ 52 % à FA/h ≤ 6.8 — sinon, verdict « équivalence »
+#     et on garde le pool propre pour l'hygiène, champion inchangé ;
+#   • lecture secondaire : fire_rate du pool fragments_moi dans pools.png,
+#     attendu en baisse vs v17.
+# Vérification : coachvocal bench --run v17_stack --run v21_fragments_propres
+name: v21_fragments_propres
+description: >
+  Recette v17 + fragments réellement propres (mesure du mot par énergie
+  relative au pic, découpe depuis les bornes du mot, plafond 45 %).
+
+wakeword: eloquence
+dataset: v19_fragments
+model: cnn_baseline
+
+training:
+  epochs: 30
+  batch_size: 64
+  learning_rate: 0.001
+  early_stopping_patience: 5
+  class_weight: true
+  threshold: 0.5
+  seeds: [42, 43, 44, 45, 46]
+  selection_metric: fa_ambient
+  selection_min_val_recall: 0.90
+  use_gpu: false

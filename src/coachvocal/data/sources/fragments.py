@@ -17,6 +17,23 @@ from ...config import SourceConfig
 from . import SourceContext, SplitPools, cached, mark_done, source
 
 
+def word_span(audio: np.ndarray, sr: int) -> tuple[int, int]:
+    """Bornes du mot [début, fin) par énergie RELATIVE au pic du clip.
+
+    Un seuil absolu (1e-5) est en-dessous du souffle d'un vrai micro
+    (RMS ~1e-3) : il voyait « du mot » dès l'échantillon 0 et sur toute la
+    seconde. Ici : RMS par trames de 20 ms, le mot = la zone au-dessus de
+    10 % du RMS max — le souffle à ~1 % du pic vocal reste largement dessous.
+    """
+    frame = max(1, sr // 50)
+    nf = max(1, len(audio) // frame)
+    rms = np.sqrt((audio[: nf * frame].reshape(nf, frame) ** 2).mean(axis=1))
+    idx = (rms >= 0.1 * float(rms.max())).nonzero()[0]
+    if not len(idx):
+        return 0, len(audio)
+    return int(idx[0] * frame), int(min(len(audio), (idx[-1] + 1) * frame))
+
+
 @source("fragments")
 def fragments(src: SourceConfig, ctx: SourceContext) -> SplitPools:
     """Params : `prefix_fracs` (fraction du mot visible), `subset` (1 clip yt sur N),
@@ -37,6 +54,19 @@ def fragments(src: SourceConfig, ctx: SourceContext) -> SplitPools:
     fracs = src.params.get("prefix_fracs", [0.30, 0.45, 0.60])
     subset = src.params.get("subset", 3)
     dense_prefix = src.params.get("dense_prefix", "moi_")
+    # ⚠️ Défaut historique : la fraction porte sur la SECONDE du clip — pour un
+    # mot de ~0,7 s, « 60 % du clip » peut contenir 80-100 % du mot, étiqueté
+    # négatif (constaté à l'oreille par l'auteur le 2026-08-13 : des fragments qui
+    # « passent pour le mot complet »). Le mode correctif `frac_of: word`
+    # mesure le mot par énergie relative (`word_span`) et applique la fraction
+    # AU MOT, découpé depuis SES bornes (pas celles du clip), plafonnée à
+    # `max_word_frac` — un fragment reste un fragment. Opt-in : les recettes
+    # historiques restent bit-à-bit intactes.
+    # (Première version invalidée à l'oreille le 2026-08-14 : seuil absolu
+    # 1e-5 < souffle micro, et découpe depuis la fin du clip — un f45 portait
+    # 68 % du mot. D'où la mesure relative et l'ancrage sur les bornes.)
+    frac_of = src.params.get("frac_of", "clip")
+    max_word_frac = float(src.params.get("max_word_frac", 0.45))
     n = ctx.clip_samples
     splits = ctx.word_splits()
 
@@ -48,10 +78,17 @@ def fragments(src: SourceConfig, ctx: SourceContext) -> SplitPools:
             if not is_dense and i % subset != 0:
                 continue
             audio, _ = sf.read(path, dtype="float32")
+            if frac_of == "word":
+                w0, w1 = word_span(audio, ctx.sr)
             for frac in (fracs if is_dense else [fracs[i % len(fracs)]]):
-                k = int(frac * n)
-                entering = np.concatenate([np.zeros(n - k, np.float32), audio[:k]])
-                leaving = np.concatenate([audio[-k:], np.zeros(n - k, np.float32)])
+                if frac_of == "word":
+                    k = int(min(frac, max_word_frac) * (w1 - w0))
+                    head, tail = audio[w0:w0 + k], audio[w1 - k:w1]
+                else:
+                    k = int(frac * n)
+                    head, tail = audio[:k], audio[-k:]
+                entering = np.concatenate([np.zeros(n - k, np.float32), head])
+                leaving = np.concatenate([tail, np.zeros(n - k, np.float32)])
                 tag = f"{path.stem}_f{int(frac * 100)}"
                 sf.write(out_dir / f"{tag}_in.wav", entering, ctx.sr, subtype="PCM_16")
                 sf.write(out_dir / f"{tag}_out.wav", leaving, ctx.sr, subtype="PCM_16")

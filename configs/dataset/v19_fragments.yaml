@@ -1,0 +1,13 @@
+# Correctif des fragments (2026-08-13, découvert à l'oreille par l'auteur puis
+# confirmé dans le code) : les fractions portaient sur la SECONDE du clip et
+# non sur le MOT — un « fragment entrant à 60 % » pouvait contenir 80-100 %
+# du mot, étiqueté négatif. Ici : fractions DU MOT, plafond 45 %, nouveau
+# cache (pool fragments_word — piège du cache documenté).
+extends: v17_stack
+name: v19_fragments
+
+sources:
+  - name: fragments_yt
+    params: {pool: fragments_word, prefix: "yt_", frac_of: word, max_word_frac: 0.45}
+  - name: fragments_moi
+    params: {pool: fragments_word, prefix: "moi_", frac_of: word, max_word_frac: 0.45}

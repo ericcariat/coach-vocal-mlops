@@ -1,0 +1,362 @@
+{
+  "pools": {
+    "test/cv_en": {
+      "n_files": 98,
+      "n_checked": 98,
+      "peak_median": 0.4903717041015625,
+      "peak_p10": 0.028182983398437514,
+      "duration_median": 1.0,
+      "problems": {
+        "silent": 2
+      }
+    },
+    "test/cv_fr": {
+      "n_files": 195,
+      "n_checked": 195,
+      "peak_median": 0.56854248046875,
+      "peak_p10": 0.07089843750000002,
+      "duration_median": 1.0,
+      "problems": {
+        "clipped": 2,
+        "silent": 3
+      }
+    },
+    "test/fragments_moi": {
+      "n_files": 30,
+      "n_checked": 30,
+      "peak_median": 0.18548583984375,
+      "peak_p10": 0.026422119140625006,
+      "duration_median": 1.0,
+      "problems": {}
+    },
+    "test/fragments_yt": {
+      "n_files": 126,
+      "n_checked": 126,
+      "peak_median": 0.257965087890625,
+      "peak_p10": 0.0,
+      "duration_median": 1.0,
+      "problems": {
+        "silent": 28
+      }
+    },
+    "test/gsc": {
+      "n_files": 250,
+      "n_checked": 250,
+      "peak_median": 0.3880615234375,
+      "peak_p10": 0.094464111328125,
+      "duration_median": 1.0,
+      "problems": {
+        "duration": 14,
+        "clipped": 18
+      }
+    },
+    "test/moi_positif": {
+      "n_files": 5,
+      "n_checked": 5,
+      "peak_median": 0.274139404296875,
+      "peak_p10": 0.18826904296875,
+      "duration_median": 1.0,
+      "problems": {}
+    },
+    "test/musan_noise": {
+      "n_files": 150,
+      "n_checked": 150,
+      "peak_median": 0.0256195068359375,
+      "peak_p10": 0.0008666992187500001,
+      "duration_median": 1.0,
+      "problems": {
+        "silent": 16,
+        "clipped": 4
+      }
+    },
+    "test/proches": {
+      "n_files": 4,
+      "n_checked": 4,
+      "peak_median": 0.626251220703125,
+      "peak_p10": 0.4233489990234375,
+      "duration_median": 1.0,
+      "problems": {
+        "clipped": 1
+      }
+    },
+    "test/silence": {
+      "n_files": 20,
+      "n_checked": 20,
+      "peak_median": 0.000823974609375,
+      "peak_p10": 0.0003143310546875,
+      "duration_median": 1.0,
+      "problems": {
+        "silent": 13
+      }
+    },
+    "test/yt_positif": {
+      "n_files": 188,
+      "n_checked": 188,
+      "peak_median": 0.4304656982421875,
+      "peak_p10": 0.1792877197265625,
+      "duration_median": 1.0,
+      "problems": {}
+    },
+    "train/cv_en": {
+      "n_files": 780,
+      "n_checked": 300,
+      "peak_median": 0.6067962646484375,
+      "peak_p10": 0.13634948730468752,
+      "duration_median": 1.0,
+      "problems": {
+        "silent": 6,
+        "clipped": 5
+      }
+    },
+    "train/cv_fr": {
+      "n_files": 1560,
+      "n_checked": 300,
+      "peak_median": 0.54217529296875,
+      "peak_p10": 0.09815673828125002,
+      "duration_median": 1.0,
+      "problems": {
+        "silent": 2,
+        "clipped": 6
+      }
+    },
+    "train/fragments_moi": {
+      "n_files": 222,
+      "n_checked": 222,
+      "peak_median": 0.2008056640625,
+      "peak_p10": 0.049880981445312514,
+      "duration_median": 1.0,
+      "problems": {}
+    },
+    "train/fragments_yt": {
+      "n_files": 1004,
+      "n_checked": 300,
+      "peak_median": 0.192352294921875,
+      "peak_p10": 0.0,
+      "duration_median": 1.0,
+      "problems": {
+        "silent": 63,
+        "clipped": 5
+      }
+    },
+    "train/gsc": {
+      "n_files": 2000,
+      "n_checked": 300,
+      "peak_median": 0.365966796875,
+      "peak_p10": 0.10255126953125,
+      "duration_median": 1.0,
+      "problems": {
+        "duration": 25,
+        "clipped": 15
+      }
+    },
+    "train/guided_hard_neg": {
+      "n_files": 23,
+      "n_checked": 23,
+      "peak_median": 0.33111572265625,
+      "peak_p10": 0.2510498046875,
+      "duration_median": 2.76,
+      "problems": {
+        "duration": 23
+      }
+    },
+    "train/guided_positif": {
+      "n_files": 31,
+      "n_checked": 31,
+      "peak_median": 0.14544677734375,
+      "peak_p10": 0.091278076171875,
+      "duration_median": 1.0,
+      "problems": {}
+    },
+    "train/hard_neg": {
+      "n_files": 54,
+      "n_checked": 54,
+      "peak_median": 0.43438720703125,
+      "peak_p10": 0.1596893310546875,
+      "duration_median": 1.0,
+      "problems": {}
+    },
+    "train/moi_positif": {
+      "n_files": 37,
+      "n_checked": 37,
+      "peak_median": 0.323486328125,
+      "peak_p10": 0.139794921875,
+      "duration_median": 1.0,
+      "problems": {}
+    },
+    "train/musan_noise": {
+      "n_files": 1200,
+      "n_checked": 300,
+      "peak_median": 0.025634765625,
+      "peak_p10": 0.0027130126953125,
+      "duration_median": 1.0,
+      "problems": {
+        "silent": 16,
+        "clipped": 7
+      }
+    },
+    "train/proches": {
+      "n_files": 36,
+      "n_checked": 36,
+      "peak_median": 0.459991455078125,
+      "peak_p10": 0.316497802734375,
+      "duration_median": 1.0,
+      "problems": {
+        "clipped": 2
+      }
+    },
+    "train/silence": {
+      "n_files": 150,
+      "n_checked": 150,
+      "peak_median": 0.000640869140625,
+      "peak_p10": 0.00018310546875,
+      "duration_median": 1.0,
+      "problems": {
+        "silent": 121
+      }
+    },
+    "train/speech_neg_300": {
+      "n_files": 300,
+      "n_checked": 300,
+      "peak_median": 0.3901214599609375,
+      "peak_p10": 0.1379425048828125,
+      "duration_median": 1.0,
+      "problems": {
+        "clipped": 29
+      }
+    },
+    "train/summre_neg_75": {
+      "n_files": 75,
+      "n_checked": 75,
+      "peak_median": 0.45361328125,
+      "peak_p10": 0.0318115234375,
+      "duration_median": 1.0,
+      "problems": {
+        "clipped": 10
+      }
+    },
+    "train/tts_positif": {
+      "n_files": 500,
+      "n_checked": 300,
+      "peak_median": 0.70001220703125,
+      "peak_p10": 0.699981689453125,
+      "duration_median": 1.0,
+      "problems": {}
+    },
+    "train/yt_positif": {
+      "n_files": 1506,
+      "n_checked": 300,
+      "peak_median": 0.3847198486328125,
+      "peak_p10": 0.13158874511718752,
+      "duration_median": 1.0,
+      "problems": {
+        "clipped": 5
+      }
+    },
+    "val/cv_en": {
+      "n_files": 98,
+      "n_checked": 98,
+      "peak_median": 0.5991363525390625,
+      "peak_p10": 0.046975708007812506,
+      "duration_median": 1.0,
+      "problems": {
+        "silent": 1
+      }
+    },
+    "val/cv_fr": {
+      "n_files": 195,
+      "n_checked": 195,
+      "peak_median": 0.593902587890625,
+      "peak_p10": 0.118121337890625,
+      "duration_median": 1.0,
+      "problems": {
+        "silent": 6,
+        "clipped": 3
+      }
+    },
+    "val/fragments_moi": {
+      "n_files": 30,
+      "n_checked": 30,
+      "peak_median": 0.18115234375,
+      "peak_p10": 0.0044769287109375,
+      "duration_median": 1.0,
+      "problems": {}
+    },
+    "val/fragments_yt": {
+      "n_files": 126,
+      "n_checked": 126,
+      "peak_median": 0.1250762939453125,
+      "peak_p10": 0.0,
+      "duration_median": 1.0,
+      "problems": {
+        "silent": 38
+      }
+    },
+    "val/gsc": {
+      "n_files": 250,
+      "n_checked": 250,
+      "peak_median": 0.3689727783203125,
+      "peak_p10": 0.0718536376953125,
+      "duration_median": 1.0,
+      "problems": {
+        "duration": 21,
+        "clipped": 11,
+        "silent": 1
+      }
+    },
+    "val/moi_positif": {
+      "n_files": 5,
+      "n_checked": 5,
+      "peak_median": 0.30511474609375,
+      "peak_p10": 0.1923095703125,
+      "duration_median": 1.0,
+      "problems": {}
+    },
+    "val/musan_noise": {
+      "n_files": 150,
+      "n_checked": 150,
+      "peak_median": 0.024444580078125,
+      "peak_p10": 0.002764892578125,
+      "duration_median": 1.0,
+      "problems": {
+        "silent": 8,
+        "clipped": 2
+      }
+    },
+    "val/proches": {
+      "n_files": 5,
+      "n_checked": 5,
+      "peak_median": 0.390350341796875,
+      "peak_p10": 0.332464599609375,
+      "duration_median": 1.0,
+      "problems": {}
+    },
+    "val/silence": {
+      "n_files": 20,
+      "n_checked": 20,
+      "peak_median": 0.000762939453125,
+      "peak_p10": 0.0002105712890625,
+      "duration_median": 1.0,
+      "problems": {
+        "silent": 17
+      }
+    },
+    "val/yt_positif": {
+      "n_files": 188,
+      "n_checked": 188,
+      "peak_median": 0.3460693359375,
+      "peak_p10": 0.09716796875,
+      "duration_median": 1.0,
+      "problems": {
+        "clipped": 2
+      }
+    }
+  },
+  "issues": [
+    "test/musan_noise : 16 clip(s) « silent »",
+    "test/proches : 1 clip(s) « clipped »",
+    "train/guided_hard_neg : 23 clip(s) « duration »",
+    "train/summre_neg_75 : 10 clip(s) « clipped »"
+  ],
+  "fingerprint": "3ab9d74cb0ccfde5",
+  "ok": false
+}

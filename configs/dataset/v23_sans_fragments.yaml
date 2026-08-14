@@ -1,0 +1,13 @@
+# Ablation : la recette du champion SANS les deux sources de fragments.
+# Question (décision du 2026-08-14) : les fragments sont-ils importants ? v21 (fragments
+# nettoyés) a explosé en FA — hypothèse : les fragments quasi-complets du pool
+# historique faisaient un garde-fou anti-FA accidentel. Les retirer tout à fait
+# mesure leur contribution réelle.
+extends: v17_stack
+name: v23_sans_fragments
+
+sources:
+  - name: fragments_moi
+    enabled: false
+  - name: fragments_yt
+    enabled: false

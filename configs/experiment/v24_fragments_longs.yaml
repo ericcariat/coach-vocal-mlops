@@ -1,0 +1,33 @@
+# v24 — fragments propres ET longs (plafond 70 % du mot), une variable vs v17.
+# Hypothèse : on garde l'hygiène de v21 (mesure du mot par énergie, jamais
+# 100 % du mot en négatif) en récupérant le garde-fou anti-FA que le pool
+# bogué fournissait par accident (fragments quasi complets).
+#
+# Critère de succès, écrit AVANT le run (banc courant 52,7 min / 27 occ,
+# seuil 0.8, champion co-mesuré, réf. 48.1 % · 6.8) :
+#   • succès : rappel ≥ 48 % ET FA/h ≤ 8.2 ;
+#   • idéal déclaré : rappel ≥ 55 % à FA/h ≤ 7 ;
+#   • lecture secondaire : FA/h attendu ENTRE v21 (38.7) et le champion (6.8),
+#     décroissant avec la longueur des fragments — sinon l'hypothèse
+#     « le garde-fou vient des fragments longs » est fausse.
+# Vérification : coachvocal bench --run v17_stack --run v24_fragments_longs
+name: v24_fragments_longs
+description: >
+  Recette v17 avec fragments propres à plafond 70 % du mot (longs mais jamais
+  complets) — récupérer le garde-fou anti-FA sans quasi-mots étiquetés négatifs.
+
+wakeword: eloquence
+dataset: v24_fragments_longs
+model: cnn_baseline
+
+training:
+  epochs: 30
+  batch_size: 64
+  learning_rate: 0.001
+  early_stopping_patience: 5
+  class_weight: true
+  threshold: 0.5
+  seeds: [42, 43, 44, 45, 46]
+  selection_metric: fa_ambient
+  selection_min_val_recall: 0.90
+  use_gpu: false

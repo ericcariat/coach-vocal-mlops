@@ -1,0 +1,33 @@
+# v22 — CONTRÔLE : la recette v17_stack strictement à l'identique, ré-entraînée
+# aujourd'hui. Motif (décision du 2026-08-14) : v20 puis v21 sont sortis très dégradés
+# au banc (38-49 FA/h) alors que le v17 champion co-mesuré redonne exactement
+# 48.1 % · 6.8 — la mesure est stable, c'est l'ENTRAÎNEMENT qu'on contrôle.
+# Si cette réplique retombe dans la dispersion du champion, le pipeline est sain
+# et les verdicts v20/v21 sont réels ; sinon, on a un problème d'environnement
+# ou de pool régénéré à débusquer AVANT toute autre conclusion.
+#
+# Critère, écrit AVANT le run (banc courant, seuil 0.8) :
+#   • attendu : rappel dans [43 %, 55 %] ET FA/h ≤ 12 (dispersion seeds
+#     constatée du protocole, ADR-003) ;
+#   • hors de cette zone → alerte pipeline, tout s'arrête jusqu'au diagnostic.
+# Vérification : coachvocal bench --run v17_stack --run v22_replica17
+name: v22_replica17
+description: >
+  Réplique de contrôle de v17_stack (aucun changement) — vérifie que le
+  pipeline d'aujourd'hui reproduit un modèle de la classe du champion.
+
+wakeword: eloquence
+dataset: v17_stack
+model: cnn_baseline
+
+training:
+  epochs: 30
+  batch_size: 64
+  learning_rate: 0.001
+  early_stopping_patience: 5
+  class_weight: true
+  threshold: 0.5
+  seeds: [42, 43, 44, 45, 46]
+  selection_metric: fa_ambient
+  selection_min_val_recall: 0.90
+  use_gpu: false

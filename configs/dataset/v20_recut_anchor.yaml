@@ -1,0 +1,26 @@
+# Géométrie de découpe des positifs, mesurée le 2026-08-15 : 1830/1882 clips
+# yt_ ont le mot collé au DÉBUT du clip (un shift −100 ms rogne le « é »),
+# 32/47 clips moi_ l'ont collé à la FIN (un shift +100 ms rogne « …ce »).
+# Le time_shift de l'augmentation tronquait donc régulièrement les bords du mot.
+#
+# Correctif — le jitter passe DANS la découpe, le mot n'est plus jamais tronqué :
+#   • yt_positif → word_clips_recut : fin du mot à 0-200 ms du bord droit,
+#     contexte RÉEL de la vidéo avant le mot (l'/d' compris) au lieu de zéros ;
+#   • moi_positif → re_anchor : même géométrie, ré-ancrage dans la fenêtre
+#     (train seulement, val/test intacts) ;
+#   • time_shift_ms: 0 — un shift par-dessus recréerait la troncature.
+# Seule variable vs v19_fragments : cette géométrie (guided_positif inchangé).
+extends: v19_fragments
+name: v20_recut_anchor
+
+augmentation:
+  time_shift_ms: 0
+
+sources:
+  - name: yt_positif
+    type: word_clips_recut
+    label: 1
+    params: {jitter_s: 0.2, only_known_positives: true}
+
+  - name: moi_positif
+    params: {label_key: eloquence, prefix: "moi_", re_anchor: true, jitter_s: 0.2}

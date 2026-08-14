@@ -1,0 +1,32 @@
+# Hypothèse : le champion v17/v19 s'est entraîné sur des positifs aux bords
+# régulièrement amputés (time_shift sur des mots collés aux bords du clip) et
+# sans vrai contexte avant le mot. Découper proprement (mot entier garanti,
+# jitter dans la découpe, contexte réel avant les yt_) doit surtout aider le
+# RAPPEL streaming — c'est l'alignement des fenêtres qui en dépend.
+#
+# Critère de succès, écrit AVANT le run (banc courant ~52 min / 27 occ,
+# seuil live 0.8, référence champion v17 : 48.1 % · 6.8 FA/h) :
+#   • succès : rappel ≥ 55 % (au-delà de la dispersion seeds ±3-7 pts)
+#     ET FA/h ≤ 8.2 (champion +20 % max) ;
+#   • idéal déclaré : rappel ≥ 63 % à FA/h ≤ 7.
+# Vérification : coachvocal bench --run v17_stack --run v20_recut_anchor
+name: v20_recut_anchor
+description: >
+  Positifs re-découpés sans troncature : recut yt (contexte réel + jitter
+  0-200 ms) + ré-ancrage moi_, time_shift 0. Seule variable vs v19_fragments.
+
+wakeword: eloquence
+dataset: v20_recut_anchor
+model: cnn_baseline
+
+training:
+  epochs: 30
+  batch_size: 64
+  learning_rate: 0.001
+  early_stopping_patience: 5
+  class_weight: true
+  threshold: 0.5
+  seeds: [42, 43, 44, 45, 46]
+  selection_metric: fa_ambient
+  selection_min_val_recall: 0.90
+  use_gpu: false
