@@ -29,6 +29,20 @@ moi_, 54 hard negatives du banc, 23 guidés — pesaient 1 parmi ~6 900).
   - la promotion resterait suspendue au test guidé au micro de l'auteur (ADR-008 à
     écrire — hors périmètre docs autorisé, à valider avec lui).
 
+**Verdict H1 (banc 52,7 min / 27 occ, archive `eloquence_20260814_032603`) :
+critère DÉPASSÉ.** Seed 42 : **85.2 % · 1.1 FA/h @0.95** (78 % · 0.0 @0.99) —
+l'idéal (≥ 70 % · ≤ 1.5) est atteint, sans océan. Cousins moi_ : **0 %** dès
+0.8 (baseline 16 %), hard negatives 0 %, cousins TTS jamais vus 1 %. Dispersion
+seeds réelle (rappel 70-85 % @0.8) : l'élection devra être protocolée.
+
+**Réserve avant tout enthousiasme** : sur les clips moi_ padés de SILENCE, le
+seed 42 ne déclenche qu'à 40 % @0.95 — l'entraînement à contexte réel rend le
+silence « anormal ». Le micro a toujours un fond de pièce, mais c'est le même
+mécanisme que la balançoire du round 2 : à vérifier au micro, et contré par
+**H2** (lancé dans la foulée, critère identique) : les positifs moi_/guided de
+repli sont padés d'un fond MUSAN réel (SNR 12-25 dB, déterministe) au lieu de
+zéros — 5 seeds pour un choix de candidat plus honnête.
+
 ## 2026-08-14 — v24 : les fragments longs confirment la tendance, sans rejoindre le champion
 
 Fragments propres à plafond **70 %** du mot (fracs 30/45/70, pool

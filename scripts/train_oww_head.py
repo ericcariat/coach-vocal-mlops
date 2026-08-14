@@ -126,7 +126,26 @@ def acav_windows(path: str, stride: int = 8) -> np.ndarray:
 
 
 
-def collect_context_positives() -> list[np.ndarray]:
+def _noise_bank(limit: int = 200) -> list[np.ndarray]:
+    """Bruits réels (MUSAN) pour remplacer le silence de padding : au micro il
+    y a toujours un fond de pièce, jamais des zéros numériques."""
+    import soundfile as sf
+
+    bank = []
+    for wav in sorted((ROOT / "data/external/musan").rglob("*.wav"))[:limit]:
+        try:
+            a, sr = sf.read(wav, dtype="float32")
+        except Exception:
+            continue
+        if sr != SR or len(a) < SR:
+            continue
+        if a.ndim > 1:
+            a = a.mean(axis=1)
+        bank.append(a.astype(np.float32))
+    return bank
+
+
+def collect_context_positives(noise_pad: bool = False) -> list[np.ndarray]:
     """Positifs à CONTEXTE RÉEL (remède au round 2) : fenêtres de PAD_S s
     découpées dans les segments du corpus, fin du mot au bord droit, mot
     localisé par corrélation croisée avec le clip propre (la méthode
@@ -140,6 +159,7 @@ def collect_context_positives() -> list[np.ndarray]:
 
     pad_n = int(PAD_S * SR)
     out: list[np.ndarray] = []
+    bank = _noise_bank() if noise_pad else []
     seg_index = {}
     for wav in (corpus_mod.CORPUS / "audio").glob("*.wav"):
         m = re.match(r"(.+)_(\d+)-(\d+)$", wav.stem)
@@ -190,12 +210,26 @@ def collect_context_positives() -> list[np.ndarray]:
                 n_ctx += 1
                 placed = True
                 break
-        if not placed:                        # repli : silence en tête
+        if not placed:                        # repli : silence ou bruit en tête
             a = clip[-pad_n:] if len(clip) >= pad_n else np.pad(
                 clip, (pad_n - len(clip), 0))
-            out.append(a.astype(np.float32))
+            a = a.astype(np.float32)
+            if noise_pad and bank:
+                # Mix d'un fond réel sur TOUTE la fenêtre (le bruit d'une pièce
+                # ne s'arrête pas quand on parle), SNR 12-25 dB, déterministe.
+                import zlib
+                rng2 = np.random.default_rng(zlib.crc32(f.name.encode()))
+                noise = bank[rng2.integers(len(bank))]
+                i0 = rng2.integers(max(1, len(noise) - pad_n))
+                noise = np.pad(noise[i0:i0 + pad_n], (0, max(0, pad_n - (len(noise) - i0))))
+                rms_c = float(np.sqrt((clip ** 2).mean()) + 1e-9)
+                rms_n = float(np.sqrt((noise ** 2).mean()) + 1e-9)
+                snr = rng2.uniform(12.0, 25.0)
+                a = a + noise * (rms_c / rms_n) * 10 ** (-snr / 20)
+            out.append(a)
             n_pad += 1
-    print(f"    positifs contexte réel : {n_ctx} · repli padding : {n_pad}")
+    print(f"    positifs contexte réel : {n_ctx} · repli padding : {n_pad}"
+          + (" (fond MUSAN)" if noise_pad else " (silence)"))
     return out
 
 
@@ -284,6 +318,9 @@ def main():
     ap.add_argument("--tag", type=str, default="nosdonnees")
     ap.add_argument("--context", action="store_true",
                     help="positifs à contexte réel (fenêtres 2 s du corpus)")
+    ap.add_argument("--noise-pad", action="store_true",
+                    help="les positifs sans segment source (moi/guided) sont "
+                         "padés d'un fond MUSAN réel au lieu de silence")
     ap.add_argument("--french-neg", type=int, default=0,
                     help="nb de fenêtres négatives françaises (poids ×20)")
     ap.add_argument("--adv-weight", type=float, default=1.0,
@@ -301,7 +338,8 @@ def main():
     print(f"📦  {len(pos_files)} positifs réels · {len(adv_files)} adversariaux "
           f"(poids ×{args.adv_weight:g}) · {len(neg_files)} négatifs (recette)")
     if args.context:
-        X_pos = embed_arrays(collect_context_positives(), mel, emb, "pos_ctx")
+        X_pos = embed_arrays(collect_context_positives(args.noise_pad), mel, emb,
+                             "pos_ctx_noise" if args.noise_pad else "pos_ctx")
     else:
         X_pos = embed_files(pos_files, mel, emb, "pos")
     X_adv = embed_files(adv_files, mel, emb, "adv")
