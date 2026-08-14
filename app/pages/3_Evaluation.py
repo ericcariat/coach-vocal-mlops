@@ -42,14 +42,60 @@ if champ_name:
         pass
 
 st.subheader("Comparatif — toutes les métriques")
+
+
+def _bench_at_08() -> dict[str, tuple[float, float]]:
+    """{nom de modèle au banc: (rappel, FA/h) @0.8} — composition la plus
+    récente, archives fusionnées (même règle que le graphique plus bas)."""
+    best: dict = {}
+    for p in sorted(paths.report_dir("stream_bench").glob(f"{WAKEWORD}_2*.json")):
+        if "verdicts" in p.name:
+            continue
+        try:
+            d = json.loads(p.read_text())
+        except Exception:
+            continue
+        sig = (round(d.get("total_seconds", 0)), d.get("n_occurrences"))
+        best.setdefault(sig, {"date": "", "points": {}})
+        best[sig]["date"] = max(best[sig]["date"], d.get("date", ""))
+        for model, per in d.get("results", {}).items():
+            if "th0.8" in per:
+                r = per["th0.8"]
+                best[sig]["points"][model] = (r["recall_stream"], r["fa_per_hour"])
+    if not best:
+        return {}
+    return max(best.values(), key=lambda v: v["date"])["points"]
+
+
+bench08 = _bench_at_08()
+
+
+def _bench_cols(r):
+    # nom au banc = nom du run (CNN) ou l'alias bench_model (tête du registre)
+    for name in (r.get("bench_model"), r["run"]):
+        if name and name in bench08:
+            rec, fa = bench08[name]
+            return rec, fa
+    return None, None
+
+
+for r in runs:
+    try:
+        r["bench_model"] = json.loads(
+            (Path(r["path"]) / "metrics.json").read_text()).get("bench_model")
+    except Exception:
+        r["bench_model"] = None
+
 df = pd.DataFrame([{
     "Run": r["run"] + (" ⭐" if r["is_champion"] else ""),
     "Date": (r["date"] or "")[:10], "Seed": r["seed"],
     "Accuracy": r["accuracy"], "F1": r["f1"], "FRR ↓": r["frr"], "FAR ↓": r["far"],
+    "Banc @0.8": _bench_cols(r)[0], "FA/h @0.8 ↓": _bench_cols(r)[1],
     "Empreinte data": r["dataset_fingerprint"],
 } for r in runs])
 st.dataframe(df.style.format({"Accuracy": "{:.2%}", "F1": "{:.4f}", "FRR ↓": "{:.2%}",
-                              "FAR ↓": "{:.2%}"}, na_rep="—"),
+                              "FAR ↓": "{:.2%}", "Banc @0.8": "{:.1%}",
+                              "FA/h @0.8 ↓": "{:.1f}"}, na_rep="—"),
              width="stretch", hide_index=True)
 
 st.caption("**FRR** (*False Rejection Rate*) : le mot est prononcé, rien ne se passe. "
