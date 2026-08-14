@@ -44,7 +44,6 @@ déjà classé premier un modèle qui s'est révélé dernier en conditions rée
 
 ```bash
 uv sync --all-groups                              # dépendances
-uv run python scripts/migrate_from_etape1.py      # données (liens physiques, 0 Go dupliqué)
 uv run coachvocal experiments                     # ce qui est déclaré
 uv run coachvocal train smoke                     # contrôle de bout en bout (~2 min)
 ```
@@ -113,6 +112,11 @@ docker compose up api ui
 - [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) — le pipeline étape par étape
 - [`docs/DATA.md`](docs/DATA.md) — provenance et licence de chaque source
 - [`docs/decisions/`](docs/decisions/) — décisions techniques et leurs raisons
-- [`HANDOFF.md`](HANDOFF.md) — **point de reprise** : état, vérifications, prochaines étapes
 - [`docs/JOURNAL.md`](docs/JOURNAL.md) — explorations, y compris les impasses
 - [`docs/CHANGELOG.md`](docs/CHANGELOG.md) — historique des runs et des promotions
+
+## Licence
+
+Code sous licence [Apache 2.0](LICENSE). Les jeux de données ne sont pas
+distribués dans ce dépôt ; leur provenance et leurs licences respectives sont
+documentées dans [`docs/DATA.md`](docs/DATA.md).
