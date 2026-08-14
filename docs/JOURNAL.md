@@ -35,7 +35,20 @@ l'idéal (≥ 70 % · ≤ 1.5) est atteint, sans océan. Cousins moi_ : **0 %** 
 0.8 (baseline 16 %), hard negatives 0 %, cousins TTS jamais vus 1 %. Dispersion
 seeds réelle (rappel 70-85 % @0.8) : l'élection devra être protocolée.
 
-**Réserve avant tout enthousiasme** : sur les clips moi_ padés de SILENCE, le
+**Verdict H2 (fond MUSAN sous les positifs de repli, 5 seeds, archive
+`eloquence_20260814_033459`) : la réserve est levée, la dispersion resserrée.**
+Quatre seeds sur cinq tiennent le quadrant : seed 46 à **89 % · 2.3 @0.95**
+(78 % · 1.1 @0.99), seed 44 à **89 % · 3.4 @0.95** (74 % · 1.1 @0.98), cousins
+moi_ à **0 % partout** pour les deux ; et la robustesse au silence remonte
+(moi_ padés silence : 57-66 % @0.95 contre 40 % en H1). Seul le seed 45 est
+écarté d'office : rappel 96 % mais cousins 7-15 % — le profil « attrape-tout ».
+L'océan ACAV n'a jamais été nécessaire. Candidats désignés pour le test micro
+de l'auteur (le juge de l'intronisation) : **frab30np seed 46 et seed 44**, point de
+fonctionnement suggéré 0.95, avec frab30 seed 42 (H1) en témoin. Sélection
+assumée EXPLORATOIRE (bancs regardés) : l'intronisation exigera le protocole
+complet — ADR-008, élection déclarée, intégration registre/serving.
+
+**Réserve d'origine (H1)** : sur les clips moi_ padés de SILENCE, le
 seed 42 ne déclenche qu'à 40 % @0.95 — l'entraînement à contexte réel rend le
 silence « anormal ». Le micro a toujours un fond de pièce, mais c'est le même
 mécanisme que la balançoire du round 2 : à vérifier au micro, et contré par
