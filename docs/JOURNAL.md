@@ -7,6 +7,25 @@ Les preuves sont dans `artifacts/reports/` et le code dans git
 (`git log --oneline`, commits du 14 août).
 
 ---
+## 2026-08-15 — Nuit 2 : v28 promu, puis la campagne des réglages fins (critères AVANT)
+
+**v28_resserre est PROMU champion** (décision d'usage après test micro,
+seuil live global 0.80 → 0.90). Programme validé pour la suite de la nuit :
+12 entraînements max, fine-tuning de l'extracteur autorisé en fin de nuit,
+promotion autonome si la grille COMPLÈTE est verte (les six clauses, cousins
+≤ 15 % @0.9 inclus). Référence à battre : v28 (FRR 8.8, FAR 1.7, banc
+88.9 · 5.7 @0.9, vitesses 64/91/72/60, suffixes 4 %, cousins 20 %).
+
+**S1 (gratuit) — balayage de la machine à états** : n_consecutive {3,4,5} ×
+cooldown {1.0,1.5} × seuils {0.85,0.9,0.95} sur le champion, banc + voix +
+préfixes. Attendu déclaré : un point qui gagne ≥ 1.5 FA/h sans perdre plus
+de 2 pts de rappel banc ni 5 pts de voix — sinon on garde 3/1.5/0.9.
+
+**S2 — le scalpel cousins (v32)** : poids dédié aux 68 cousins du pool
+adversarial (45 moi_ + 23 « éloquente » de la session guidée), ×120, les 54
+hard negatives restant à ×50. Une variable vs v28. Critère : cousins ≤ 15 %
+@0.9 ET toutes les bornes v28 conservées.
+
 ## 2026-08-15 — La nuit du 15 août, racontée simplement
 
 **1. Trois essais de modèle, trois échecs — et trois vraies leçons.**

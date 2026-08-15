@@ -70,6 +70,14 @@ def collect_files() -> tuple[list[Path], list[Path], list[Path]]:
     pos = sorted((ROOT / "exports/oww_training_b/positifs_reels").glob("*.wav"))
     adv = sorted((ROOT / "exports/oww_training_b/negatifs_adversariaux").glob("*.wav"))
     neg = sorted((ROOT / "exports/oww_training_b/negatifs_parole_continue_fr").glob("*.wav"))
+    # Sous-ensemble COUSINS du pool adversarial : les mots-voisins enregistrés
+    # (moi_*) et la session « éloquente/éloquen » du 2026-08-14 (guided_204*).
+    # Le scalpel de la nuit 2 (S2) : les durcir SANS toucher aux 54 hard
+    # negatives du banc — la leçon de v31 (le marteau global casse les
+    # vitesses).
+    global COUSINS_SET
+    COUSINS_SET = [f for f in adv
+                   if f.name.startswith("moi_") or f.name.startswith("guided_204")]
     # + les négatifs génériques du TRAIN de la recette champion (bruit, GSC,
     # CV, silence, fragments) — notre océan à nous, même s'il est petit
     manifest = ROOT / "artifacts/runs/eloquence/v17_stack/manifest.csv"
@@ -431,6 +439,10 @@ def main():
                     help="préfixes découpés AUSSI dans des variantes accélérées "
                          "(×1.05/×1.15) : la durée cesse d'être un indice, seule "
                          "la fin manquante sépare préfixe et mot rapide (v27)")
+    ap.add_argument("--cousin-weight", type=float, default=0.0,
+                    help="poids DÉDIÉ au sous-ensemble cousins du pool "
+                         "adversarial (moi_* + session éloquente) ; 0 = ils "
+                         "gardent le poids adversarial commun")
     ap.add_argument("--adv-weight", type=float, default=1.0,
                     help="poids des 122 négatifs adversariaux (cousins moi_, "
                          "hard negatives du banc, guidés) — le point faible du round 5")
@@ -463,10 +475,19 @@ def main():
         X_pos = embed_files(pos_files, mel, emb, "pos")
     X_adv = embed_files(adv_files, mel, emb, "adv")
     X_neg = embed_files(neg_files, mel, emb, "negrest")
+    # Poids adversarial : commun, sauf le sous-ensemble cousins si un poids
+    # dédié est demandé (S2, nuit 2).
+    w_adv = np.full(len(adv_files), args.adv_weight)
+    if args.cousin_weight:
+        noms_cousins = {f.name for f in COUSINS_SET}
+        for i, f in enumerate(adv_files):
+            if f.name in noms_cousins:
+                w_adv[i] = args.cousin_weight
+        print(f"    cousins dédiés : {int((w_adv == args.cousin_weight).sum())} "
+              f"clips à ×{args.cousin_weight:g} (le reste du pool à ×{args.adv_weight:g})")
     parts_X = [X_pos, X_adv, X_neg]
     parts_y = [np.ones(len(X_pos)), np.zeros(len(X_adv)), np.zeros(len(X_neg))]
-    parts_w = [np.ones(len(X_pos)), np.full(len(X_adv), args.adv_weight),
-               np.ones(len(X_neg))]
+    parts_w = [np.ones(len(X_pos)), w_adv, np.ones(len(X_neg))]
     if args.french_neg:
         X_fr = embed_arrays(collect_french_negatives(args.french_neg), mel, emb,
                             "frneg")
