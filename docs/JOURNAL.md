@@ -49,6 +49,17 @@ adversarial normal ×50 — plus de données au lieu de plus de poids. Une
 variable vs v28. Critère inchangé : cousins ≤ 15 % @0.9, bornes v28
 conservées.
 
+**Verdict v33 : échec** — cousins inchangés (20 % @0.9), banc 85.2 % · 9.1
+FA/h (> 6), suffixes remontés à 19 %. La voix et le lent progressent (87 %
+@0.9, ×0.85 : 77 %) mais la cible ne bouge pas. **Piste cousins refermée
+pour la nuit (2 échecs : v32, v33).** Hypothèse restante : la tête 64×3 n'a
+pas la capacité de séparer cousins et mot sans sacrifier autre chose.
+
+**S4 (v34, run 6/12) — capacité** : tête 128×3 (~420 k poids), recette v28
+STRICTE (aucun autre changement). Critère : la grille complète, avec
+l'espoir déclaré que cousins ET suffixes profitent de la capacité ; échec si
+FA/h > 6 @0.9 ou vitesses < v28 − 5 pts.
+
 ## 2026-08-15 — La nuit du 15 août, racontée simplement
 
 **1. Trois essais de modèle, trois échecs — et trois vraies leçons.**

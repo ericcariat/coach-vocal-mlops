@@ -439,6 +439,9 @@ def main():
                     help="préfixes découpés AUSSI dans des variantes accélérées "
                          "(×1.05/×1.15) : la durée cesse d'être un indice, seule "
                          "la fin manquante sépare préfixe et mot rapide (v27)")
+    ap.add_argument("--head-units", type=int, default=64,
+                    help="neurones par couche de la tête (3 couches) — 64 "
+                         "historique ; 128 teste l'hypothèse capacité (S4)")
     ap.add_argument("--cousin-speeds", action="store_true",
                     help="les cousins (moi_* + session éloquente) déclinés en "
                          "vitesses ×0.85/0.95/1.05/1.15 — PLUS de données au "
@@ -556,9 +559,9 @@ def main():
         head = keras.Sequential([
             keras.layers.Input(shape=(HEAD_EMBEDDINGS, 96)),
             keras.layers.Flatten(),
-            keras.layers.Dense(64, activation="relu"),
-            keras.layers.Dense(64, activation="relu"),
-            keras.layers.Dense(64, activation="relu"),
+            keras.layers.Dense(args.head_units, activation="relu"),
+            keras.layers.Dense(args.head_units, activation="relu"),
+            keras.layers.Dense(args.head_units, activation="relu"),
             keras.layers.Dense(1, activation="sigmoid"),
         ])
         head.compile(optimizer=keras.optimizers.Adam(1e-3),
@@ -583,7 +586,7 @@ def main():
                      monitor="val_auc", mode="max", patience=6,
                      restore_best_weights=True)])
 
-        out = EXPORT_DIR / f"eloquence_{args.tag}_64x3_seed{seed}.onnx"
+        out = EXPORT_DIR / f"eloquence_{args.tag}_{args.head_units}x3_seed{seed}.onnx"
         import tf2onnx
 
         # tf2onnx ne connaît pas les modèles Keras 3 : on exporte via une
