@@ -52,8 +52,10 @@ def test_api_sert_le_champion_onnx():
     from coachvocal.serving.api import api
 
     client = TestClient(api)
+    # 1 s seulement : plus court que la fenêtre d'une tête (~2 s) — c'est le
+    # cas qui plantait /predict (argmax sur zéro fenêtre) avant fit_to_window.
     buf = io.BytesIO()
-    sf.write(buf, np.zeros(32000, np.float32), 16000, format="WAV")
+    sf.write(buf, np.zeros(16000, np.float32), 16000, format="WAV")
     r = client.post("/predict", files={"file": ("t.wav", buf.getvalue(), "audio/wav")})
     assert r.status_code == 200 and r.json()["detected"] is False
     buf.seek(0)

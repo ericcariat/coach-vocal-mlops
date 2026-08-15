@@ -64,6 +64,21 @@ def read_audio(raw: bytes, target_sr: int) -> np.ndarray:
     return audio
 
 
+def fit_to_window(audio: np.ndarray, detector) -> np.ndarray:
+    """Complète un clip plus court que la fenêtre du détecteur (1 s pour le
+    CNN, ~2 s pour une tête openWakeWord) avec un souffle léger de micro EN
+    TÊTE — jamais de silence numérique (règle du 2026-08-14), et le contenu
+    reste au bord droit, la convention des deux chaînes."""
+    sr = detector.wakeword.sample_rate
+    besoin = getattr(detector, "n", 0) or int(np.ceil(
+        (detector.window_s + 3 * detector.hop_s) * sr))
+    if len(audio) >= besoin:
+        return audio
+    souffle = 0.001 * np.random.default_rng(0).standard_normal(
+        besoin - len(audio)).astype(np.float32)
+    return np.concatenate([souffle, audio.astype(np.float32)])
+
+
 # ── Schémas de réponse ────────────────────────────────────────────────────────
 class Health(BaseModel):
     status: str
@@ -131,7 +146,8 @@ def predict(file: UploadFile = File(..., description="WAV mono (toute durée ≥
             threshold: Optional[float] = None):
     """Probabilité maximale sur les fenêtres glissantes du fichier."""
     detector = get_detector(wakeword, run)
-    audio = read_audio(file.file.read(), detector.wakeword.sample_rate)
+    audio = fit_to_window(read_audio(file.file.read(), detector.wakeword.sample_rate),
+                          detector)
     th = threshold if threshold is not None else detector.threshold
 
     t0 = time.perf_counter()
@@ -150,7 +166,8 @@ def detect(file: UploadFile = File(..., description="WAV mono, flux continu"),
            threshold: Optional[float] = None):
     """Rejoue la logique live : renvoie les instants de réveil du détecteur."""
     detector = get_detector(wakeword, run)
-    audio = read_audio(file.file.read(), detector.wakeword.sample_rate)
+    audio = fit_to_window(read_audio(file.file.read(), detector.wakeword.sample_rate),
+                          detector)
     th = threshold if threshold is not None else detector.threshold
     triggers = detector.run_offline(audio, th)
     return Detection(
