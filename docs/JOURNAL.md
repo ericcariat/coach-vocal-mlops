@@ -36,6 +36,14 @@ Verdict de la nuit : **v28 reste champion, confirmé par 7 challengers** — et
 la prochaine marche est dans les DONNÉES : trancher les 9 clips à l'oreille,
 et enregistrer de nouveaux cousins variés si le mur est réel.
 
+**Tranché au matin (écoute)** : les 9 clips sont LÉGITIMES — c'est bien
+« éloquent(e) », prononcé proche du mot. Le mur des 20 % est donc réel avec
+les données actuelles ; la clause cousins ≤ 15 % attendra de nouveaux
+enregistrements de cousins variés (vitesses, distances). La dispersion des
+seeds a son dossier d'explication : `docs/DISPERSION_DES_SEEDS.html`
+(sources de variance, tableau des 4 tirages, matrices de confusion, mise en
+regard avec la littérature).
+
 ## 2026-08-15 — Nuit 2 : v28 promu, puis la campagne des réglages fins (critères AVANT)
 
 **v28_resserre est PROMU champion** (décision d'usage après test micro,
