@@ -27,6 +27,18 @@ banc 88.9 % · 5.7 @0.9, vitesses 64/91/72/60, suffixe 85 % non mesuré avant) :
 Les itérations suivantes (dosages) hériteront du même critère, une variable
 à la fois, verdicts consignés ici.
 
+**Verdict v29 (run 1/10, archive `eloquence_20260815_*`) : échec — et la
+cause structurelle des balanciers enfin identifiée.** Les suffixes
+progressent (28 % @0.8, 0 % à 65 %) et la voix monte à 98 %, mais tout le
+reste se desserre : 39.8-66 FA/h, cousins 42 %, préfixes 85 %. Le motif se
+répète à CHAQUE ajout de négatifs depuis H3. Cause identifiée : le
+`class_weight` par comptes bruts — ajouter 17 700 négatifs augmente
+mécaniquement le poids de chaque positif (la balance compense), et le modèle
+devient gâchette. **v30 (run 2/10)** : même recette que v29, une seule
+variable — l'équilibre de classes calculé sur les masses EFFECTIVES
+(pondérations comprises). Critère identique à v29 ; baseline suffixes de v28
+mesurée au passage.
+
 ## 2026-08-14 — Le champion tire avant la fin du mot : diagnostic et H3 (critère AVANT le run)
 
 Constat au micro : la tête déclenche sur « éloquen » (sans la fin), et
