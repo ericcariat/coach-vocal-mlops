@@ -291,6 +291,38 @@ def collect_prefix_negatives(fracs=(0.60, 0.75, 0.85),
     return out
 
 
+def collect_suffix_negatives(fracs=(0.65, 0.80, 0.90),
+                             speeds=(1.0, 1.05, 1.15)) -> list[np.ndarray]:
+    """Suffixes du mot (DÉBUT absent) — le miroir des préfixes.
+
+    Fuite entendue au micro (2026-08-15) : « loquence » déclenchait — rien
+    n'exigeait le début du mot. Fractions CONSERVÉES depuis la fin : 0.90 =
+    il ne manque que le « é » (le cas entendu), 0.65 ≈ « oquence ».
+    Multi-vitesses pour ne pas réintroduire l'indice de durée (leçon v26/v27).
+    Positifs d'entraînement uniquement."""
+    import soundfile as sf
+
+    from coachvocal.data.sources.fragments import word_span
+
+    pad_n = int(PAD_S * SR)
+    out: list[np.ndarray] = []
+    for f in sorted((ROOT / "exports/oww_training_b/positifs_reels").glob("*.wav")):
+        audio, sr = sf.read(f, dtype="float32")
+        if sr != SR:
+            continue
+        if audio.ndim > 1:
+            audio = audio.mean(axis=1)
+        for sp in speeds:
+            aa = vitesse(audio, sp) if sp != 1.0 else audio
+            w0, w1 = word_span(aa, SR)
+            for frac in fracs:
+                k = int(frac * (w1 - w0))
+                out.append(pad_souffle(aa[w1 - k:w1], pad_n, f"suf|{f.name}|{frac}|{sp}"))
+    print(f"    négatifs-suffixes : {len(out)} fenêtres (fracs {list(fracs)}, "
+          f"vitesses {list(speeds)}, fond souffle)")
+    return out
+
+
 def embed_arrays(arrays, mel_sess, emb_sess, tag: str) -> np.ndarray:
     """Comme embed_files mais depuis des tampons audio déjà chargés."""
     CACHE.mkdir(parents=True, exist_ok=True)
@@ -388,6 +420,9 @@ def main():
     ap.add_argument("--prefix-neg-weight", type=float, default=0.0,
                     help="poids des négatifs-préfixes (60/75/85 % du mot, fin "
                          "absente) — enseigne « attends la fin du mot » ; 0 = off")
+    ap.add_argument("--suffix-neg-weight", type=float, default=0.0,
+                    help="poids des négatifs-suffixes (65/80/90 % du mot, DÉBUT "
+                         "absent, multi-vitesses) — enseigne « le é compte » ; 0 = off")
     ap.add_argument("--prefix-fast", action="store_true",
                     help="préfixes découpés AUSSI dans des variantes accélérées "
                          "(×1.05/×1.15) : la durée cesse d'être un indice, seule "
@@ -441,6 +476,11 @@ def main():
         parts_X.append(X_pre)
         parts_y.append(np.zeros(len(X_pre)))
         parts_w.append(np.full(len(X_pre), args.prefix_neg_weight))
+    if args.suffix_neg_weight:
+        X_suf = embed_arrays(collect_suffix_negatives(), mel, emb, "suffixneg_s1")
+        parts_X.append(X_suf)
+        parts_y.append(np.zeros(len(X_suf)))
+        parts_w.append(np.full(len(X_suf), args.suffix_neg_weight))
     if args.acav:
         X_acav = acav_windows(args.acav, args.acav_stride)
         print(f"    + océan ACAV : {X_acav.shape} "

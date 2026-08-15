@@ -77,6 +77,15 @@ def groupes() -> list[tuple[str, list[np.ndarray], bool]]:
             w0, w1 = word_span(a, SR)
             arrs.append(a[w0:w0 + int(frac * (w1 - w0))])
         out.append((f"préfixes {frac:.0%} du mot (attendu : BAS)", arrs, False))
+    # Suffixes : le mot amputé de son DÉBUT (fuite entendue au micro le
+    # 2026-08-15 : « loquence » déclenchait) — 85 % conservés ≈ « loquence »,
+    # 65 % ≈ « oquence ».
+    for frac in (0.85, 0.65):
+        arrs = []
+        for a in pos:
+            w0, w1 = word_span(a, SR)
+            arrs.append(a[w1 - int(frac * (w1 - w0)):w1])
+        out.append((f"suffixes {frac:.0%} du mot (attendu : BAS)", arrs, False))
     return out
 
 

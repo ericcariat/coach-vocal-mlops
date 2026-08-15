@@ -7,6 +7,26 @@ Les preuves sont dans `artifacts/reports/` et le code dans git
 (`git log --oneline`, commits du 14 août).
 
 ---
+## 2026-08-15 — Nuit autonome : v29 et la campagne des suffixes (critères AVANT les runs)
+
+Programme validé avant lancement (10 entraînements max, seed 46, promotion
+autonome si critères verts, juge final : le test micro au réveil).
+
+Constat au micro (2026-08-15, v28) : « loquence » déclenche — le mot amputé
+de son début passe. Miroir exact des préfixes : rien n'exige le « é ». La
+mesure des suffixes entre au banc des cousins (85 % conservés ≈ « loquence »,
+65 % ≈ « oquence »), et **v29** ajoute les négatifs-suffixes (65/80/90 % du
+mot conservés depuis la fin, multi-vitesses, souffle — même machinerie que
+les préfixes).
+
+**Critère v29, écrit avant le run** (référence v28 : FRR 8.8 %, FAR 1.7 %,
+banc 88.9 % · 5.7 @0.9, vitesses 64/91/72/60, suffixe 85 % non mesuré avant) :
+  - conserver v28 : FRR ≤ 10 %, FAR ≤ 5 %, banc ≥ 85 % · ≤ 6 FA/h @0.9,
+    vitesses ≥ v28 − 5 pts ;
+  - gagner : suffixes 85 % ≤ 15 % @0.9 ET cousins moi_ ≤ 15 % @0.9.
+Les itérations suivantes (dosages) hériteront du même critère, une variable
+à la fois, verdicts consignés ici.
+
 ## 2026-08-14 — Le champion tire avant la fin du mot : diagnostic et H3 (critère AVANT le run)
 
 Constat au micro : la tête déclenche sur « éloquen » (sans la fin), et
