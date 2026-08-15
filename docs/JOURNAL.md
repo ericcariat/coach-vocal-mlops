@@ -78,6 +78,20 @@ lexicographique (1) nombre de clauses vertes de la grille, (2) FA/h @0.9
 minimal, (3) rappel banc maximal. Le gagnant (seed 46 incluse) devient le
 candidat final de la nuit.
 
+**Verdict S5 : le champion garde sa couronne** (5/6 clauses ; seeds 43/44/45 :
+3, 4 et 2 clauses). Deux enseignements : la dispersion de la recette est
+ÉNORME (2.3 à 59.2 FA/h selon la seed — v28 est un très bon tirage, à
+retenir pour tout futur ré-entraînement), et la seed 44 PROUVE que les 9
+cousins récalcitrants sont rejetables (9 % @0.9) — le mur est une frontière
+d'arbitrage (payée en vitesses : 30/72/38/11), pas une fatalité.
+
+**S6 reformulé (v36, run 10/12) — l'adaptateur résiduel** : le vrai dégel
+des poids Google exigerait le modèle TF d'origine (on n'a que l'ONNX
+d'inférence) ; à la place, une couche adaptatrice entraînable (96→96, tanh,
+initialisée à zéro = identité au départ) entre l'extracteur gelé et la tête.
+Recette v28, une variable. Critère : la grille complète ; échec si FA/h > 6
+@0.9 ou vitesses < v28 − 5 pts. Deux essais max.
+
 ## 2026-08-15 — La nuit du 15 août, racontée simplement
 
 **1. Trois essais de modèle, trois échecs — et trois vraies leçons.**

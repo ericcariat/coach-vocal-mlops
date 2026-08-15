@@ -439,6 +439,10 @@ def main():
                     help="préfixes découpés AUSSI dans des variantes accélérées "
                          "(×1.05/×1.15) : la durée cesse d'être un indice, seule "
                          "la fin manquante sépare préfixe et mot rapide (v27)")
+    ap.add_argument("--adapter", action="store_true",
+                    help="adaptateur résiduel entraînable (96->96, tanh) entre "
+                         "l'extracteur gelé et la tête — l'esprit du fine-tuning "
+                         "sans les poids TF d'origine (S6, nuit 2)")
     ap.add_argument("--head-units", type=int, default=64,
                     help="neurones par couche de la tête (3 couches) — 64 "
                          "historique ; 128 teste l'hypothèse capacité (S4)")
@@ -556,14 +560,21 @@ def main():
         n_val = int(0.1 * len(X))
         va, tr = idx[:n_val], idx[n_val:]
 
-        head = keras.Sequential([
-            keras.layers.Input(shape=(HEAD_EMBEDDINGS, 96)),
-            keras.layers.Flatten(),
-            keras.layers.Dense(args.head_units, activation="relu"),
-            keras.layers.Dense(args.head_units, activation="relu"),
-            keras.layers.Dense(args.head_units, activation="relu"),
-            keras.layers.Dense(1, activation="sigmoid"),
-        ])
+        entree = keras.layers.Input(shape=(HEAD_EMBEDDINGS, 96))
+        x = entree
+        if args.adapter:
+            # Résiduel : l'adaptateur part de l'identité et apprend un DELTA
+            # sur chaque résumé de 96 nombres — la représentation s'assouplit
+            # sans jeter ce que l'extracteur sait déjà.
+            delta = keras.layers.TimeDistributed(
+                keras.layers.Dense(96, activation="tanh",
+                                   kernel_initializer="zeros"))(x)
+            x = keras.layers.Add()([x, delta])
+        x = keras.layers.Flatten()(x)
+        for _ in range(3):
+            x = keras.layers.Dense(args.head_units, activation="relu")(x)
+        sortie = keras.layers.Dense(1, activation="sigmoid")(x)
+        head = keras.Model(entree, sortie)
         head.compile(optimizer=keras.optimizers.Adam(1e-3),
                      loss="binary_crossentropy",
                      metrics=[keras.metrics.AUC(name="auc")])
