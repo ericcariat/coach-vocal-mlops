@@ -56,6 +56,22 @@ manque QU'UNE case : **cousins moi_ 20 % @0.9 (objectif ≤ 15 %)**.
 cousins ≤ 15 % @0.9, suffixes restent ≤ 15 % @0.9, et toutes les bornes v28
 conservées (FRR ≤ 10, FAR ≤ 5, banc ≥ 85 % · ≤ 6 @0.9, vitesses − 5 pts max).
 
+**Verdict v31 : échec** — cousins 16 % @0.9 (mieux que 20) mais vitesses
+effondrées (×1.15 : 26 %, ×1.3 : 9 % contre 72/60 chez v28), FRR 17.6 %,
+banc 88.9 % · 10.2 FA/h. Le durcissement adversarial global re-sacrifie les
+mots rapides.
+
+**Arrêt des dosages (règle pré-déclarée : 3 essais consécutifs sans battre la
+référence).** v29, v30, v31 : trois verdicts nets, trois leçons (les
+suffixes étaient déjà tenus à 0.9 ; les masses effectives sur-pondèrent ;
+le marteau adversarial casse les vitesses). **v28 reste le meilleur
+candidat de la nuit** — il tient TOUTES les clauses de promotion sauf une
+(cousins 20 % @0.9 pour ≤ 15 %) : pas de promotion autonome, le champion
+reste `oww_frab30np4b_s46`, le test micro du matin tranchera entre les deux.
+Piste future pour la clause cousins : un poids DÉDIÉ au sous-ensemble
+cousins/« éloquente » (sans durcir les 54 hard negatives en même temps),
+et/ou de nouveaux enregistrements de cousins à vitesses variées.
+
 ## 2026-08-14 — Le champion tire avant la fin du mot : diagnostic et H3 (critère AVANT le run)
 
 Constat au micro : la tête déclenche sur « éloquen » (sans la fin), et
