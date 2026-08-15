@@ -1512,5 +1512,99 @@
     }
    }
   }
+ },
+ "eloquence_v36_adaptateur_64x3_seed46": {
+  "date": "2026-08-15",
+  "protocole": "mini-flux + machine à états",
+  "groupes": {
+   "positifs moi_ (attendu : HAUT, vus)": {
+    "n": 47,
+    "attendu": "haut",
+    "taux": {
+     "0.5": 1.0,
+     "0.8": 0.9787,
+     "0.9": 0.9787,
+     "0.95": 0.9574,
+     "0.99": 0.8723
+    }
+   },
+   "cousins moi_ (attendu : BAS, vus si adv-weight)": {
+    "n": 45,
+    "attendu": "bas",
+    "taux": {
+     "0.5": 0.4,
+     "0.8": 0.2444,
+     "0.9": 0.2222,
+     "0.95": 0.2222,
+     "0.99": 0.2222
+    }
+   },
+   "cousins TTS (attendu : BAS, jamais vus)": {
+    "n": 150,
+    "attendu": "bas",
+    "taux": {
+     "0.5": 0.1533,
+     "0.8": 0.1067,
+     "0.9": 0.08,
+     "0.95": 0.0667,
+     "0.99": 0.06
+    }
+   },
+   "hard negatives banc (attendu : BAS, vus)": {
+    "n": 54,
+    "attendu": "bas",
+    "taux": {
+     "0.5": 0.0926,
+     "0.8": 0.0556,
+     "0.9": 0.037,
+     "0.95": 0.0185,
+     "0.99": 0.0185
+    }
+   },
+   "préfixes 80% du mot (attendu : BAS)": {
+    "n": 47,
+    "attendu": "bas",
+    "taux": {
+     "0.5": 0.8936,
+     "0.8": 0.7447,
+     "0.9": 0.617,
+     "0.95": 0.5532,
+     "0.99": 0.3404
+    }
+   },
+   "préfixes 90% du mot (attendu : BAS)": {
+    "n": 47,
+    "attendu": "bas",
+    "taux": {
+     "0.5": 0.9149,
+     "0.8": 0.8511,
+     "0.9": 0.7234,
+     "0.95": 0.6809,
+     "0.99": 0.4681
+    }
+   },
+   "suffixes 85% du mot (attendu : BAS)": {
+    "n": 47,
+    "attendu": "bas",
+    "taux": {
+     "0.5": 0.4894,
+     "0.8": 0.2128,
+     "0.9": 0.1702,
+     "0.95": 0.1489,
+     "0.99": 0.0426
+    }
+   },
+   "suffixes 65% du mot (attendu : BAS)": {
+    "n": 47,
+    "attendu": "bas",
+    "taux": {
+     "0.5": 0.0,
+     "0.8": 0.0,
+     "0.9": 0.0,
+     "0.95": 0.0,
+     "0.99": 0.0
+    }
+   }
+  }
  }
 }

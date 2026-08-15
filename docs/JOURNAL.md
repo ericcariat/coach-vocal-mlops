@@ -7,6 +7,35 @@ Les preuves sont dans `artifacts/reports/` et le code dans git
 (`git log --oneline`, commits du 14 août).
 
 ---
+## 2026-08-15 — La nuit 2, racontée simplement
+
+**v28 a été promu champion en début de nuit** (test micro validé, seuil live
+0.9), puis sept entraînements ont tenté de fermer sa dernière case orange
+(les mots-cousins à 20 %). Aucun n'a fait mieux — mais la nuit a rapporté
+cinq découvertes qui valent plus qu'une promotion :
+
+1. **La loi des poids** : trois expériences indépendantes le confirment —
+   au-delà d'un poids d'échantillon ~50, l'entraînement se déstabilise et
+   produit l'INVERSE du but. Pour insister : plus de données, jamais plus de
+   poids.
+2. **Les 9 cousins récalcitrants sont 9 clips d'une seule session
+   d'enregistrement** — identiques sur toutes les architectures. Problème de
+   données, pas de modèle (à écouter : `artifacts/ecoute_cousins/`). Et la
+   seed 44 prouve qu'ils SONT rejetables (9 %), au prix des vitesses.
+3. **La dispersion des seeds est énorme** (2.3 à 59 FA/h pour la même
+   recette) : le champion est un très bon tirage — tout futur
+   ré-entraînement devra re-passer la loterie.
+4. **La persistance est un tueur de préfixes gratuit** : à 5 fenêtres
+   consécutives, les préfixes tombent à 9 % sans entraînement — un « profil
+   silencieux » (81.5 % · 2.3 FA/h) existe sur étagère.
+5. **L'adaptateur résiduel** (l'esprit du fine-tuning sans les poids TF de
+   l'extracteur) échoue du même mode que tout le reste : la souplesse
+   ajoutée se paie en fausses alarmes. Le verrou n'est pas la représentation.
+
+Verdict de la nuit : **v28 reste champion, confirmé par 7 challengers** — et
+la prochaine marche est dans les DONNÉES : trancher les 9 clips à l'oreille,
+et enregistrer de nouveaux cousins variés si le mur est réel.
+
 ## 2026-08-15 — Nuit 2 : v28 promu, puis la campagne des réglages fins (critères AVANT)
 
 **v28_resserre est PROMU champion** (décision d'usage après test micro,

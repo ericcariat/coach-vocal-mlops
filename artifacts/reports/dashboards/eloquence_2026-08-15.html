@@ -38,9 +38,14 @@ code { background:color-mix(in srgb, var(--accent) 12%, transparent); padding:.1
   border-radius:4px; font-size:13px; }
 </style></head><body><div class="wrap">
 <h1>Wake word « eloquence » — tableau de bord</h1>
-<p class="sub">Généré le 2026-08-15 03:21 · toutes les métriques de tous les runs</p>
+<p class="sub">Généré le 2026-08-15 04:27 · toutes les métriques de tous les runs</p>
 <p class='note'>⭐ Champion : <b>v28_resserre</b> (promu le 2026-08-15)<br>Banc 52,7 min / 27 occ (archive 20260815_005402), seuil live 0.9 : rappel 88.9 % (24/27) · 5.7 FA/h — contre 81.5 % · 2.3 @0.8 pour le prédécesseur. Examen réel : FRR 8.8 % et FAR 1.7 % (objectifs ≤10/≤5 atteints). Vitesses : x0.85 64 %, x1.15 72 %, x1.3 60 % (prédécesseur : 26/51/34). Suffixes 4 % @0.9. Test micro validé le 2026-08-15 (décision d&#x27;usage). Réserve connue : cousins 20 % @0.9 (objectif 15) — piste poids dédié notée au JOURNAL.</p>
-
+<div class='panel kpi'>
+          <div><div class='v'>88.9%</div><div class='l'>Rappel streaming</div></div>
+          <div><div class='v'>5.7</div><div class='l'>Fausses alarmes / heure</div></div>
+          <div><div class='v'>27</div><div class='l'>Occurrences testées</div></div>
+          <div><div class='v'>53 min</div><div class='l'>Audio continu</div></div>
+        </div>
 
 <h2>Banc streaming — la mesure qui décide</h2>
 <p class="note">Logique live rejouée sur de l'audio YouTube continu jamais vu à
@@ -48,7 +53,7 @@ l'entraînement, vérité terrain WhisperX. <b>Rappel</b> = occurrences réellem
 attrapées ; <b>FA/h</b> = réveils intempestifs par heure. Corpus thématique donc
 pire cas volontaire. Les événements « incertains » (vérité terrain douteuse) sont
 exclus du décompte.</p>
-<div class='scroll'><table><thead><tr><th>Modèle</th><th>Rappel 0.8</th><th>FA/h 0.8</th><th>Incertains</th><th>Rappel 0.9</th><th>FA/h 0.9</th><th>Incertains</th><th>Rappel 0.95</th><th>FA/h 0.95</th><th>Incertains</th></tr></thead><tbody><tr><td>oww_frab30np4b_s46</td><td>81.48%</td><td>2.3</td><td>1</td><td>81.48%</td><td>2.3</td><td>1</td><td>77.78%</td><td>1.1</td><td>1</td></tr><tr><td>eloquence_v31_cousins80_64x3_seed46</td><td>88.89%</td><td>14.8</td><td>1</td><td>88.89%</td><td>10.2</td><td>1</td><td>88.89%</td><td>9.1</td><td>1</td></tr></tbody></table></div>
+<div class='scroll'><table><thead><tr><th>Modèle</th><th>Rappel 0.9</th><th>FA/h 0.9</th><th>Incertains</th><th>Rappel 0.95</th><th>FA/h 0.95</th><th>Incertains</th></tr></thead><tbody><tr><td>v28_resserre</td><td>88.89%</td><td>5.7</td><td>1</td><td>85.19%</td><td>3.4</td><td>1</td></tr><tr><td>eloquence_v36_adaptateur_64x3_seed46</td><td>92.59%</td><td>21.6</td><td>3</td><td>85.19%</td><td>14.8</td><td>3</td></tr></tbody></table></div>
 
 <h2>Test par clips — signal de contrôle</h2>
 <p class="note warn">⚠️ Ces métriques ont déjà <b>mal classé</b> les modèles : le
