@@ -35,6 +35,20 @@ adversarial (45 moi_ + 23 « éloquente » de la session guidée), ×120, les 54
 hard negatives restant à ×50. Une variable vs v28. Critère : cousins ≤ 15 %
 @0.9 ET toutes les bornes v28 conservées.
 
+**Verdict v32 (run 4/12) : échec paradoxal — et la LOI DES POIDS se
+confirme.** Cousins PIRES (36 % @0.9), FA/h ×8 (46.6), préfixes 79 % — alors
+que voix et vitesses culminent (98-100 %, 96/98/94/81). À travers H3 (préfixes
+×20), v31 (adv ×80) et v32 (cousins ×120), le motif est systématique :
+**au-delà d'un poids ~50, les gradients géants déstabilisent l'entraînement
+et produisent l'INVERSE du but**. Règle de dosage adoptée : jamais plus de
+~50 ; pour insister, multiplier les DONNÉES, pas les poids.
+
+**S3 (v33, run 5/12) — cousins multi-vitesses** : les 68 cousins déclinés en
+×0.85/0.95/1.05/1.15 (272 fenêtres de plus, variété réelle) au poids
+adversarial normal ×50 — plus de données au lieu de plus de poids. Une
+variable vs v28. Critère inchangé : cousins ≤ 15 % @0.9, bornes v28
+conservées.
+
 ## 2026-08-15 — La nuit du 15 août, racontée simplement
 
 **1. Trois essais de modèle, trois échecs — et trois vraies leçons.**

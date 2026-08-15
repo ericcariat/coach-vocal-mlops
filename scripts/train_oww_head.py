@@ -439,6 +439,11 @@ def main():
                     help="préfixes découpés AUSSI dans des variantes accélérées "
                          "(×1.05/×1.15) : la durée cesse d'être un indice, seule "
                          "la fin manquante sépare préfixe et mot rapide (v27)")
+    ap.add_argument("--cousin-speeds", action="store_true",
+                    help="les cousins (moi_* + session éloquente) déclinés en "
+                         "vitesses ×0.85/0.95/1.05/1.15 — PLUS de données au "
+                         "lieu de plus de poids (leçon v32 : au-delà de ~50, "
+                         "les poids géants déstabilisent)")
     ap.add_argument("--cousin-weight", type=float, default=0.0,
                     help="poids DÉDIÉ au sous-ensemble cousins du pool "
                          "adversarial (moi_* + session éloquente) ; 0 = ils "
@@ -501,6 +506,24 @@ def main():
         parts_X.append(X_pre)
         parts_y.append(np.zeros(len(X_pre)))
         parts_w.append(np.full(len(X_pre), args.prefix_neg_weight))
+    if args.cousin_speeds:
+        import soundfile as _sf
+        pad_n = int(PAD_S * SR)
+        arrs = []
+        for f in COUSINS_SET:
+            a, sr_c = _sf.read(f, dtype="float32")
+            if sr_c != SR:
+                continue
+            if a.ndim > 1:
+                a = a.mean(axis=1)
+            for sp in (0.85, 0.95, 1.05, 1.15):
+                arrs.append(pad_souffle(vitesse(a.astype(np.float32), sp),
+                                        pad_n, f"cousp|{f.name}|{sp}"))
+        X_cs = embed_arrays(arrs, mel, emb, "cousinspeeds")
+        parts_X.append(X_cs)
+        parts_y.append(np.zeros(len(X_cs)))
+        parts_w.append(np.full(len(X_cs), args.adv_weight))
+        print(f"    cousins multi-vitesses : {len(X_cs)} fenêtres à ×{args.adv_weight:g}")
     if args.suffix_neg_weight:
         X_suf = embed_arrays(collect_suffix_negatives(), mel, emb, "suffixneg_s1")
         parts_X.append(X_suf)
