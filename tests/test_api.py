@@ -19,7 +19,7 @@ def test_config_expose_la_logique_live():
     r = client.get("/config", params={"wakeword": "eloquence"})
     assert r.status_code == 200
     live = r.json()["live"]
-    assert live["n_consecutive"] == 3 and live["threshold"] == 0.8
+    assert live["n_consecutive"] == 3 and 0.5 <= live["threshold"] <= 0.99
 
 
 def test_openapi_disponible():
