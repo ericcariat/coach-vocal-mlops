@@ -21,6 +21,15 @@ cooldown {1.0,1.5} × seuils {0.85,0.9,0.95} sur le champion, banc + voix +
 préfixes. Attendu déclaré : un point qui gagne ≥ 1.5 FA/h sans perdre plus
 de 2 pts de rappel banc ni 5 pts de voix — sinon on garde 3/1.5/0.9.
 
+**Verdict S1 : pas de point gagnant selon le critère** (le meilleur candidat,
+4 consécutives @0.9, gagne 2.3 FA/h mais perd 3.7 pts de rappel banc — au-delà
+des 2 autorisés). Le réglage champion reste 3 consécutives / cooldown 1.5 /
+seuil 0.9. Deux découvertes consignées : le cooldown est neutre (1.0 ≡ 1.5
+partout), et la persistance est un tueur de préfixes — à 5 consécutives, les
+préfixes 90 % tombent à 9 % SANS entraînement (mais rappel 81.5 % et voix
+62-70 %). Un « profil silencieux » (5/0.85 : 81.5 % · 2.3 FA/h · préfixes
+9 %) existe désormais sur étagère pour un usage qui privilégierait le calme.
+
 **S2 — le scalpel cousins (v32)** : poids dédié aux 68 cousins du pool
 adversarial (45 moi_ + 23 « éloquente » de la session guidée), ×120, les 54
 hard negatives restant à ×50. Une variable vs v28. Critère : cousins ≤ 15 %
