@@ -7,6 +7,36 @@ Les preuves sont dans `artifacts/reports/` et le code dans git
 (`git log --oneline`, commits du 14 août).
 
 ---
+## 2026-08-15 — La nuit du 15 août, racontée simplement
+
+**1. Trois essais de modèle, trois échecs — et trois vraies leçons.**
+On voulait corriger la dernière fuite entendue au micro (« loquence », le mot
+sans son début). v29 a ajouté des contre-exemples de ce type : tout s'est
+desserré. v30 a testé une autre façon d'équilibrer positifs et négatifs :
+147 fausses alarmes par heure, la pire mesure du projet — hypothèse enterrée,
+et c'est tant mieux : on sait maintenant POURQUOI les réglages faisaient de
+la balançoire. v31 a durci tous les pièges d'un coup : les mots rapides sont
+repassés à la trappe. Trois essais sans battre la référence = arrêt, comme
+convenu avant la nuit.
+
+**2. La vraie découverte : on chassait un fantôme.** En mesurant enfin la
+référence v28 sur les « suffixes », surprise : au seuil d'usage (0.9), elle
+ne fuit presque pas (4 %). La fuite entendue était marginale dans la mesure.
+v28 tient TOUTES les cases de la grille de promotion sauf une (les
+mots-cousins : 20 % au lieu de ≤ 15 %) : pas de promotion automatique, le
+test au micro départagera v28 et le champion actuel au réveil.
+
+**3. Le notebook est né — et il tourne.** `notebooks/
+detection_mot_cle_eloquence.ipynb` : 33 cellules toutes exécutées — on y
+écoute les sons, on voit l'audio devenir une image, un petit CNN s'entraîne
+en direct avec ses courbes, matrice de confusion et courbe ROC, puis le
+transfert d'apprentissage et l'appel de l'API. Simple et lisible, commité.
+
+**4. Le dossier de présentation est prêt à être nourri**
+(`docs/certification/`, jamais dans git) : le fil conducteur interactif de
+l'oral en 9 étapes minutées, le déroulé de démo de l'API vérifié en vrai, la
+liste des captures à faire, et 7 figures déjà copiées.
+
 ## 2026-08-15 — Nuit autonome : v29 et la campagne des suffixes (critères AVANT les runs)
 
 Programme validé avant lancement (10 entraînements max, seed 46, promotion
