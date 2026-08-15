@@ -60,6 +60,24 @@ STRICTE (aucun autre changement). Critère : la grille complète, avec
 l'espoir déclaré que cousins ET suffixes profitent de la capacité ; échec si
 FA/h > 6 @0.9 ou vitesses < v28 − 5 pts.
 
+**Verdict v34 : échec** (FA/h 9.1, ×1.3 effondré à 32 %, cousins 20 %) — la
+capacité n'était pas le verrou.
+
+**LA découverte de la piste cousins : ce sont toujours les 9 MÊMES clips.**
+Sur v28, v33 et v34, les déclencheurs cousins @0.9 sont identiques — 9 clips
+d'une seule session d'ingestion (`6tq4j6gd`, « negatif_close »). Le mur des
+20 % n'est pas un problème de modèle : c'est une question de DONNÉES. Copiés
+dans `artifacts/ecoute_cousins/` pour l'écoute du matin : s'ils sont ambigus
+ou mal étiquetés, la clause tombe (sans eux, v28 ≈ 3 % de cousins) ; s'ils
+sont légitimes, le mur est réel et il faudra d'autres enregistrements.
+Aucune ré-étiquette autonome — la vérité terrain se juge à l'oreille.
+
+**S5 (runs 7-9/12) — la loterie protocolée** : recette v28 re-tirée en seeds
+43/44/45, batterie complète chacune. Élection DÉCLARÉE avant : priorité
+lexicographique (1) nombre de clauses vertes de la grille, (2) FA/h @0.9
+minimal, (3) rappel banc maximal. Le gagnant (seed 46 incluse) devient le
+candidat final de la nuit.
+
 ## 2026-08-15 — La nuit du 15 août, racontée simplement
 
 **1. Trois essais de modèle, trois échecs — et trois vraies leçons.**
