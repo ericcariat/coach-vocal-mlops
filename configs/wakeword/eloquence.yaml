@@ -15,7 +15,7 @@ audio:
   clip_seconds: 1.0
 
 live:
-  threshold: 0.80          # plus haut que le seuil d'évaluation (0.5) : en
+  threshold: 0.90          # plus haut que le seuil d'évaluation (0.5) : en
                            # always-on on préfère rater un mot que se réveiller seul
   hop_s: 0.125             # une décision toutes les 125 ms
   n_consecutive: 3         # 3 fenêtres d'affilée → filtre les pics isolés

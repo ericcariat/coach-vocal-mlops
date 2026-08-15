@@ -1,11 +1,18 @@
 {
   "champion": {
-    "run": "oww_frab30np4b_s46",
-    "promoted": "2026-08-14",
-    "reason": "Banc 52,7 min / 27 occ (archive 20260814_211029), seuil live 0.8 : rappel 81.5 % (22/27) · 2.3 FA/h. Préfixes tronqués 80/90 % : 0 % (prédécesseur : 17/38 % — il tirait avant la fin du mot, « éloquente » passait). Cousins 0 %. Test micro validé le 2026-08-14 : « éloquence » détecté, « éloquen » et « éloquente » muets. Recul YouTube 22/27 vs 25/27 accepté (priorité : la voix cible).",
+    "run": "v28_resserre",
+    "promoted": "2026-08-15",
+    "reason": "Banc 52,7 min / 27 occ (archive 20260815_005402), seuil live 0.9 : rappel 88.9 % (24/27) · 5.7 FA/h — contre 81.5 % · 2.3 @0.8 pour le prédécesseur. Examen réel : FRR 8.8 % et FAR 1.7 % (objectifs ≤10/≤5 atteints). Vitesses : x0.85 64 %, x1.15 72 %, x1.3 60 % (prédécesseur : 26/51/34). Suffixes 4 % @0.9. Test micro validé le 2026-08-15 (décision d'usage). Réserve connue : cousins 20 % @0.9 (objectif 15) — piste poids dédié notée au JOURNAL.",
     "evidence": {}
   },
   "history": [
+    {
+      "run": "oww_frab30np4b_s46",
+      "promoted": "2026-08-14",
+      "reason": "Banc 52,7 min / 27 occ (archive 20260814_211029), seuil live 0.8 : rappel 81.5 % (22/27) · 2.3 FA/h. Préfixes tronqués 80/90 % : 0 % (prédécesseur : 17/38 % — il tirait avant la fin du mot, « éloquente » passait). Cousins 0 %. Test micro validé le 2026-08-14 : « éloquence » détecté, « éloquen » et « éloquente » muets. Recul YouTube 22/27 vs 25/27 accepté (priorité : la voix cible).",
+      "evidence": {},
+      "retired": "2026-08-15"
+    },
     {
       "run": "oww_frab30np_s46",
       "promoted": "2026-08-14",

@@ -23,6 +23,22 @@ lien `current/`. Ne jamais écrire un chemin de run en dur ailleurs.
 
 ## Runs
 
+### v28_resserre — 2026-08-15 — PROMU CHAMPION (les objectifs qualité atteints)
+- **Nuit d'itérations mesurées v25 → v31** (souffle dans les données, vitesse,
+  préfixes multi-vitesses, dosages) : v28 = préfixes ×6 + adversariaux ×50 sur
+  la recette contexte réel + fond MUSAN + vitesse CNN. Trois dosages ultérieurs
+  (v29/v30/v31) ont tous échoué — v28 confirmé meilleur, règle d'arrêt
+  appliquée.
+- **Examen en conditions réelles** (mini-flux + machine à états) :
+  **FRR 8.8 %** et **FAR 1.7 %** — les deux objectifs (≤ 10 % / ≤ 5 %)
+  atteints. Banc (archive `eloquence_20260815_005402.json`) : **88.9 % ·
+  5.7 FA/h au seuil live 0.9** (85.2 · 3.4 @0.95).
+- **Vitesses** (voix de référence, @0.8) : ×0.85 : 64 %, ×1.15 : 72 %,
+  ×1.3 : 60 % — le prédécesseur : 26/51/34. Suffixes 4 % @0.9.
+- **Seuil live global : 0.80 → 0.90** (le point de fonctionnement du champion).
+- **Test micro validé** (2026-08-15). Réserve tracée : cousins 20 % @0.9
+  (objectif 15) — piste « poids dédié » au JOURNAL.
+
 ### oww_frab30np4b_s46 — 2026-08-14 — PROMU CHAMPION (il attend la fin du mot)
 - **Le défaut du prédécesseur, entendu au micro puis chiffré** : il déclenchait
   dès ~85 % du mot (préfixes tronqués : 17 % à 80 %, 38 % à 90 %) — « éloquen »
