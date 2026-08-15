@@ -420,9 +420,10 @@ def main():
     ap.add_argument("--prefix-neg-weight", type=float, default=0.0,
                     help="poids des négatifs-préfixes (60/75/85 % du mot, fin "
                          "absente) — enseigne « attends la fin du mot » ; 0 = off")
-    ap.add_argument("--classic-class-weight", action="store_true",
-                    help="ancien équilibre de classes par comptes bruts (les "
-                         "runs historiques) au lieu des masses effectives")
+    ap.add_argument("--effective-class-weight", action="store_true",
+                    help="équilibre de classes par masses effectives — testé et "
+                         "REJETÉ (v30 : 146.8 FA/h, sur-pondération des positifs "
+                         "x21) ; conservé pour reproduire l'expérience")
     ap.add_argument("--suffix-neg-weight", type=float, default=0.0,
                     help="poids des négatifs-suffixes (65/80/90 % du mot, DÉBUT "
                          "absent, multi-vitesses) — enseigne « le é compte » ; 0 = off")
@@ -519,19 +520,18 @@ def main():
         head.compile(optimizer=keras.optimizers.Adam(1e-3),
                      loss="binary_crossentropy",
                      metrics=[keras.metrics.AUC(name="auc")])
-        # Équilibre de classes sur les masses EFFECTIVES (pondérations
-        # comprises) : l'ancien calcul par simples comptes faisait grimper le
-        # poids de chaque positif à chaque ajout de négatifs — la cause
-        # structurelle des balanciers rappel/FA observés (v29, JOURNAL
-        # 2026-08-15). Opt-out : --classic-class-weight.
-        if args.classic_class_weight:
-            n_pos, n_neg = y[tr].sum(), len(tr) - y[tr].sum()
-            cw = {0: len(tr) / (2 * n_neg), 1: len(tr) / (2 * n_pos)}
-        else:
+        # Équilibre de classes par comptes bruts (le calcul historique).
+        # L'alternative par masses effectives a été testée et REJETÉE (v30 :
+        # elle sur-pondérait les positifs x21 -> 146.8 FA/h, JOURNAL
+        # 2026-08-15) — conservée en opt-in pour reproduire l'expérience.
+        if args.effective_class_weight:
             masse_pos = float(w[tr][y[tr] > 0].sum())
             masse_neg = float(w[tr][y[tr] == 0].sum())
             total = masse_pos + masse_neg
             cw = {0: total / (2 * masse_neg), 1: total / (2 * masse_pos)}
+        else:
+            n_pos, n_neg = y[tr].sum(), len(tr) - y[tr].sum()
+            cw = {0: len(tr) / (2 * n_neg), 1: len(tr) / (2 * n_pos)}
         head.fit(X[tr], y[tr] , validation_data=(X[va], y[va]),
                  sample_weight=w[tr] * np.where(y[tr] > 0, cw[1], cw[0]),
                  epochs=args.epochs, batch_size=128, verbose=2,

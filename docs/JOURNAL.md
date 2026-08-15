@@ -39,6 +39,23 @@ variable — l'équilibre de classes calculé sur les masses EFFECTIVES
 (pondérations comprises). Critère identique à v29 ; baseline suffixes de v28
 mesurée au passage.
 
+**Verdict v30 : hypothèse FALSIFIÉE, violemment** — 146.8 FA/h @0.8, le pire
+banc du projet. Les masses effectives sur-pondèrent les positifs (×21 au lieu
+de ×2.7 par comptes) : l'inverse d'une stabilisation. Le calcul historique
+redevient le défaut (`--effective-class-weight` conservé en opt-in pour
+reproduire l'expérience).
+
+**Et la mesure qui recadre la nuit** : le baseline suffixes de v28, mesuré
+enfin, est déjà BON — 13 % @0.8, **4 % @0.9**, 2 % @0.95. Au seuil d'usage
+0.9, la fuite « loquence » est marginale dans la mesure : v29/v30 ont dégradé
+un système qui tenait déjà cette clause. Sur les critères de la nuit, v28 ne
+manque QU'UNE case : **cousins moi_ 20 % @0.9 (objectif ≤ 15 %)**.
+
+**v31 (run 3/10)** : recette v28 exacte, une variable — adversariaux
+×50 → ×80 (les 45 cousins et 23 « éloquente » vivent dans ce pool). Critère :
+cousins ≤ 15 % @0.9, suffixes restent ≤ 15 % @0.9, et toutes les bornes v28
+conservées (FRR ≤ 10, FAR ≤ 5, banc ≥ 85 % · ≤ 6 @0.9, vitesses − 5 pts max).
+
 ## 2026-08-14 — Le champion tire avant la fin du mot : diagnostic et H3 (critère AVANT le run)
 
 Constat au micro : la tête déclenche sur « éloquen » (sans la fin), et
